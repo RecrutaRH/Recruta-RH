@@ -310,7 +310,7 @@ return function render(_ctx, _cache) {
                 }, "console.anthropic.com")
               ]),
               _createElementVNode("label", { style: {"font-size":"12px","color":"#64748B","display":"block","margin-bottom":"12px"} }, [
-                _createTextVNode("Chave (sk-ant-...)"),
+                _createTextVNode("Chave de API"),
                 _withDirectives(_createElementVNode("input", {
                   "onUpdate:modelValue": $event => ((newApiKey) = $event),
                   type: "password",
@@ -3297,7 +3297,7 @@ function jsonBinPull(masterKey, binId) {
 
 
 
-const DEFAULT_API_KEY = "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";
+const DEFAULT_API_KEY = "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";
 const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
 const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
 
@@ -3777,8 +3777,8 @@ createApp({
     var transcripts=ref(lsGet('recruitarh_transcripts',{}));
     var summaries=ref(lsGet('recruitarh_summaries',{}));
     var intDates=ref(lsGet('recruitarh_intdates',{}));
-    var apiKey=ref(DEFAULT_API_KEY||lsGet('recruitarh_apikey',''));
-    var showApiModal=ref(!apiKey.value),newApiKey=ref('');
+    var apiKey=ref('server-managed');
+    var showApiModal=ref(false),newApiKey=ref('');
     var showJobModal=ref(false),editingJob=ref(null);
     var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today()});
     var ejf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:'',closedDate:''});
@@ -4053,7 +4053,7 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4089,7 +4089,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
