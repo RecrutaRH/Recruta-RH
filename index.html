@@ -310,7 +310,7 @@ return function render(_ctx, _cache) {
                 }, "console.anthropic.com")
               ]),
               _createElementVNode("label", { style: {"font-size":"12px","color":"#64748B","display":"block","margin-bottom":"12px"} }, [
-                _createTextVNode("Chave de API"),
+                _createTextVNode("Chave (sk-ant-...)"),
                 _withDirectives(_createElementVNode("input", {
                   "onUpdate:modelValue": $event => ((newApiKey) = $event),
                   type: "password",
@@ -338,7 +338,7 @@ return function render(_ctx, _cache) {
                 _createElementVNode("button", {
                   onClick: $event => (showSyncModal=false),
                   style: {"background":"none","border":"none","cursor":"pointer","font-size":"22px","color":"#64748B"}
-                }, "X", 8 /* PROPS */, ["onClick"])
+                }, "✕", 8 /* PROPS */, ["onClick"])
               ]),
               _createElementVNode("p", { style: {"font-size":"13px","color":"#64748B","margin-bottom":"20px","line-height":"1.6"} }, [
                 _createTextVNode("Usa o "),
@@ -349,7 +349,7 @@ return function render(_ctx, _cache) {
                   target: "_blank",
                   style: {"color":"#2563EB"}
                 }, "Crie sua conta"),
-                _createTextVNode(", depois va em Account API Keys e copie a "),
+                _createTextVNode(", depois va em Account > API Keys e copie a "),
                 _createElementVNode("strong", null, "Master Key"),
                 _createTextVNode(".")
               ]),
@@ -378,18 +378,18 @@ return function render(_ctx, _cache) {
                       onClick: saveSyncConfig,
                       disabled: jbCreating||!jbKeyInput.trim(),
                       style: _normalizeStyle({width:'100%',background:jbCreating?'#F1F5F9':'#2563EB',color:jbCreating?'#64748B':'#fff',border:'none',borderRadius:'8px',padding:'11px',fontSize:'14px',fontWeight:700,cursor:jbCreating?'not-allowed':'pointer'})
-                    }, _toDisplayString(jbCreating?'Criando...':(jbExistingId && jbExistingId.trim() ? 'Conectar ao bin existente' : 'Ativar compartilhamento')), 13 /* TEXT, STYLE, PROPS */, ["onClick", "disabled"])
+                    }, _toDisplayString(jbCreating?'Criando...':(jbExistingId&&jbExistingId.trim()?'Conectar ao bin existente':'Sincronizar')), 13 /* TEXT, STYLE, PROPS */, ["onClick", "disabled"])
                   ]))
                 : (_openBlock(), _createElementBlock("div", { key: 1 }, [
                     _createElementVNode("div", { style: {"background":"#F0FDF4","border-radius":"10px","padding":"14px 16px","margin-bottom":"16px"} }, [
-                      _createElementVNode("p", { style: {"font-size":"12px","font-weight":"700","color":"#16A34A","margin-bottom":"2px"} }, "OK Compartilhamento ativo"),
+                      _createElementVNode("p", { style: {"font-size":"12px","font-weight":"700","color":"#16A34A","margin-bottom":"2px"} }, "✓ Compartilhamento ativo"),
                       _createElementVNode("p", { style: {"font-size":"11px","color":"#16A34A"} }, _toDisplayString(jbStatus), 1 /* TEXT */)
                     ]),
                     _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
                       _createElementVNode("button", {
                         onClick: $event => {pullSync();flash('Sincronizado!')},
                         style: {"flex":"1","background":"#2563EB","color":"#fff","border":"none","border-radius":"8px","padding":"10px","font-size":"13px","font-weight":"700","cursor":"pointer"}
-                      }, "Sync Sincronizar agora", 8 /* PROPS */, ["onClick"]),
+                      }, "↻ Sincronizar agora", 8 /* PROPS */, ["onClick"]),
                       _createElementVNode("button", {
                         onClick: $event => {deactivateSync();showSyncModal=false},
                         style: {"background":"none","border":"1px solid #FCA5A5","border-radius":"8px","padding":"10px","font-size":"12px","cursor":"pointer","color":"#DC2626"}
@@ -410,7 +410,7 @@ return function render(_ctx, _cache) {
                 _createElementVNode("button", {
                   onClick: $event => (editingJob=null),
                   style: {"background":"none","border":"none","cursor":"pointer","font-size":"22px","color":"#64748B"}
-                }, "X", 8 /* PROPS */, ["onClick"])
+                }, "✕", 8 /* PROPS */, ["onClick"])
               ]),
               _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"12px","margin-bottom":"14px"} }, [
                 _createElementVNode("label", { style: {"font-size":"12px","color":"#64748B"} }, [
@@ -465,7 +465,7 @@ return function render(_ctx, _cache) {
                   ]),
                   _createElementVNode("span", { style: {"font-size":"11px","color":"#94A3B8","margin-top":"3px","display":"block"} }, "Preencher encerra a vaga")
                 ]),
-                (ejf.openDate && ejf.closedDate)
+                (ejf.openDate&&ejf.closedDate)
                   ? (_openBlock(), _createElementBlock("div", {
                       key: 0,
                       style: {"display":"flex","align-items":"flex-end","padding-bottom":"4px"}
@@ -514,7 +514,7 @@ return function render(_ctx, _cache) {
                 _createElementVNode("button", {
                   onClick: $event => (showJobModal=false),
                   style: {"background":"none","border":"none","cursor":"pointer","font-size":"22px","color":"#64748B"}
-                }, "X", 8 /* PROPS */, ["onClick"])
+                }, "✕", 8 /* PROPS */, ["onClick"])
               ]),
               _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"12px","margin-bottom":"14px"} }, [
                 _createElementVNode("label", { style: {"font-size":"12px","color":"#64748B"} }, [
@@ -596,7 +596,7 @@ return function render(_ctx, _cache) {
                   _createElementVNode("button", {
                     onClick: $event => (showManualModal=false),
                     style: {"background":"none","border":"none","font-size":"20px","cursor":"pointer","color":"#94A3B8","line-height":"1"}
-                  }, "x", 8 /* PROPS */, ["onClick"])
+                  }, "×", 8 /* PROPS */, ["onClick"])
                 ]),
                 _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"10px","margin-bottom":"10px"} }, [
                   _createElementVNode("div", null, [
@@ -704,7 +704,7 @@ return function render(_ctx, _cache) {
                   style: {"font-size":"15px","flex-shrink":"0"}
                 }, null, 2 /* CLASS */),
                 _createTextVNode(" " + _toDisplayString(item.label) + " ", 1 /* TEXT */),
-                (item.id==='jobs' && jobs.filter(j=>isVagaCrit(j)).length>0)
+                (item.id==='jobs'&&jobs.filter(j=>isVagaCrit(j)).length>0)
                   ? (_openBlock(), _createElementBlock("span", {
                       key: 0,
                       style: {"position":"absolute","right":"9px","min-width":"16px","height":"16px","border-radius":"99px","background":"#DC2626","color":"#fff","font-size":"9px","font-weight":"700","display":"flex","align-items":"center","justify-content":"center","padding":"0 4px"}
@@ -718,18 +718,18 @@ return function render(_ctx, _cache) {
               ? (_openBlock(), _createElementBlock("p", {
                   key: 0,
                   style: {"font-size":"10px","color":"#86EFAC","margin-bottom":"4px"}
-                }, "Sync " + _toDisplayString(jbStatus), 1 /* TEXT */))
+                }, "↻ " + _toDisplayString(jbStatus), 1 /* TEXT */))
               : _createCommentVNode("v-if", true),
             _createElementVNode("button", {
               onClick: $event => (showSyncModal=true),
               style: _normalizeStyle({width:'100%',textAlign:'left',background:jbBin?'rgba(134,239,172,.1)':'rgba(255,255,255,.06)',border:jbBin?'1px solid rgba(134,239,172,.2)':'1px solid rgba(255,255,255,.08)',borderRadius:'6px',color:jbBin?'#86EFAC':'#94A3B8',fontSize:'10.5px',cursor:'pointer',padding:'5px 8px',marginBottom:'6px',fontFamily:'Inter,sans-serif'})
-            }, _toDisplayString(jbBin?'OK Compartilhamento ativo':'> Ativar compartilhamento'), 13 /* TEXT, STYLE, PROPS */, ["onClick"]),
+            }, _toDisplayString(jbBin?'✓ Compartilhamento ativo':'▶ Ativar compartilhamento'), 13 /* TEXT, STYLE, PROPS */, ["onClick"]),
             jbBin
               ? (_openBlock(), _createElementBlock("button", {
                   key: 1,
                   onClick: $event => {pushSync();pullSync();flash('Sincronizando...')},
                   style: {"width":"100%","text-align":"left","background":"rgba(37,99,235,.15)","border":"1px solid rgba(37,99,235,.25)","border-radius":"6px","color":"#93C5FD","font-size":"10.5px","cursor":"pointer","padding":"5px 8px","font-family":"Inter,sans-serif","margin-bottom":"8px"}
-                }, "Sync Forcar sincronizacao", 8 /* PROPS */, ["onClick"]))
+                }, "↻ Forcar sincronizacao", 8 /* PROPS */, ["onClick"]))
               : _createCommentVNode("v-if", true),
             _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin-bottom":"2px"} }, _toDisplayString(candidates.length) + " candidatos", 1 /* TEXT */),
             _createElementVNode("p", { style: {"font-size":"10px","color":"#475569"} }, _toDisplayString(metrics.contratados) + " contratados", 1 /* TEXT */),
@@ -737,16 +737,16 @@ return function render(_ctx, _cache) {
               ? (_openBlock(), _createElementBlock("p", {
                   key: 2,
                   style: {"color":"#86EFAC","font-size":"10px","margin-top":"5px"}
-                }, "* " + _toDisplayString(saveMsg), 1 /* TEXT */))
+                }, "● " + _toDisplayString(saveMsg), 1 /* TEXT */))
               : _createCommentVNode("v-if", true)
           ]),
           _createElementVNode("div", { style: {"padding":"10px 12px","border-top":"1px solid rgba(255,255,255,.08)","display":"flex","align-items":"center","gap":"9px"} }, [
             _createElementVNode("div", {
               style: _normalizeStyle({width:'32px',height:'32px',borderRadius:'50%',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700,color:'#fff',flexShrink:0})
-            }, _toDisplayString(currentUser && currentUser.firstName ? currentUser.firstName.slice(0,2).toUpperCase() : 'RH'), 5 /* TEXT, STYLE */),
+            }, _toDisplayString(currentUser&¤tUser.firstName?currentUser.firstName.slice(0,2).toUpperCase():'RH'), 5 /* TEXT, STYLE */),
             _createElementVNode("div", { style: {"flex":"1","min-width":"0"} }, [
-              _createElementVNode("div", { style: {"font-size":"11.5px","font-weight":"600","color":"#fff","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(currentUser ? currentUser.name : 'Convidado'), 1 /* TEXT */),
-              _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.45)"} }, _toDisplayString(currentUser && currentUser.role==='admin' ? 'Administrador' : 'Recrutador(a)'), 1 /* TEXT */)
+              _createElementVNode("div", { style: {"font-size":"11.5px","font-weight":"600","color":"#fff","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(currentUser?currentUser.name:'Convidado'), 1 /* TEXT */),
+              _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.45)"} }, _toDisplayString(currentUser&¤tUser.role==="admin"?"Administrador":"Recrutador(a)"), 1 /* TEXT */)
             ]),
             _createElementVNode("button", {
               onClick: $event => (rsLogout()),
@@ -789,7 +789,7 @@ return function render(_ctx, _cache) {
                         _createTextVNode("Voce tem "),
                         _createElementVNode("strong", { style: {"color":"#fff"} }, _toDisplayString(candidates.filter(c=>c.status==='aguardando_lider').length) + " candidato(s)", 1 /* TEXT */),
                         _createTextVNode(" aguardando aprovacao e "),
-                        _createElementVNode("strong", { style: {"color":"#fff"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta' && bizDaysSince(j.openDate)>8).length) + " vaga(s)", 1 /* TEXT */),
+                        _createElementVNode("strong", { style: {"color":"#fff"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta'&&bizDaysSince(j.openDate)>8).length) + " vaga(s)", 1 /* TEXT */),
                         _createTextVNode(" proximas do vencimento do SLA.")
                       ]),
                       _createElementVNode("div", { style: {"display":"flex","gap":"10px","flex-wrap":"wrap","align-items":"center"} }, [
@@ -844,7 +844,7 @@ return function render(_ctx, _cache) {
                     (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(dashCards.slice(0,5), (k, ki) => {
                       return (_openBlock(), _createElementBlock("div", {
                         key: k.label,
-                        onClick: $event => (k.link && goTo(k.link)),
+                        onClick: $event => (k.link&&goTo(k.link)),
                         style: _normalizeStyle([{background:'#fff',border:'1px solid #E5E7EB',borderRadius:'12px',padding:'16px 16px 14px',position:'relative',overflow:'hidden',boxShadow:'0 1px 3px rgba(15,23,42,.05)',cursor:k.link?'pointer':'default',transition:'all .15s'}, {"box-shadow":"0 1px 3px rgba(15,23,42,.05)"}])
                       }, [
                         _createElementVNode("div", {
@@ -879,7 +879,7 @@ return function render(_ctx, _cache) {
                       (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(dashCards.slice(5,9), (k) => {
                         return (_openBlock(), _createElementBlock("div", {
                           key: k.label,
-                          onClick: $event => (k.link && goTo(k.link)),
+                          onClick: $event => (k.link&&goTo(k.link)),
                           style: _normalizeStyle([{cursor:k.link?'pointer':'default'}, {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"9px","padding":"10px 12px"}])
                         }, [
                           _createElementVNode("div", {
@@ -919,7 +919,7 @@ return function render(_ctx, _cache) {
                               fill: "none",
                               stroke: "#16A34A",
                               "stroke-width": "10",
-                              "stroke-dasharray": (slaStats && slaStats.on||0)/Math.max((slaStats && (slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9+' 175.9',
+                              "stroke-dasharray": (slaStats&&slaStats.on||0)/Math.max((slaStats&&(slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9+' 175.9',
                               "stroke-dashoffset": "44",
                               transform: "rotate(-90 36 36)",
                               "stroke-linecap": "round"
@@ -931,8 +931,8 @@ return function render(_ctx, _cache) {
                               fill: "none",
                               stroke: "#EA580C",
                               "stroke-width": "10",
-                              "stroke-dasharray": (slaStats && slaStats.near||0)/Math.max((slaStats && (slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9+' 175.9',
-                              "stroke-dashoffset": 44-(slaStats && slaStats.on||0)/Math.max((slaStats && (slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9,
+                              "stroke-dasharray": (slaStats&&slaStats.near||0)/Math.max((slaStats&&(slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9+' 175.9',
+                              "stroke-dashoffset": 44-(slaStats&&slaStats.on||0)/Math.max((slaStats&&(slaStats.on+slaStats.near+slaStats.over))||1,1)*175.9,
                               transform: "rotate(-90 36 36)",
                               "stroke-linecap": "round"
                             }, null, 8 /* PROPS */, ["stroke-dasharray", "stroke-dashoffset"]),
@@ -941,7 +941,7 @@ return function render(_ctx, _cache) {
                               y: "40",
                               "text-anchor": "middle",
                               style: {"font-size":"13px","font-weight":"800","font-family":"Inter,sans-serif","fill":"#0F172A"}
-                            }, _toDisplayString((slaStats && (slaStats.on+slaStats.near+slaStats.over))||0), 1 /* TEXT */)
+                            }, _toDisplayString((slaStats&&(slaStats.on+slaStats.near+slaStats.over))||0), 1 /* TEXT */)
                           ]))
                         ]),
                         _createElementVNode("div", { style: {"flex":"1","display":"flex","flex-direction":"column","gap":"5px"} }, [
@@ -950,21 +950,21 @@ return function render(_ctx, _cache) {
                               _createElementVNode("div", { style: {"width":"8px","height":"8px","border-radius":"50%","background":"#16A34A"} }),
                               _createElementVNode("span", { style: {"font-size":"11px","color":"#64748B"} }, "No prazo")
                             ]),
-                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(slaStats && slaStats.on||0), 1 /* TEXT */)
+                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(slaStats&&slaStats.on||0), 1 /* TEXT */)
                           ]),
                           _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between"} }, [
                             _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"5px"} }, [
                               _createElementVNode("div", { style: {"width":"8px","height":"8px","border-radius":"50%","background":"#EA580C"} }),
                               _createElementVNode("span", { style: {"font-size":"11px","color":"#64748B"} }, "Proximo")
                             ]),
-                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#EA580C"} }, _toDisplayString(slaStats && slaStats.near||0), 1 /* TEXT */)
+                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#EA580C"} }, _toDisplayString(slaStats&&slaStats.near||0), 1 /* TEXT */)
                           ]),
                           _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between"} }, [
                             _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"5px"} }, [
                               _createElementVNode("div", { style: {"width":"8px","height":"8px","border-radius":"50%","background":"#DC2626"} }),
                               _createElementVNode("span", { style: {"font-size":"11px","color":"#64748B"} }, "Atrasado")
                             ]),
-                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#DC2626"} }, _toDisplayString(slaStats && slaStats.over||0), 1 /* TEXT */)
+                            _createElementVNode("span", { style: {"font-size":"13px","font-weight":"700","color":"#DC2626"} }, _toDisplayString(slaStats&&slaStats.over||0), 1 /* TEXT */)
                           ])
                         ])
                       ])
@@ -1089,7 +1089,7 @@ return function render(_ctx, _cache) {
                                       ]),
                                       _createElementVNode("div", { style: {"flex":"1"} }, [
                                         _createElementVNode("div", { style: {"font-size":"12px","font-weight":"500","color":"#0F172A","line-height":"1.4"} }, _toDisplayString(j.title), 1 /* TEXT */),
-                                        _createElementVNode("div", { style: {"font-size":"10.5px","color":"#DC2626","margin-top":"1px"} }, _toDisplayString(bizDaysSince(j.openDate)) + " dias uteis SLA vencido (meta: 10d)", 1 /* TEXT */)
+                                        _createElementVNode("div", { style: {"font-size":"10.5px","color":"#DC2626","margin-top":"1px"} }, _toDisplayString(bizDaysSince(j.openDate)) + " dias uteis - SLA vencido (meta: 10d)", 1 /* TEXT */)
                                       ]),
                                       _createElementVNode("i", {
                                         class: "ti ti-chevron-right",
@@ -1099,7 +1099,7 @@ return function render(_ctx, _cache) {
                                   : _createCommentVNode("v-if", true)
                               ]))
                             }), 128 /* KEYED_FRAGMENT */)),
-                            (jobs.filter(j=>j.status==='aberta' && bizDaysSince(j.openDate)>10).length===0)
+                            (jobs.filter(j=>j.status==='aberta'&&bizDaysSince(j.openDate)>10).length===0)
                               ? (_openBlock(), _createElementBlock("div", {
                                   key: 0,
                                   style: {"padding":"16px 14px","font-size":"12px","color":"#64748B","text-align":"center"}
@@ -1133,7 +1133,7 @@ return function render(_ctx, _cache) {
                               : _createCommentVNode("v-if", true),
                             _createElementVNode("div", { style: {"display":"flex","align-items":"flex-start","gap":"8px","padding":"9px 14px"} }, [
                               _createElementVNode("div", { style: {"width":"7px","height":"7px","border-radius":"50%","background":"#2563EB","flex-shrink":"0","margin-top":"4px"} }),
-                              _createElementVNode("div", { style: {"font-size":"12px","color":"#0F172A","line-height":"1.4"} }, _toDisplayString(candidates.length) + " curriculos triados taxa de aprovacao: " + _toDisplayString(metrics.total>0?Math.round(metrics.contratados/metrics.total*100):0) + "%", 1 /* TEXT */)
+                              _createElementVNode("div", { style: {"font-size":"12px","color":"#0F172A","line-height":"1.4"} }, _toDisplayString(candidates.length) + " curriculos triados . taxa de aprovacao: " + _toDisplayString(metrics.total>0?Math.round(metrics.contratados/metrics.total*100):0) + "%", 1 /* TEXT */)
                             ])
                           ]))
                         : _createCommentVNode("v-if", true)
@@ -1229,7 +1229,7 @@ return function render(_ctx, _cache) {
                       ])
                     ]),
                     _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"repeat(3,1fr)","gap":"10px"} }, [
-                      (candidates.filter(c=>c.analysis && c.analysis.score && c.analysis.score.total>=80).length)
+                      (candidates.filter(c=>c.analysis&&c.analysis.score&&c.analysis.score.total>=80).length)
                         ? (_openBlock(), _createElementBlock("div", {
                             key: 0,
                             style: {"background":"rgba(255,255,255,.1)","border":"1px solid rgba(255,255,255,.15)","border-radius":"10px","padding":"12px 14px","cursor":"pointer"},
@@ -1242,8 +1242,8 @@ return function render(_ctx, _cache) {
                               }),
                               _createElementVNode("span", { style: {"font-size":"9px","font-weight":"700","color":"rgba(255,255,255,.7)","text-transform":"uppercase","letter-spacing":".07em"} }, "Destaques")
                             ]),
-                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.analysis && c.analysis.score && c.analysis.score.total>=80).length) + " candidato(s) com aderencia alta ", 1 /* TEXT */),
-                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score 80 pts prontos para entrevista")
+                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.analysis&&c.analysis.score&&c.analysis.score.total>=80).length) + " candidato(s) com aderencia alta ", 1 /* TEXT */),
+                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score >= 80 pts . prontos para entrevista")
                           ], 8 /* PROPS */, ["onClick"]))
                         : (_openBlock(), _createElementBlock("div", {
                             key: 1,
@@ -1258,7 +1258,7 @@ return function render(_ctx, _cache) {
                             ]),
                             _createElementVNode("div", { style: {"font-size":"11px","color":"rgba(255,255,255,.5)"} }, "Nenhum candidato com score alto ainda")
                           ])),
-                      (jobs.filter(j=>j.status==='aberta' && bizDaysSince(j.openDate)>=8).length)
+                      (jobs.filter(j=>j.status==='aberta'&&bizDaysSince(j.openDate)>=8).length)
                         ? (_openBlock(), _createElementBlock("div", {
                             key: 2,
                             style: {"background":"rgba(234,88,12,.2)","border":"1px solid rgba(234,88,12,.4)","border-radius":"10px","padding":"12px 14px","cursor":"pointer"},
@@ -1271,7 +1271,7 @@ return function render(_ctx, _cache) {
                               }),
                               _createElementVNode("span", { style: {"font-size":"9px","font-weight":"700","color":"#FB923C","text-transform":"uppercase","letter-spacing":".07em"} }, "SLA em Risco")
                             ]),
-                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta' && bizDaysSince(j.openDate)>=20).length) + " vaga(s) proximas do limite ", 1 /* TEXT */),
+                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta'&&bizDaysSince(j.openDate)>=20).length) + " vaga(s) proximas do limite ", 1 /* TEXT */),
                             _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Acima de 20 dias uteis abertas")
                           ], 8 /* PROPS */, ["onClick"]))
                         : (_openBlock(), _createElementBlock("div", {
@@ -1288,7 +1288,7 @@ return function render(_ctx, _cache) {
                             _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, "Todas as vagas no prazo"),
                             _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Nenhuma vaga com risco de SLA")
                           ])),
-                      (candidates.filter(c=>c.status==='banco' && c.analysis && c.analysis.score && c.analysis.score.total>=70).length)
+                      (candidates.filter(c=>c.status==='banco'&&c.analysis&&c.analysis.score&&c.analysis.score.total>=70).length)
                         ? (_openBlock(), _createElementBlock("div", {
                             key: 4,
                             style: {"background":"rgba(99,102,241,.2)","border":"1px solid rgba(99,102,241,.4)","border-radius":"10px","padding":"12px 14px","cursor":"pointer"},
@@ -1301,8 +1301,8 @@ return function render(_ctx, _cache) {
                               }),
                               _createElementVNode("span", { style: {"font-size":"9px","font-weight":"700","color":"#A5B4FC","text-transform":"uppercase","letter-spacing":".07em"} }, "Reaproveitamento")
                             ]),
-                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco' && c.analysis && c.analysis.score && c.analysis.score.total>=70).length) + " talento(s) disponiveis ", 1 /* TEXT */),
-                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score 70 prontos para reaproveitamento")
+                            _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco'&&c.analysis&&c.analysis.score&&c.analysis.score.total>=70).length) + " talento(s) disponiveis ", 1 /* TEXT */),
+                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score >= 70 . prontos para reaproveitamento")
                           ], 8 /* PROPS */, ["onClick"]))
                         : (_openBlock(), _createElementBlock("div", {
                             key: 5,
@@ -1328,7 +1328,7 @@ return function render(_ctx, _cache) {
                         _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.6)","margin-top":"2px"} }, "Contratados")
                       ]),
                       _createElementVNode("div", { style: {"text-align":"center"} }, [
-                        _createElementVNode("div", { style: {"font-size":"18px","font-weight":"800","color":"#93C5FD"} }, _toDisplayString(candidates.length>0?Math.round(candidates.filter(c=>c.analysis && c.analysis.score && c.analysis.score.total>0).reduce((s,c)=>s+(c.analysis.score.total||0),0)/Math.max(candidates.filter(c=>c.analysis && c.analysis.score && c.analysis.score.total>0).length,1)):0), 1 /* TEXT */),
+                        _createElementVNode("div", { style: {"font-size":"18px","font-weight":"800","color":"#93C5FD"} }, _toDisplayString(candidates.length>0?Math.round(candidates.filter(c=>c.analysis&&c.analysis.score&&c.analysis.score.total>0).reduce((s,c)=>s+(c.analysis.score.total||0),0)/Math.max(candidates.filter(c=>c.analysis&&c.analysis.score&&c.analysis.score.total>0).length,1)):0), 1 /* TEXT */),
                         _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.6)","margin-top":"2px"} }, "Score medio")
                       ]),
                       _createElementVNode("div", { style: {"text-align":"center"} }, [
@@ -1361,7 +1361,7 @@ return function render(_ctx, _cache) {
                     _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"20px"} }, [
                       _createElementVNode("div", null, [
                         _createElementVNode("h1", { style: {"font-size":"21px","font-weight":"700","color":"#0F172A","margin-bottom":"3px"} }, "Vagas"),
-                        _createElementVNode("p", { style: {"font-size":"13px","color":"#64748B"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta').length) + " ativas . " + _toDisplayString(jobs.filter(j=>j.status==='encerrada').length) + " encerradas . " + _toDisplayString(jobs.filter(j=>isVagaCrit(j)).length) + " critica(s)", 1 /* TEXT */)
+                        _createElementVNode("p", { style: {"font-size":"13px","color":"#64748B"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta').length) + " ativas · " + _toDisplayString(jobs.filter(j=>j.status==='encerrada').length) + " encerradas · " + _toDisplayString(jobs.filter(j=>isVagaCrit(j)).length) + " critica(s)", 1 /* TEXT */)
                       ]),
                       _createElementVNode("button", {
                         onClick: $event => (showJobModal=true),
@@ -1389,7 +1389,7 @@ return function render(_ctx, _cache) {
                           _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
                               _createElementVNode("tr", null, [
-                                _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 16px","border-bottom":"1px solid #E5E7EB"} }, "Vaga . Area"),
+                                _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 16px","border-bottom":"1px solid #E5E7EB"} }, "Vaga · Area"),
                                 _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 10px","border-bottom":"1px solid #E5E7EB"} }, "Candidatos"),
                                 _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 10px","border-bottom":"1px solid #E5E7EB"} }, "Aguard."),
                                 _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 10px","border-bottom":"1px solid #E5E7EB"} }, "Abertura"),
@@ -1417,15 +1417,15 @@ return function render(_ctx, _cache) {
                                           }, "Critica"))
                                         : _createCommentVNode("v-if", true)
                                     ]),
-                                    _createElementVNode("div", { style: {"font-size":"10.5px","color":"#64748B"} }, _toDisplayString(job.dept) + " . " + _toDisplayString(job.status==='encerrada'?('Encerrada '+fmtDate(job.closedDate)):(bizDaysSince(job.openDate)+' dias uteis aberta')), 1 /* TEXT */)
+                                    _createElementVNode("div", { style: {"font-size":"10.5px","color":"#64748B"} }, _toDisplayString(job.dept) + " · " + _toDisplayString(job.status==='encerrada'?('Encerrada '+fmtDate(job.closedDate)):(bizDaysSince(job.openDate)+' dias uteis aberta')), 1 /* TEXT */)
                                   ], 4 /* STYLE */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-weight":"500","font-size":"12.5px"} }, _toDisplayString(jobCands(job.id).length), 1 /* TEXT */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
                                     _createElementVNode("span", {
                                       style: _normalizeStyle({fontSize:'12px',fontWeight:600,color:pending(job.id).length>0?'#EA580C':'#94A3B8'})
-                                    }, _toDisplayString(pending(job.id).length) + _toDisplayString(pending(job.id).length>0?' ':''), 5 /* TEXT, STYLE */)
+                                    }, _toDisplayString(pending(job.id).length) + _toDisplayString(pending(job.id).length>0?' !':''), 5 /* TEXT, STYLE */)
                                   ]),
-                                  _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-size":"12px","color":"#64748B","white-space":"nowrap"} }, _toDisplayString(fmtDate(job.openDate)||''), 1 /* TEXT */),
+                                  _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-size":"12px","color":"#64748B","white-space":"nowrap"} }, _toDisplayString(fmtDate(job.openDate)||'-'), 1 /* TEXT */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
                                     (job.status==='aberta')
                                       ? (_openBlock(), _createElementBlock("div", {
@@ -1447,7 +1447,7 @@ return function render(_ctx, _cache) {
                                       ? (_openBlock(), _createElementBlock("div", {
                                           key: 2,
                                           style: {"font-size":"11px","color":"#94A3B8"}
-                                        }, _toDisplayString(job.timeToFill?job.timeToFill+'d uteis':''), 1 /* TEXT */))
+                                        }, _toDisplayString(job.timeToFill?job.timeToFill+'d uteis':'-'), 1 /* TEXT */))
                                       : _createCommentVNode("v-if", true)
                                   ]),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-size":"12px","color":"#64748B","max-width":"200px"} }, _toDisplayString(proximaAcao(job)), 1 /* TEXT */),
@@ -1494,13 +1494,13 @@ return function render(_ctx, _cache) {
                                 _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"3px"} }, [
                                   _createElementVNode("span", { style: {"font-size":"12px","color":"#0F172A","font-weight":"500"} }, _toDisplayString(area), 1 /* TEXT */),
                                   _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"8px"} }, [
-                                    _createElementVNode("span", { style: {"font-size":"11px","color":"#64748B"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta' && (j.dept||'Sem area')===area).length) + " vaga(s)", 1 /* TEXT */),
-                                    _createElementVNode("span", { style: {"font-size":"10.5px","color":"#94A3B8"} }, _toDisplayString(candidates.filter(c=>jobs.filter(j=>j.status==='aberta' && (j.dept||'Sem area')===area).map(j=>j.id).includes(c.jobId)).length) + " candidatos", 1 /* TEXT */)
+                                    _createElementVNode("span", { style: {"font-size":"11px","color":"#64748B"} }, _toDisplayString(jobs.filter(j=>j.status==='aberta'&&(j.dept||'Sem area')===area).length) + " vaga(s)", 1 /* TEXT */),
+                                    _createElementVNode("span", { style: {"font-size":"10.5px","color":"#94A3B8"} }, _toDisplayString(candidates.filter(c=>jobs.filter(j=>j.status==='aberta'&&(j.dept||'Sem area')===area).map(j=>j.id).includes(c.jobId)).length) + " candidatos", 1 /* TEXT */)
                                   ])
                                 ]),
                                 _createElementVNode("div", { style: {"height":"8px","background":"#F1F5F9","border-radius":"99px","overflow":"hidden"} }, [
                                   _createElementVNode("div", {
-                                    style: _normalizeStyle({height:'8px',borderRadius:'99px',background:'#2563EB',width:(jobs.filter(j=>j.status==='aberta' && (j.dept||'Sem area')===area).length/Math.max(jobs.filter(j=>j.status==='aberta').length,1)*100)+'%',transition:'width .4s ease'})
+                                    style: _normalizeStyle({height:'8px',borderRadius:'99px',background:'#2563EB',width:(jobs.filter(j=>j.status==='aberta'&&(j.dept||'Sem area')===area).length/Math.max(jobs.filter(j=>j.status==='aberta').length,1)*100)+'%',transition:'width .4s ease'})
                                   }, null, 4 /* STYLE */)
                                 ])
                               ]))
@@ -1655,7 +1655,7 @@ return function render(_ctx, _cache) {
                       _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"10px","flex-wrap":"wrap","gap":"8px"} }, [
                         _createElementVNode("div", null, [
                           _createElementVNode("h1", { style: {"font-size":"21px","font-weight":"700","color":"#0F172A","margin-bottom":"3px"} }, "Candidatos"),
-                          _createElementVNode("p", { style: {"font-size":"13px","color":"#64748B"} }, _toDisplayString(filteredCands.length) + " exibidos . " + _toDisplayString(candidates.length) + " total . " + _toDisplayString(jobs.filter(j=>j.status==='aberta').length) + " vagas ativas", 1 /* TEXT */)
+                          _createElementVNode("p", { style: {"font-size":"13px","color":"#64748B"} }, _toDisplayString(filteredCands.length) + " exibidos · " + _toDisplayString(candidates.length) + " total · " + _toDisplayString(jobs.filter(j=>j.status==='aberta').length) + " vagas ativas", 1 /* TEXT */)
                         ]),
                         _createElementVNode("div", { style: {"display":"flex","gap":"8px","align-items":"center","flex-wrap":"wrap"} }, [
                           _createElementVNode("button", {
@@ -1689,7 +1689,7 @@ return function render(_ctx, _cache) {
                             key: 1,
                             style: {"display":"grid","grid-template-columns":"270px 1fr","background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","height":"calc(100vh - 158px)","min-height":"500px"}
                           }, [
-                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column"} }, [
+                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column","min-height":"0","height":"100%"} }, [
                               _createElementVNode("div", { style: {"padding":"12px 12px 0"} }, [
                                 _createElementVNode("div", { style: {"position":"relative"} }, [
                                   _createElementVNode("i", {
@@ -1720,12 +1720,38 @@ return function render(_ctx, _cache) {
                                   }), 128 /* KEYED_FRAGMENT */))
                                 ], 40 /* PROPS, NEED_HYDRATION */, ["onChange"])
                               ]),
-                              _createElementVNode("div", { style: {"flex":"1","overflow":"auto"} }, [
+                              _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap":"4px","border-bottom":"1px solid #E5E7EB","flex-wrap":"wrap"} }, [
+                                _createElementVNode("button", {
+                                  onClick: $event => (candStatusFilter='active'),
+                                  style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='active'?'#2563EB':'#F1F5F9',color:candStatusFilter==='active'?'#fff':'#64748B'})
+                                }, "Ativos", 12 /* STYLE, PROPS */, ["onClick"]),
+                                _createElementVNode("button", {
+                                  onClick: $event => (candStatusFilter='all'),
+                                  style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='all'?'#2563EB':'#F1F5F9',color:candStatusFilter==='all'?'#fff':'#64748B'})
+                                }, "Todos", 12 /* STYLE, PROPS */, ["onClick"]),
+                                _createElementVNode("button", {
+                                  onClick: $event => (candStatusFilter='reprovado'),
+                                  style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='reprovado'?'#DC2626':'#F1F5F9',color:candStatusFilter==='reprovado'?'#fff':'#64748B'})
+                                }, "Reprovados", 12 /* STYLE, PROPS */, ["onClick"]),
+                                _createElementVNode("button", {
+                                  onClick: $event => (candStatusFilter='banco'),
+                                  style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='banco'?'#7C3AED':'#F1F5F9',color:candStatusFilter==='banco'?'#fff':'#64748B'})
+                                }, "Banco", 12 /* STYLE, PROPS */, ["onClick"]),
+                                _createElementVNode("select", {
+                                  onChange: $event => (candSort=$event.target.value),
+                                  style: {"margin-left":"auto","font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","font-family":"Inter,sans-serif","color":"#0F172A","background":"#fff","cursor":"pointer"}
+                                }, [
+                                  _createElementVNode("option", { value: "date_desc" }, "Mais recentes"),
+                                  _createElementVNode("option", { value: "date_asc" }, "Mais antigos"),
+                                  _createElementVNode("option", { value: "score_desc" }, "Maior score")
+                                ], 40 /* PROPS, NEED_HYDRATION */, ["onChange"])
+                              ]),
+                              _createElementVNode("div", { style: {"flex":"1","overflow":"auto","min-height":"0"} }, [
                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList((filteredCands||[]), (c) => {
                                   return (_openBlock(), _createElementBlock("div", {
                                     key: c.id,
                                     onClick: $event => {viewCand=c;detTab='ai'},
-                                    style: _normalizeStyle({padding:'12px 12px',borderBottom:'1px solid #F8FAFC',cursor:'pointer',background:viewCand && viewCand.id===c.id?'#EFF6FF':'',borderLeft:viewCand && viewCand.id===c.id?'2px solid #2563EB':'2px solid transparent'})
+                                    style: _normalizeStyle({padding:'12px 12px',borderBottom:'1px solid #F8FAFC',cursor:'pointer',background:viewCand&&viewCand.id===c.id?'#EFF6FF':'',borderLeft:viewCand&&viewCand.id===c.id?'2px solid #2563EB':'2px solid transparent'})
                                   }, [
                                     _createElementVNode("div", { style: {"font-size":"12.5px","font-weight":"600","color":"#0F172A","margin-bottom":"1px"} }, _toDisplayString(c.name), 1 /* TEXT */),
                                     _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B","margin-bottom":"5px"} }, _toDisplayString(c.jobTitle), 1 /* TEXT */),
@@ -1734,12 +1760,12 @@ return function render(_ctx, _cache) {
                                         style: _normalizeStyle({fontSize:'11px',color:stageMeta(c.status).col})
                                       }, _toDisplayString(stageMeta(c.status).label), 5 /* TEXT, STYLE */),
                                       _createElementVNode("span", {
-                                        style: _normalizeStyle({fontSize:'10.5px',fontWeight:700,padding:'2px 6px',borderRadius:'5px',background:c.analysis && c.analysis.score && c.analysis.score.total>=80?'#F0FDF4':c.analysis && c.analysis.score && c.analysis.score.total>=60?'#EFF6FF':'#F1F5F9',color:c.analysis && c.analysis.score && c.analysis.score.total>=80?'#16A34A':c.analysis && c.analysis.score && c.analysis.score.total>=60?'#2563EB':'#64748B'})
-                                      }, _toDisplayString(c.analysis && c.analysis.score?c.analysis.score.total:'-'), 5 /* TEXT, STYLE */)
+                                        style: _normalizeStyle({fontSize:'10.5px',fontWeight:700,padding:'2px 6px',borderRadius:'5px',background:c.analysis&&c.analysis.score&&c.analysis.score.total>=80?'#F0FDF4':c.analysis&&c.analysis.score&&c.analysis.score.total>=60?'#EFF6FF':'#F1F5F9',color:c.analysis&&c.analysis.score&&c.analysis.score.total>=80?'#16A34A':c.analysis&&c.analysis.score&&c.analysis.score.total>=60?'#2563EB':'#64748B'})
+                                      }, _toDisplayString(c.analysis&&c.analysis.score?c.analysis.score.total:'-'), 5 /* TEXT, STYLE */)
                                     ])
                                   ], 12 /* STYLE, PROPS */, ["onClick"]))
                                 }), 128 /* KEYED_FRAGMENT */)),
-                                (!(filteredCands && filteredCands.length))
+                                (!(filteredCands&&filteredCands.length))
                                   ? (_openBlock(), _createElementBlock("div", {
                                       key: 0,
                                       style: {"padding":"24px","text-align":"center","font-size":"12px","color":"#64748B"}
@@ -1770,17 +1796,17 @@ return function render(_ctx, _cache) {
                                         _createElementVNode("div", { style: {"font-size":"11.5px","color":"#64748B","margin-bottom":"5px"} }, [
                                           _createTextVNode(_toDisplayString(viewCand.jobTitle), 1 /* TEXT */),
                                           (viewCand.email)
-                                            ? (_openBlock(), _createElementBlock("span", { key: 0 }, " . " + _toDisplayString(viewCand.email), 1 /* TEXT */))
+                                            ? (_openBlock(), _createElementBlock("span", { key: 0 }, " · " + _toDisplayString(viewCand.email), 1 /* TEXT */))
                                             : _createCommentVNode("v-if", true)
                                         ]),
                                         _createElementVNode("div", { style: {"display":"flex","gap":"6px","flex-wrap":"wrap"} }, [
                                           _createElementVNode("span", {
                                             style: _normalizeStyle({fontSize:'10.5px',fontWeight:500,padding:'2px 8px',borderRadius:'99px',background:stageMeta(viewCand.status).bg,color:stageMeta(viewCand.status).col})
                                           }, _toDisplayString(stageMeta(viewCand.status).label), 5 /* TEXT, STYLE */),
-                                          (viewCand.analysis && viewCand.analysis.classification)
+                                          (viewCand.analysis&&viewCand.analysis.classification)
                                             ? (_openBlock(), _createElementBlock("span", {
                                                 key: 0,
-                                                style: _normalizeStyle({fontSize:'10.5px',fontWeight:500,padding:'2px 8px',borderRadius:'99px',background:scoreBgCol(viewCand.analysis.score && viewCand.analysis.score.total||0),color:scoreColor(viewCand.analysis.score && viewCand.analysis.score.total||0)})
+                                                style: _normalizeStyle({fontSize:'10.5px',fontWeight:500,padding:'2px 8px',borderRadius:'99px',background:scoreBgCol(viewCand.analysis.score&&viewCand.analysis.score.total||0),color:scoreColor(viewCand.analysis.score&&viewCand.analysis.score.total||0)})
                                               }, _toDisplayString(viewCand.analysis.classification), 5 /* TEXT, STYLE */))
                                             : _createCommentVNode("v-if", true)
                                         ])
@@ -1804,10 +1830,10 @@ return function render(_ctx, _cache) {
                                             cy: "25",
                                             r: "19",
                                             fill: "none",
-                                            stroke: scoreColor(viewCand.analysis && viewCand.analysis.score && viewCand.analysis.score.total||0),
+                                            stroke: scoreColor(viewCand.analysis&&viewCand.analysis.score&&viewCand.analysis.score.total||0),
                                             "stroke-width": "5",
                                             "stroke-dasharray": 2*Math.PI*19,
-                                            "stroke-dashoffset": 2*Math.PI*19*(1-(viewCand.analysis && viewCand.analysis.score && viewCand.analysis.score.total||0)/100),
+                                            "stroke-dashoffset": 2*Math.PI*19*(1-(viewCand.analysis&&viewCand.analysis.score&&viewCand.analysis.score.total||0)/100),
                                             transform: "rotate(-90 25 25)",
                                             "stroke-linecap": "round"
                                           }, null, 8 /* PROPS */, ["stroke", "stroke-dasharray", "stroke-dashoffset"]),
@@ -1815,14 +1841,14 @@ return function render(_ctx, _cache) {
                                             x: "25",
                                             y: "29",
                                             "text-anchor": "middle",
-                                            fill: scoreColor(viewCand.analysis && viewCand.analysis.score && viewCand.analysis.score.total||0),
+                                            fill: scoreColor(viewCand.analysis&&viewCand.analysis.score&&viewCand.analysis.score.total||0),
                                             style: {"font-size":"10px","font-weight":"700","font-family":"Inter,sans-serif"}
-                                          }, _toDisplayString(viewCand.analysis && viewCand.analysis.score?viewCand.analysis.score.total:'-'), 9 /* TEXT, PROPS */, ["fill"])
+                                          }, _toDisplayString(viewCand.analysis&&viewCand.analysis.score?viewCand.analysis.score.total:'-'), 9 /* TEXT, PROPS */, ["fill"])
                                         ])),
                                         _createElementVNode("div", { style: {"font-size":"9px","color":"#64748B"} }, "Score")
                                       ])
                                     ]),
-                                    (viewCand.analysis && viewCand.analysis.recommendation)
+                                    (viewCand.analysis&&viewCand.analysis.recommendation)
                                       ? (_openBlock(), _createElementBlock("div", {
                                           key: 0,
                                           style: _normalizeStyle({padding:'8px 11px',borderRadius:'8px',display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px',background:recMeta(viewCand.analysis.recommendation).bg,borderLeft:'3px solid '+recMeta(viewCand.analysis.recommendation).color})
@@ -1892,7 +1918,7 @@ return function render(_ctx, _cache) {
                                           _createTextVNode(" Parecer PDF")
                                         ], 8 /* PROPS */, ["onClick"]))
                                       : _createCommentVNode("v-if", true),
-                                    (viewCand && viewCand.analysis)
+                                    (viewCand&&viewCand.analysis)
                                       ? (_openBlock(), _createElementBlock("button", {
                                           key: 1,
                                           onClick: $event => (downloadAnalysisPDF(viewCand)),
@@ -1907,7 +1933,7 @@ return function render(_ctx, _cache) {
                                       : _createCommentVNode("v-if", true)
                                   ]),
                                   _createElementVNode("div", { style: {"overflow":"auto","padding":"14px 18px"} }, [
-                                    (detTab==='ai' && viewCand.analysis)
+                                    (detTab==='ai'&&viewCand.analysis)
                                       ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
                                           _createElementVNode("div", { style: {"background":"linear-gradient(135deg,#0F172A,#1E3A8A)","border-radius":"12px","padding":"14px 16px","margin-bottom":"10px","display":"flex","align-items":"center","gap":"14px"} }, [
                                             (_openBlock(), _createElementBlock("svg", {
@@ -1929,9 +1955,9 @@ return function render(_ctx, _cache) {
                                                 cy: "27",
                                                 r: "22",
                                                 fill: "none",
-                                                stroke: scoreColor(viewCand.analysis.score && viewCand.analysis.score.total||0),
+                                                stroke: scoreColor(viewCand.analysis.score&&viewCand.analysis.score.total||0),
                                                 "stroke-width": "5",
-                                                "stroke-dasharray": 2*Math.PI*22*(viewCand.analysis.score && viewCand.analysis.score.total||0)/100+' '+2*Math.PI*22,
+                                                "stroke-dasharray": 2*Math.PI*22*(viewCand.analysis.score&&viewCand.analysis.score.total||0)/100+' '+2*Math.PI*22,
                                                 "stroke-dashoffset": "0",
                                                 transform: "rotate(-90 27 27)",
                                                 "stroke-linecap": "round"
@@ -1940,16 +1966,16 @@ return function render(_ctx, _cache) {
                                                 x: "27",
                                                 y: "32",
                                                 "text-anchor": "middle",
-                                                fill: scoreColor(viewCand.analysis.score && viewCand.analysis.score.total||0),
+                                                fill: scoreColor(viewCand.analysis.score&&viewCand.analysis.score.total||0),
                                                 style: {"font-size":"14px","font-weight":"800","font-family":"Inter,sans-serif"}
-                                              }, _toDisplayString(viewCand.analysis.score && viewCand.analysis.score.total||0), 9 /* TEXT, PROPS */, ["fill"])
+                                              }, _toDisplayString(viewCand.analysis.score&&viewCand.analysis.score.total||0), 9 /* TEXT, PROPS */, ["fill"])
                                             ])),
                                             _createElementVNode("div", { style: {"flex":"1"} }, [
                                               _createElementVNode("div", { style: {"font-size":"9px","font-weight":"700","color":"rgba(255,255,255,.55)","text-transform":"uppercase","letter-spacing":".08em","margin-bottom":"4px"} }, "Avaliacao"),
                                               _createElementVNode("div", {
-                                                style: _normalizeStyle({fontSize:'14px',fontWeight:800,color:scoreColor(viewCand.analysis.score && viewCand.analysis.score.total||0),marginBottom:'3px'})
-                                              }, _toDisplayString(viewCand.analysis.classification||''), 5 /* TEXT, STYLE */),
-                                              _createElementVNode("div", { style: {"font-size":"11px","color":"rgba(255,255,255,.7)"} }, _toDisplayString(viewCand.analysis.recommendation||''), 1 /* TEXT */)
+                                                style: _normalizeStyle({fontSize:'14px',fontWeight:800,color:scoreColor(viewCand.analysis.score&&viewCand.analysis.score.total||0),marginBottom:'3px'})
+                                              }, _toDisplayString(viewCand.analysis.classification||'-'), 5 /* TEXT, STYLE */),
+                                              _createElementVNode("div", { style: {"font-size":"11px","color":"rgba(255,255,255,.7)"} }, _toDisplayString(viewCand.analysis.recommendation||'-'), 1 /* TEXT */)
                                             ]),
                                             (viewCand.analysis.culturalFit)
                                               ? (_openBlock(), _createElementBlock("div", {
@@ -1967,7 +1993,7 @@ return function render(_ctx, _cache) {
                                                 ], 4 /* STYLE */))
                                               : _createCommentVNode("v-if", true)
                                           ]),
-                                          (viewCand.analysis.executiveSummary && viewCand.analysis.executiveSummary.strengths)
+                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.strengths)
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 0,
                                                 style: {"background":"#EFF6FF","border":"1px solid #BFDBFE","border-radius":"10px","padding":"11px 14px","margin-bottom":"10px"}
@@ -2025,7 +2051,7 @@ return function render(_ctx, _cache) {
                                                 }),
                                                 _createTextVNode(" Competencias Tecnicas")
                                               ]),
-                                              (viewCand.analysis.candidateAnalysis && viewCand.analysis.candidateAnalysis.hardSkills && viewCand.analysis.candidateAnalysis.hardSkills.length)
+                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.hardSkills&&viewCand.analysis.candidateAnalysis.hardSkills.length)
                                                 ? (_openBlock(), _createElementBlock("div", {
                                                     key: 0,
                                                     style: {"display":"flex","flex-wrap":"wrap","gap":"4px"}
@@ -2040,7 +2066,7 @@ return function render(_ctx, _cache) {
                                                 : (_openBlock(), _createElementBlock("div", {
                                                     key: 1,
                                                     style: {"font-size":"11px","color":"#94A3B8"}
-                                                  }))
+                                                  }, "-"))
                                             ]),
                                             _createElementVNode("div", { style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"10px","padding":"10px 12px"} }, [
                                               _createElementVNode("div", { style: {"font-size":"9px","font-weight":"700","color":"#7C3AED","text-transform":"uppercase","letter-spacing":".07em","margin-bottom":"7px","display":"flex","align-items":"center","gap":"4px"} }, [
@@ -2050,7 +2076,7 @@ return function render(_ctx, _cache) {
                                                 }),
                                                 _createTextVNode(" Perfil Comportamental")
                                               ]),
-                                              (viewCand.analysis.candidateAnalysis && viewCand.analysis.candidateAnalysis.softSkills && viewCand.analysis.candidateAnalysis.softSkills.length)
+                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.softSkills&&viewCand.analysis.candidateAnalysis.softSkills.length)
                                                 ? (_openBlock(), _createElementBlock("div", {
                                                     key: 0,
                                                     style: {"display":"flex","flex-wrap":"wrap","gap":"4px"}
@@ -2065,7 +2091,7 @@ return function render(_ctx, _cache) {
                                                 : (_openBlock(), _createElementBlock("div", {
                                                     key: 1,
                                                     style: {"font-size":"11px","color":"#94A3B8"}
-                                                  }))
+                                                  }, "-"))
                                             ])
                                           ]),
                                           (viewCand.analysis.comparison)
@@ -2073,7 +2099,7 @@ return function render(_ctx, _cache) {
                                                 key: 2,
                                                 style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"8px","margin-bottom":"10px"}
                                               }, [
-                                                (viewCand.analysis.comparison.matched && viewCand.analysis.comparison.matched.length)
+                                                (viewCand.analysis.comparison.matched&&viewCand.analysis.comparison.matched.length)
                                                   ? (_openBlock(), _createElementBlock("div", {
                                                       key: 0,
                                                       style: {"background":"#F0FDF4","border":"1px solid #BBF7D0","border-radius":"10px","padding":"10px 12px"}
@@ -2096,7 +2122,7 @@ return function render(_ctx, _cache) {
                                                       }), 128 /* KEYED_FRAGMENT */))
                                                     ]))
                                                   : _createCommentVNode("v-if", true),
-                                                (viewCand.analysis.comparison.missing && viewCand.analysis.comparison.missing.length)
+                                                (viewCand.analysis.comparison.missing&&viewCand.analysis.comparison.missing.length)
                                                   ? (_openBlock(), _createElementBlock("div", {
                                                       key: 1,
                                                       style: {"background":"#FFF7ED","border":"1px solid #FED7AA","border-radius":"10px","padding":"10px 12px"}
@@ -2113,7 +2139,7 @@ return function render(_ctx, _cache) {
                                                           key: m,
                                                           style: {"display":"flex","gap":"6px","margin-bottom":"4px","align-items":"baseline"}
                                                         }, [
-                                                          _createElementVNode("span", { style: {"color":"#EA580C","font-size":"10px","flex-shrink":"0"} }),
+                                                          _createElementVNode("span", { style: {"color":"#EA580C","font-size":"10px","flex-shrink":"0"} }, "!"),
                                                           _createElementVNode("span", { style: {"font-size":"10.5px","color":"#92400E","line-height":"1.45"} }, _toDisplayString(m), 1 /* TEXT */)
                                                         ]))
                                                       }), 128 /* KEYED_FRAGMENT */))
@@ -2121,7 +2147,7 @@ return function render(_ctx, _cache) {
                                                   : _createCommentVNode("v-if", true)
                                               ]))
                                             : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis.executiveSummary && viewCand.analysis.executiveSummary.reasoning)
+                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 3,
                                                 style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"10px 12px"}
@@ -2153,7 +2179,7 @@ return function render(_ctx, _cache) {
                                           ])
                                         ]))
                                       : _createCommentVNode("v-if", true),
-                                    (detTab==='ai' && viewCand.analysis && editAnaMode)
+                                    (detTab==='ai'&&viewCand.analysis&&editAnaMode)
                                       ? (_openBlock(), _createElementBlock("div", {
                                           key: 1,
                                           style: {"display":"flex","flex-direction":"column","gap":"8px"}
@@ -2338,7 +2364,7 @@ return function render(_ctx, _cache) {
                                                             key: 0,
                                                             onClick: $event => (startEdit(viewCand.id,row.field,row.value)),
                                                             style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
-                                                          }, null, 8 /* PROPS */, ["onClick"]))
+                                                          }, "✎", 8 /* PROPS */, ["onClick"]))
                                                         : (_openBlock(), _createElementBlock("div", {
                                                             key: 1,
                                                             style: {"display":"flex","gap":"5px"}
@@ -2428,7 +2454,7 @@ return function render(_ctx, _cache) {
                                                           ? (_openBlock(), _createElementBlock("span", {
                                                               key: 0,
                                                               style: {"color":"#EA580C"}
-                                                            }))
+                                                            }, "!"))
                                                           : _createCommentVNode("v-if", true),
                                                         (!isEditing(viewCand.id,'pontosAtencao'))
                                                           ? (_openBlock(), _createElementBlock("span", { key: 1 }, _toDisplayString(p), 1 /* TEXT */))
@@ -2470,11 +2496,11 @@ return function render(_ctx, _cache) {
                                                   _createElementVNode("button", {
                                                     onClick: $event => (dlParecer(viewCand)),
                                                     style: {"background":"#0369A1","color":"#fff","border":"none","border-radius":"8px","padding":"10px","font-size":"13px","font-weight":"700","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                  }, "v Baixar parecer PDF", 8 /* PROPS */, ["onClick"]),
+                                                  }, "⇩ Baixar parecer PDF", 8 /* PROPS */, ["onClick"]),
                                                   _createElementVNode("button", {
                                                     onClick: $event => (summaryMailto(viewCand)),
                                                     style: {"background":"#0F172A","color":"#fff","border":"none","border-radius":"8px","padding":"10px","font-size":"13px","font-weight":"700","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                  }, " Enviar ao gestor", 8 /* PROPS */, ["onClick"])
+                                                  }, "✉ Enviar ao gestor", 8 /* PROPS */, ["onClick"])
                                                 ])
                                               ]))
                                             : _createCommentVNode("v-if", true)
@@ -2538,7 +2564,7 @@ return function render(_ctx, _cache) {
                                       : _createCommentVNode("v-if", true),
                                     (detTab==='notes')
                                       ? (_openBlock(), _createElementBlock("div", { key: 4 }, [
-                                          _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"12px"} }, "Observacoes internas RH"),
+                                          _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"12px"} }, "Observacoes internas . RH"),
                                           (getNote(viewCand.id))
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 0,
@@ -2636,12 +2662,12 @@ return function render(_ctx, _cache) {
                                     ]),
                                     _createElementVNode("div", { style: {"flex":"1"} }, [
                                       _createElementVNode("p", { style: {"font-size":"13px","font-weight":"700","margin-bottom":"2px","color":"#0F172A"} }, _toDisplayString(pdfFile.name), 1 /* TEXT */),
-                                      _createElementVNode("p", { style: {"font-size":"11px","color":"#64748B"} }, _toDisplayString(Math.round(pdfFile.size/1024)) + " KB . PDF pronto para analise", 1 /* TEXT */)
+                                      _createElementVNode("p", { style: {"font-size":"11px","color":"#64748B"} }, _toDisplayString(Math.round(pdfFile.size/1024)) + " KB · PDF pronto para analise", 1 /* TEXT */)
                                     ]),
                                     _createElementVNode("button", {
                                       onClick: $event => (pdfFile=null),
                                       style: {"background":"none","border":"none","cursor":"pointer","color":"#94A3B8","font-size":"18px","line-height":"1"}
-                                    }, "x", 8 /* PROPS */, ["onClick"])
+                                    }, "×", 8 /* PROPS */, ["onClick"])
                                   ]))
                                 : (_openBlock(), _createElementBlock("div", {
                                     key: 1,
@@ -2660,7 +2686,7 @@ return function render(_ctx, _cache) {
                                       _createTextVNode("ou "),
                                       _createElementVNode("span", { style: {"color":"#2563EB","font-weight":"600"} }, "clique para selecionar")
                                     ]),
-                                    _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin-top":"6px"} }, "Apenas PDF . Maximo 10 MB")
+                                    _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin-top":"6px"} }, "Apenas PDF · Maximo 10 MB")
                                   ], 44 /* STYLE, PROPS, NEED_HYDRATION */, ["onClick", "onDragover", "onDragleave", "onDrop"])),
                               error
                                 ? (_openBlock(), _createElementBlock("div", {
@@ -2740,7 +2766,7 @@ return function render(_ctx, _cache) {
                                         fill: "none",
                                         stroke: "#fff",
                                         "stroke-width": "5",
-                                        "stroke-dasharray": 2*Math.PI*24*(latestResult.analysis && latestResult.analysis.score?latestResult.analysis.score.total:0)/100+' '+2*Math.PI*24,
+                                        "stroke-dasharray": 2*Math.PI*24*(latestResult.analysis&&latestResult.analysis.score?latestResult.analysis.score.total:0)/100+' '+2*Math.PI*24,
                                         "stroke-dashoffset": "0",
                                         transform: "rotate(-90 30 30)",
                                         "stroke-linecap": "round"
@@ -2751,33 +2777,33 @@ return function render(_ctx, _cache) {
                                         "text-anchor": "middle",
                                         fill: "#fff",
                                         style: {"font-size":"13px","font-weight":"800","font-family":"Inter,sans-serif"}
-                                      }, _toDisplayString(latestResult.analysis && latestResult.analysis.score?latestResult.analysis.score.total:0), 1 /* TEXT */)
+                                      }, _toDisplayString(latestResult.analysis&&latestResult.analysis.score?latestResult.analysis.score.total:0), 1 /* TEXT */)
                                     ])),
                                     _createElementVNode("div", { style: {"font-size":"9px","color":"rgba(255,255,255,.6)","margin-top":"2px"} }, "Score")
                                   ])
                                 ]),
                                 _createElementVNode("div", {
-                                  style: _normalizeStyle({background:recMeta(latestResult.analysis && latestResult.analysis.recommendation).bg,padding:'10px 20px',display:'flex',alignItems:'center',gap:'10px',borderBottom:'1px solid #E5E7EB'})
+                                  style: _normalizeStyle({background:recMeta(latestResult.analysis&&latestResult.analysis.recommendation).bg,padding:'10px 20px',display:'flex',alignItems:'center',gap:'10px',borderBottom:'1px solid #E5E7EB'})
                                 }, [
                                   _createElementVNode("i", {
                                     class: "ti ti-sparkles",
-                                    style: _normalizeStyle({fontSize:'16px',color:recMeta(latestResult.analysis && latestResult.analysis.recommendation).color})
+                                    style: _normalizeStyle({fontSize:'16px',color:recMeta(latestResult.analysis&&latestResult.analysis.recommendation).color})
                                   }, null, 4 /* STYLE */),
                                   _createElementVNode("div", null, [
                                     _createElementVNode("div", {
-                                      style: _normalizeStyle([{"font-size":"9px","font-weight":"700","text-transform":"uppercase","letter-spacing":".07em"}, {color:recMeta(latestResult.analysis && latestResult.analysis.recommendation).color}])
+                                      style: _normalizeStyle([{"font-size":"9px","font-weight":"700","text-transform":"uppercase","letter-spacing":".07em"}, {color:recMeta(latestResult.analysis&&latestResult.analysis.recommendation).color}])
                                     }, "Recomendacao", 4 /* STYLE */),
                                     _createElementVNode("div", {
-                                      style: _normalizeStyle([{"font-size":"13px","font-weight":"700"}, {color:recMeta(latestResult.analysis && latestResult.analysis.recommendation).color}])
-                                    }, _toDisplayString(latestResult.analysis && latestResult.analysis.recommendation), 5 /* TEXT, STYLE */)
+                                      style: _normalizeStyle([{"font-size":"13px","font-weight":"700"}, {color:recMeta(latestResult.analysis&&latestResult.analysis.recommendation).color}])
+                                    }, _toDisplayString(latestResult.analysis&&latestResult.analysis.recommendation), 5 /* TEXT, STYLE */)
                                   ]),
                                   _createElementVNode("div", { style: {"margin-left":"auto"} }, [
                                     _createElementVNode("span", {
-                                      style: _normalizeStyle({background:scoreBgCol(latestResult.analysis && latestResult.analysis.score && latestResult.analysis.score.total||0),color:scoreColor(latestResult.analysis && latestResult.analysis.score && latestResult.analysis.score.total||0),fontSize:'11px',fontWeight:700,padding:'3px 10px',borderRadius:'99px'})
-                                    }, _toDisplayString(latestResult.analysis && latestResult.analysis.classification), 5 /* TEXT, STYLE */)
+                                      style: _normalizeStyle({background:scoreBgCol(latestResult.analysis&&latestResult.analysis.score&&latestResult.analysis.score.total||0),color:scoreColor(latestResult.analysis&&latestResult.analysis.score&&latestResult.analysis.score.total||0),fontSize:'11px',fontWeight:700,padding:'3px 10px',borderRadius:'99px'})
+                                    }, _toDisplayString(latestResult.analysis&&latestResult.analysis.classification), 5 /* TEXT, STYLE */)
                                   ])
                                 ], 4 /* STYLE */),
-                                (latestResult.analysis && latestResult.analysis.executiveSummary && latestResult.analysis.executiveSummary.strengths)
+                                (latestResult.analysis&&latestResult.analysis.executiveSummary&&latestResult.analysis.executiveSummary.strengths)
                                   ? (_openBlock(), _createElementBlock("div", {
                                       key: 0,
                                       style: {"padding":"14px 20px","background":"#F8FAFF","border-bottom":"1px solid #E5E7EB"}
@@ -2792,7 +2818,7 @@ return function render(_ctx, _cache) {
                                       _createElementVNode("p", { style: {"font-size":"12px","color":"#0F172A","line-height":"1.7"} }, _toDisplayString(latestResult.analysis.executiveSummary.strengths), 1 /* TEXT */)
                                     ]))
                                   : _createCommentVNode("v-if", true),
-                                (latestResult.analysis && latestResult.analysis.score)
+                                (latestResult.analysis&&latestResult.analysis.score)
                                   ? (_openBlock(), _createElementBlock("div", {
                                       key: 1,
                                       style: {"padding":"14px 20px","border-bottom":"1px solid #E5E7EB"}
@@ -2892,15 +2918,15 @@ return function render(_ctx, _cache) {
                                     }, _toDisplayString(st.label), 5 /* TEXT, STYLE */)
                                   ]),
                                   _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"10px"} }, [
-                                    (filtCands.filter(c=>c.status===st.key && c.analysis && c.analysis.score).length)
+                                    (filtCands.filter(c=>c.status===st.key&&c.analysis&&c.analysis.score).length)
                                       ? (_openBlock(), _createElementBlock("span", {
                                           key: 0,
                                           style: {"font-size":"10px","color":"#64748B"}
                                         }, [
                                           _createTextVNode(" Avg "),
                                           _createElementVNode("strong", {
-                                            style: _normalizeStyle({color:scoreColor(Math.round(filtCands.filter(c=>c.status===st.key && c.analysis && c.analysis.score).reduce((s,c)=>s+c.analysis.score.total,0)/filtCands.filter(c=>c.status===st.key && c.analysis && c.analysis.score).length||0))})
-                                          }, _toDisplayString(Math.round(filtCands.filter(c=>c.status===st.key && c.analysis && c.analysis.score).reduce((s,c)=>s+c.analysis.score.total,0)/filtCands.filter(c=>c.status===st.key && c.analysis && c.analysis.score).length||0)) + " pts", 5 /* TEXT, STYLE */)
+                                            style: _normalizeStyle({color:scoreColor(Math.round(filtCands.filter(c=>c.status===st.key&&c.analysis&&c.analysis.score).reduce((s,c)=>s+c.analysis.score.total,0)/filtCands.filter(c=>c.status===st.key&&c.analysis&&c.analysis.score).length||0))})
+                                          }, _toDisplayString(Math.round(filtCands.filter(c=>c.status===st.key&&c.analysis&&c.analysis.score).reduce((s,c)=>s+c.analysis.score.total,0)/filtCands.filter(c=>c.status===st.key&&c.analysis&&c.analysis.score).length||0)) + " pts", 5 /* TEXT, STYLE */)
                                         ]))
                                       : _createCommentVNode("v-if", true),
                                     _createElementVNode("span", {
@@ -2916,7 +2942,7 @@ return function render(_ctx, _cache) {
                                       style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"11px 13px","cursor":"pointer","transition":"all .15s","position":"relative","overflow":"hidden"}
                                     }, [
                                       _createElementVNode("div", {
-                                        style: _normalizeStyle({position:'absolute',top:0,left:0,bottom:0,width:'3px',background:scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0)})
+                                        style: _normalizeStyle({position:'absolute',top:0,left:0,bottom:0,width:'3px',background:scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0)})
                                       }, null, 4 /* STYLE */),
                                       _createElementVNode("div", { style: {"padding-left":"6px"} }, [
                                         _createElementVNode("div", { style: {"display":"flex","align-items":"flex-start","justify-content":"space-between","gap":"6px","margin-bottom":"6px"} }, [
@@ -2925,17 +2951,17 @@ return function render(_ctx, _cache) {
                                             _createElementVNode("div", { style: {"font-size":"10px","color":"#64748B","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(c.jobTitle), 1 /* TEXT */)
                                           ]),
                                           _createElementVNode("div", {
-                                            style: _normalizeStyle({flexShrink:0,width:'32px',height:'32px',borderRadius:'50%',background:'#fff',border:'2px solid '+scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0),display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:800,color:scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0)})
-                                          }, _toDisplayString(c.analysis && c.analysis.score?c.analysis.score.total:'-'), 5 /* TEXT, STYLE */)
+                                            style: _normalizeStyle({flexShrink:0,width:'32px',height:'32px',borderRadius:'50%',background:'#fff',border:'2px solid '+scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0),display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:800,color:scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0)})
+                                          }, _toDisplayString(c.analysis&&c.analysis.score?c.analysis.score.total:'-'), 5 /* TEXT, STYLE */)
                                         ]),
                                         _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"5px","flex-wrap":"wrap"} }, [
-                                          (c.analysis && c.analysis.classification)
+                                          (c.analysis&&c.analysis.classification)
                                             ? (_openBlock(), _createElementBlock("span", {
                                                 key: 0,
-                                                style: _normalizeStyle({fontSize:'9.5px',fontWeight:600,padding:'2px 7px',borderRadius:'99px',background:scoreBgCol(c.analysis && c.analysis.score && c.analysis.score.total||0),color:scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0)})
+                                                style: _normalizeStyle({fontSize:'9.5px',fontWeight:600,padding:'2px 7px',borderRadius:'99px',background:scoreBgCol(c.analysis&&c.analysis.score&&c.analysis.score.total||0),color:scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0)})
                                               }, _toDisplayString(c.analysis.classification), 5 /* TEXT, STYLE */))
                                             : _createCommentVNode("v-if", true),
-                                          (c.analysis && c.analysis.culturalFit)
+                                          (c.analysis&&c.analysis.culturalFit)
                                             ? (_openBlock(), _createElementBlock("span", {
                                                 key: 1,
                                                 style: {"font-size":"9.5px","color":"#64748B","display":"flex","align-items":"center","gap":"2px"}
@@ -3014,7 +3040,7 @@ return function render(_ctx, _cache) {
                                     })
                                   ])
                                 ]),
-                                _createElementVNode("div", { style: {"font-size":"28px","font-weight":"800","color":"#7C3AED","letter-spacing":"-.5px","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco' && c.score>0).length?Math.round(candidates.filter(c=>c.status==='banco' && c.score>0).reduce((s,c)=>s+c.score,0)/candidates.filter(c=>c.status==='banco' && c.score>0).length):''), 1 /* TEXT */),
+                                _createElementVNode("div", { style: {"font-size":"28px","font-weight":"800","color":"#7C3AED","letter-spacing":"-.5px","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco'&&c.score>0).length?Math.round(candidates.filter(c=>c.status==='banco'&&c.score>0).reduce((s,c)=>s+c.score,0)/candidates.filter(c=>c.status==='banco'&&c.score>0).length):'-'), 1 /* TEXT */),
                                 _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B"} }, "Pontuacao media")
                               ]),
                               _createElementVNode("div", { style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","padding":"16px","position":"relative","overflow":"hidden","box-shadow":"0 1px 3px rgba(15,23,42,.05)"} }, [
@@ -3028,8 +3054,8 @@ return function render(_ctx, _cache) {
                                     })
                                   ])
                                 ]),
-                                _createElementVNode("div", { style: {"font-size":"28px","font-weight":"800","color":"#16A34A","letter-spacing":"-.5px","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco' && c.score>=80).length), 1 /* TEXT */),
-                                _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B"} }, "Score 80 pts")
+                                _createElementVNode("div", { style: {"font-size":"28px","font-weight":"800","color":"#16A34A","letter-spacing":"-.5px","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco'&&c.score>=80).length), 1 /* TEXT */),
+                                _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B"} }, "Score >= 80 pts")
                               ]),
                               _createElementVNode("div", { style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","padding":"16px","position":"relative","overflow":"hidden","box-shadow":"0 1px 3px rgba(15,23,42,.05)"} }, [
                                 _createElementVNode("div", { style: {"position":"absolute","top":"0","left":"0","right":"0","height":"3px","background":"#EA580C","border-radius":"12px 12px 0 0"} }),
@@ -3062,14 +3088,14 @@ return function render(_ctx, _cache) {
                                   key: 1,
                                   style: {"display":"grid","grid-template-columns":"repeat(auto-fill,minmax(280px,1fr))","gap":"12px"}
                                 }, [
-                                  (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(candidates.filter(c=>c.status==='banco' && inPeriod(c.submittedAt) && (insightFilter==='banco_70'?c.analysis && c.analysis.score && c.analysis.score.total>=70:true)), (c) => {
+                                  (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(candidates.filter(c=>c.status==='banco'&&inPeriod(c.submittedAt)&&(insightFilter==='banco_70'?c.analysis&&c.analysis.score&&c.analysis.score.total>=70:true)), (c) => {
                                     return (_openBlock(), _createElementBlock("div", {
                                       key: c.id,
                                       onClick: $event => {viewCand=c;detTab='ai';goTo('candidates')},
                                       style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"14px","cursor":"pointer","overflow":"hidden","box-shadow":"0 1px 4px rgba(15,23,42,.05)","transition":"all .18s"}
                                     }, [
                                       _createElementVNode("div", {
-                                        style: _normalizeStyle({background:'linear-gradient(135deg,#0F172A,'+scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0)+'33)',padding:'16px 16px 12px',position:'relative'})
+                                        style: _normalizeStyle({background:'linear-gradient(135deg,#0F172A,'+scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0)+'33)',padding:'16px 16px 12px',position:'relative'})
                                       }, [
                                         _createElementVNode("div", { style: {"display":"flex","align-items":"flex-start","gap":"11px"} }, [
                                           _createElementVNode("div", {
@@ -3106,7 +3132,7 @@ return function render(_ctx, _cache) {
                                                 fill: "none",
                                                 stroke: "#fff",
                                                 "stroke-width": "4",
-                                                "stroke-dasharray": 2*Math.PI*19*(c.analysis && c.analysis.score && c.analysis.score.total||0)/100+' '+2*Math.PI*19,
+                                                "stroke-dasharray": 2*Math.PI*19*(c.analysis&&c.analysis.score&&c.analysis.score.total||0)/100+' '+2*Math.PI*19,
                                                 "stroke-dashoffset": "0",
                                                 transform: "rotate(-90 23 23)",
                                                 "stroke-linecap": "round"
@@ -3117,20 +3143,20 @@ return function render(_ctx, _cache) {
                                                 "text-anchor": "middle",
                                                 fill: "#fff",
                                                 style: {"font-size":"11px","font-weight":"800","font-family":"Inter,sans-serif"}
-                                              }, _toDisplayString(c.analysis && c.analysis.score?c.analysis.score.total:'-'), 1 /* TEXT */)
+                                              }, _toDisplayString(c.analysis&&c.analysis.score?c.analysis.score.total:'-'), 1 /* TEXT */)
                                             ]))
                                           ])
                                         ])
                                       ], 4 /* STYLE */),
                                       _createElementVNode("div", { style: {"padding":"12px 16px"} }, [
                                         _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"6px","margin-bottom":"10px","flex-wrap":"wrap"} }, [
-                                          (c.analysis && c.analysis.classification)
+                                          (c.analysis&&c.analysis.classification)
                                             ? (_openBlock(), _createElementBlock("span", {
                                                 key: 0,
-                                                style: _normalizeStyle({fontSize:'10px',fontWeight:700,padding:'3px 8px',borderRadius:'99px',background:scoreBgCol(c.analysis && c.analysis.score && c.analysis.score.total||0),color:scoreColor(c.analysis && c.analysis.score && c.analysis.score.total||0)})
+                                                style: _normalizeStyle({fontSize:'10px',fontWeight:700,padding:'3px 8px',borderRadius:'99px',background:scoreBgCol(c.analysis&&c.analysis.score&&c.analysis.score.total||0),color:scoreColor(c.analysis&&c.analysis.score&&c.analysis.score.total||0)})
                                               }, _toDisplayString(c.analysis.classification), 5 /* TEXT, STYLE */))
                                             : _createCommentVNode("v-if", true),
-                                          (c.analysis && c.analysis.culturalFit)
+                                          (c.analysis&&c.analysis.culturalFit)
                                             ? (_openBlock(), _createElementBlock("span", {
                                                 key: 1,
                                                 style: _normalizeStyle({fontSize:'10px',fontWeight:600,padding:'3px 8px',borderRadius:'99px',background:c.analysis.culturalFit.level==='Alto fit cultural'?'#F0FDF4':'#FFF7ED',color:c.analysis.culturalFit.level==='Alto fit cultural'?'#16A34A':'#EA580C'})
@@ -3143,7 +3169,7 @@ return function render(_ctx, _cache) {
                                               ], 4 /* STYLE */))
                                             : _createCommentVNode("v-if", true)
                                         ]),
-                                        (c.analysis && c.analysis.candidateAnalysis && c.analysis.candidateAnalysis.hardSkills && c.analysis.candidateAnalysis.hardSkills.length)
+                                        (c.analysis&&c.analysis.candidateAnalysis&&c.analysis.candidateAnalysis.hardSkills&&c.analysis.candidateAnalysis.hardSkills.length)
                                           ? (_openBlock(), _createElementBlock("div", {
                                               key: 0,
                                               style: {"margin-bottom":"10px"}
@@ -3165,7 +3191,7 @@ return function render(_ctx, _cache) {
                                               ])
                                             ]))
                                           : _createCommentVNode("v-if", true),
-                                        (c.analysis && c.analysis.score)
+                                        (c.analysis&&c.analysis.score)
                                           ? (_openBlock(), _createElementBlock("div", {
                                               key: 1,
                                               style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"5px 14px"}
@@ -3194,7 +3220,7 @@ return function render(_ctx, _cache) {
                                             class: "ti ti-calendar",
                                             style: {"font-size":"10px"}
                                           }),
-                                          _createTextVNode(" " + _toDisplayString(c.submittedAt && c.submittedAt.split(',')[0]||''), 1 /* TEXT */)
+                                          _createTextVNode(" " + _toDisplayString(c.submittedAt&&c.submittedAt.split(',')[0]||'-'), 1 /* TEXT */)
                                         ]),
                                         _createElementVNode("span", { style: {"font-size":"10px","color":"#2563EB","font-weight":"600","display":"flex","align-items":"center","gap":"3px"} }, [
                                           _createTextVNode("Ver perfil "),
@@ -3255,7 +3281,7 @@ return function render(_ctx, _cache) {
     ], 64 /* STABLE_FRAGMENT */))
   }
 }
-};try{__vueRenderFn=_b(Vue);}catch(e){console.error('Render build error:',e);var el=document.getElementById('vue-err');if(el){el.textContent='Erro ao montar render: '+e.message;el.style.display='block';}}})();
+};try{__vueRenderFn=_b(Vue);}catch(e){console.error('Render error:',e);}})();
 </script>
 <script>
 function supabaseCall(action, table, id, data) {
@@ -3793,6 +3819,7 @@ createApp({
     var selJobId=ref(''),pdfFile=ref(null),isDragging=ref(false);
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
+    var candStatusFilter=ref('active'),candSort=ref('date_desc');
     var isGenSum=ref(false),genSumStep=ref('');
     var alertTab=ref('cand');
     var detTab=ref('ai');
@@ -4168,9 +4195,32 @@ createApp({
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
+    var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta_enviada','contratado'];
     var filtCands=computed(function(){
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
+      // Status filter
+      if(candStatusFilter.value==='active'){
+        list=list.filter(function(c){return ACTIVE_STATUSES.indexOf(c.status)!==-1;});
+      } else if(candStatusFilter.value==='reprovado'){
+        list=list.filter(function(c){return c.status==='reprovado';});
+      } else if(candStatusFilter.value==='banco'){
+        list=list.filter(function(c){return c.status==='banco';});
+      }
+      // Job filter
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
+      // Sort
+      list=list.slice().sort(function(a,b){
+        if(candSort.value==='date_desc'){
+          return new Date(b.submittedAt||0)-new Date(a.submittedAt||0);
+        } else if(candSort.value==='date_asc'){
+          return new Date(a.submittedAt||0)-new Date(b.submittedAt||0);
+        } else if(candSort.value==='score_desc'){
+          var sa=(a.analysis&&a.analysis.score&&a.analysis.score.total)||0;
+          var sb=(b.analysis&&b.analysis.score&&b.analysis.score.total)||0;
+          return sb-sa;
+        }
+        return 0;
+      });
       return list;
     });
     var vcTrans=computed(function(){return viewCand.value?(TRANSITIONS[viewCand.value.status]||[]):[];});
@@ -4284,7 +4334,7 @@ createApp({
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
     return {
-      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
+      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
       isAnalyzing,analyzeStep,latestResult,viewCand,error,pipFilter,saveMsg,
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
