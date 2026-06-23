@@ -3776,7 +3776,6 @@ createApp({
     }
     (function(){try{var s=localStorage.getItem('rsrh_user');if(s&&window.RS_USERS){var f=window.RS_USERS.find(function(x){return x.id===s;});if(f){currentUser.value=f;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');}}}catch(e){}})();
     // Supabase always active
-    jbKey.value='supabase';jbBin.value='supabase';
     window._vueSetUser=function(u){currentUser.value=u;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');};
     var navItems=[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'jobs',label:'Vagas',icon:'ti-briefcase'},{id:'candidates',label:'Candidatos',icon:'ti-users'},{id:'pipeline',label:'Pipeline',icon:'ti-git-merge'},{id:'analyze',label:'Analisar currículo',icon:'ti-file-search'},{id:'banco',label:'Banco de talentos',icon:'ti-database'}];
     var nav=ref('dashboard'),prevNav=ref('dashboard');
