@@ -3258,48 +3258,53 @@ return function render(_ctx, _cache) {
 };try{__vueRenderFn=_b(Vue);}catch(e){console.error('Render build error:',e);var el=document.getElementById('vue-err');if(el){el.textContent='Erro ao montar render: '+e.message;el.style.display='block';}}})();
 </script>
 <script>
-// ── JSONBin.io API functions ──────────────────────────────────────────────────
-function jsonBinCreate(masterKey) {
-  return fetch('https://api.jsonbin.io/v3/b', {
+function supabaseCall(action, table, id, data) {
+  return fetch('/api/db', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Master-Key': masterKey,
-      'X-Bin-Name': 'R&S RH'
-    },
-    body: JSON.stringify({jobs:[],candidates:[],notes:{}})
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ return d.metadata ? d.metadata.id : null; })
-    .catch(function(){ return null; });
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action, table, id, data})
+  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
 }
+function jsonBinCreate(masterKey) { return Promise.resolve('supabase'); }
 function jsonBinPush(masterKey, binId, data) {
-  if(!masterKey || !binId) return Promise.resolve(null);
-  return fetch('https://api.jsonbin.io/v3/b/' + binId, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Master-Key': masterKey
-    },
-    body: JSON.stringify(data)
-  }).then(function(r){ return r.json(); }).catch(function(){ return null; });
+  if(!data) return Promise.resolve(null);
+  var saves = [
+    supabaseCall('saveMany','jobs',null,data.jobs||[]),
+    supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
+    supabaseCall('setState','app_state','notes',data.notes||{}),
+    supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
+    supabaseCall('setState','app_state','summaries',data.summaries||{}),
+    supabaseCall('setState','app_state','intDates',data.intDates||{}),
+  ];
+  return Promise.all(saves).then(function(){ return {ok:true}; }).catch(function(){ return null; });
 }
 function jsonBinPull(masterKey, binId) {
-  if(!masterKey || !binId) return Promise.resolve(null);
-  return fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
-    method: 'GET',
-    headers: { 'X-Master-Key': masterKey }
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ return d.record || null; })
-    .catch(function(){ return null; });
+  return Promise.all([
+    supabaseCall('loadAll','jobs'),
+    supabaseCall('loadAll','candidates'),
+    supabaseCall('getState','app_state','notes'),
+    supabaseCall('getState','app_state','transcripts'),
+    supabaseCall('getState','app_state','summaries'),
+    supabaseCall('getState','app_state','intDates'),
+  ]).then(function(results){
+    return {
+      jobs: results[0].data || [],
+      candidates: results[1].data || [],
+      notes: results[2].data || {},
+      transcripts: results[3].data || {},
+      summaries: results[4].data || {},
+      intDates: results[5].data || {}
+    };
+  }).catch(function(){ return null; });
 }
 
 
+// ── JSONBin.io API functions ──────────────────────────────────────────────────
 
 
 
-const DEFAULT_API_KEY = "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";
-const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
-const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
+const DEFAULT_API_KEY = "";
+
 
 const STAGES = [
   {key:'aguardando_lider',label:'Aguardando l\u00edder',col:'#6d28d9',bg:'#ede9fe'},
@@ -3743,8 +3748,10 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 </script>
 <script>
+
 
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
@@ -3768,6 +3775,8 @@ createApp({
       if(u)u.value='';if(p)p.value='';
     }
     (function(){try{var s=localStorage.getItem('rsrh_user');if(s&&window.RS_USERS){var f=window.RS_USERS.find(function(x){return x.id===s;});if(f){currentUser.value=f;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');}}}catch(e){}})();
+    // Supabase always active
+    jbKey.value='supabase';jbBin.value='supabase';
     window._vueSetUser=function(u){currentUser.value=u;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');};
     var navItems=[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'jobs',label:'Vagas',icon:'ti-briefcase'},{id:'candidates',label:'Candidatos',icon:'ti-users'},{id:'pipeline',label:'Pipeline',icon:'ti-git-merge'},{id:'analyze',label:'Analisar currículo',icon:'ti-file-search'},{id:'banco',label:'Banco de talentos',icon:'ti-database'}];
     var nav=ref('dashboard'),prevNav=ref('dashboard');
@@ -3790,8 +3799,8 @@ createApp({
     var detTab=ref('ai');
     var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
     // JSONBin sync
-    var jbKey=ref(DEFAULT_JB_KEY||lsGet('recruitarh_jbkey',''));
-    var jbBin=ref(DEFAULT_JB_BIN||lsGet('recruitarh_jbbin',''));
+    var jbKey=ref('supabase');
+    var jbBin=ref('supabase');
     var jbStatus=ref('');
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
@@ -3977,11 +3986,9 @@ createApp({
       });
     }
     function saveSyncConfig(){
-      if(!jbKeyInput.value.trim())return;
-      var key=jbKeyInput.value.trim();
-      var existId=(jbExistingId.value||'').trim();
-      if(existId){jbKey.value=key;jbBin.value=existId;jbKeyInput.value='';jbExistingId.value='';showSyncModal.value=false;pullSync();flash('Conectado! Sincronizando...');}
-      else{jbCreating.value=true;jsonBinCreate(key).then(function(id){if(id){jbKey.value=key;jbBin.value=id;jbKeyInput.value='';jbExistingId.value='';showSyncModal.value=false;pushSync();flash('Compartilhamento ativado!');}else{flash('Erro: verifique a chave JSONBin');}jbCreating.value=false;});}
+      showSyncModal.value=false;
+      pullSync();
+      flash('Sincronizando com banco de dados...');
     }
     function deactivateSync(){jbKey.value='';jbBin.value='';jbStatus.value='';flash('Compartilhamento desativado');}
 
@@ -4293,6 +4300,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
   }
 }).mount('#app');
+
 
 
 </script>
