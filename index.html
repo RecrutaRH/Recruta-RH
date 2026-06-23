@@ -366,19 +366,11 @@ return function render(_ctx, _cache) {
                         [_vModelText, jbKeyInput]
                       ])
                     ]),
-                    _withDirectives(_createElementVNode("input", {
-                      "onUpdate:modelValue": $event => ((jbExistingId) = $event),
-                      type: "text",
-                      placeholder: "Bin ID existente (opcional)",
-                      style: {"width":"100%","padding":"8px 10px","border":"1px solid #E5E7EB","border-radius":"7px","font-size":"12px","margin-bottom":"8px","font-family":"monospace","box-sizing":"border-box"}
-                    }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
-                      [_vModelText, jbExistingId]
-                    ]),
                     _createElementVNode("button", {
                       onClick: saveSyncConfig,
                       disabled: jbCreating||!jbKeyInput.trim(),
                       style: _normalizeStyle({width:'100%',background:jbCreating?'#F1F5F9':'#2563EB',color:jbCreating?'#64748B':'#fff',border:'none',borderRadius:'8px',padding:'11px',fontSize:'14px',fontWeight:700,cursor:jbCreating?'not-allowed':'pointer'})
-                    }, _toDisplayString(jbCreating?'Criando...':(jbExistingId&&jbExistingId.trim()?'Conectar ao bin existente':'Sincronizar')), 13 /* TEXT, STYLE, PROPS */, ["onClick", "disabled"])
+                    }, _toDisplayString(jbCreating?'Criando...':'Ativar compartilhamento'), 13 /* TEXT, STYLE, PROPS */, ["onClick", "disabled"])
                   ]))
                 : (_openBlock(), _createElementBlock("div", { key: 1 }, [
                     _createElementVNode("div", { style: {"background":"#F0FDF4","border-radius":"10px","padding":"14px 16px","margin-bottom":"16px"} }, [
@@ -743,10 +735,10 @@ return function render(_ctx, _cache) {
           _createElementVNode("div", { style: {"padding":"10px 12px","border-top":"1px solid rgba(255,255,255,.08)","display":"flex","align-items":"center","gap":"9px"} }, [
             _createElementVNode("div", {
               style: _normalizeStyle({width:'32px',height:'32px',borderRadius:'50%',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700,color:'#fff',flexShrink:0})
-            }, _toDisplayString(currentUser&¤tUser.firstName?currentUser.firstName.slice(0,2).toUpperCase():'RH'), 5 /* TEXT, STYLE */),
+            }, _toDisplayString(currentUser ? currentUser.firstName.slice(0,2).toUpperCase() : 'RH'), 5 /* TEXT, STYLE */),
             _createElementVNode("div", { style: {"flex":"1","min-width":"0"} }, [
-              _createElementVNode("div", { style: {"font-size":"11.5px","font-weight":"600","color":"#fff","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(currentUser?currentUser.name:'Convidado'), 1 /* TEXT */),
-              _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.45)"} }, _toDisplayString(currentUser&¤tUser.role==="admin"?"Administrador":"Recrutador(a)"), 1 /* TEXT */)
+              _createElementVNode("div", { style: {"font-size":"11.5px","font-weight":"600","color":"#fff","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(currentUser ? currentUser.name : 'Convidado'), 1 /* TEXT */),
+              _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.45)"} }, _toDisplayString(currentUser ? (currentUser.role === "admin" ? "Administrador" : "Recrutador(a)") : ""), 1 /* TEXT */)
             ]),
             _createElementVNode("button", {
               onClick: $event => (rsLogout()),
@@ -1689,7 +1681,7 @@ return function render(_ctx, _cache) {
                             key: 1,
                             style: {"display":"grid","grid-template-columns":"270px 1fr","background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","height":"calc(100vh - 158px)","min-height":"500px"}
                           }, [
-                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column","min-height":"0","height":"100%"} }, [
+                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column"} }, [
                               _createElementVNode("div", { style: {"padding":"12px 12px 0"} }, [
                                 _createElementVNode("div", { style: {"position":"relative"} }, [
                                   _createElementVNode("i", {
@@ -1739,7 +1731,7 @@ return function render(_ctx, _cache) {
                                 }, "Banco", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("select", {
                                   onChange: $event => (candSort=$event.target.value),
-                                  style: {"margin-left":"auto","font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","font-family":"Inter,sans-serif","color":"#0F172A","background":"#fff","cursor":"pointer"}
+                                  style: {"margin-left":"auto","font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#0F172A","background":"#fff","cursor":"pointer"}
                                 }, [
                                   _createElementVNode("option", { value: "date_desc" }, "Mais recentes"),
                                   _createElementVNode("option", { value: "date_asc" }, "Mais antigos"),
