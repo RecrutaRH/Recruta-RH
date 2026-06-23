@@ -1,20 +1,25 @@
 // Vercel Serverless Function
-// Atua como intermediário seguro entre o browser e a API da Anthropic.
-// A chave fica protegida como variável de ambiente (ANTHROPIC_API_KEY),
-// nunca é exposta no código do navegador.
+// Intermediário seguro entre o browser e a API da Anthropic.
+// Chave protegida como variável de ambiente (ANTHROPIC_API_KEY).
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb'  // Aumentado para suportar PDFs grandes
+    }
+  }
+};
 
 export default async function handler(req, res) {
-  // Apenas POST é permitido
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: { message: 'Method not allowed' } });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
-
   if (!apiKey) {
     return res.status(500).json({
-      error: { message: 'ANTHROPIC_API_KEY não configurada no servidor.' }
+      error: { message: 'ANTHROPIC_API_KEY nao configurada no servidor.' }
     });
   }
 
