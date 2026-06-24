@@ -349,7 +349,7 @@ return function render(_ctx, _cache) {
                   target: "_blank",
                   style: {"color":"#2563EB"}
                 }, "Crie sua conta"),
-                _createTextVNode(", depois va em Account > API Keys e copie a "),
+                _createTextVNode(", depois va em Account API Keys e copie a "),
                 _createElementVNode("strong", null, "Master Key"),
                 _createTextVNode(".")
               ]),
@@ -750,7 +750,54 @@ return function render(_ctx, _cache) {
                 style: {"font-size":"16px"}
               })
             ], 8 /* PROPS */, ["onClick"])
-          ])
+          ]),
+          showDeclinouModal
+            ? (_openBlock(), _createElementBlock("div", {
+                key: 0,
+                style: {"position":"fixed","inset":"0","background":"rgba(0,0,0,.5)","display":"flex","align-items":"center","justify-content":"center","z-index":"9999"}
+              }, [
+                _createElementVNode("div", { style: {"background":"#fff","border-radius":"14px","padding":"28px","width":"460px","max-width":"calc(100vw - 32px)","border":"1px solid #E5E7EB"} }, [
+                  _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"8px"} }, [
+                    _createElementVNode("p", { style: {"font-weight":"700","font-size":"16px","color":"#0F172A"} }, "Registrar declinio"),
+                    _createElementVNode("button", {
+                      onClick: $event => (cancelDeclinou()),
+                      style: {"background":"none","border":"none","cursor":"pointer","font-size":"20px","color":"#94A3B8","line-height":"1"}
+                    }, "x", 8 /* PROPS */, ["onClick"])
+                  ]),
+                  _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"14px"} }, "Selecione o motivo pelo qual o candidato nao seguiu no processo."),
+                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"8px"} }, "Motivo *"),
+                  _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"6px","margin-bottom":"14px"} }, [
+                    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(DECLINOU_MOTIVOS, (m) => {
+                      return (_openBlock(), _createElementBlock("button", {
+                        key: m,
+                        onClick: $event => (declinouMotivo=m),
+                        style: _normalizeStyle({padding:'8px 10px',borderRadius:'7px',border:'1px solid',borderColor:declinouMotivo===m?'#7C3AED':'#E5E7EB',background:declinouMotivo===m?'#F5F3FF':'#fff',color:declinouMotivo===m?'#6D28D9':'#475569',fontSize:'12px',cursor:'pointer',textAlign:'left',fontFamily:'Inter,sans-serif'})
+                      }, _toDisplayString(m), 13 /* TEXT, STYLE, PROPS */, ["onClick"]))
+                    }), 128 /* KEYED_FRAGMENT */))
+                  ]),
+                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"5px"} }, "Observacao (opcional)"),
+                  _withDirectives(_createElementVNode("textarea", {
+                    "onUpdate:modelValue": $event => ((declinouObs) = $event),
+                    rows: "2",
+                    placeholder: "Detalhes adicionais...",
+                    style: {"margin-bottom":"14px","font-size":"12.5px"}
+                  }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
+                    [_vModelText, declinouObs]
+                  ]),
+                  _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
+                    _createElementVNode("button", {
+                      onClick: $event => (cancelDeclinou()),
+                      style: {"flex":"1","border":"1px solid #E5E7EB","background":"none","border-radius":"8px","padding":"10px","font-size":"13px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
+                    }, "Cancelar", 8 /* PROPS */, ["onClick"]),
+                    _createElementVNode("button", {
+                      onClick: $event => (confirmDeclinou()),
+                      disabled: !declinouMotivo,
+                      style: _normalizeStyle({flex:1,background:declinouMotivo?'#7C3AED':'#F1F5F9',color:declinouMotivo?'#fff':'#94A3B8',border:'none',borderRadius:'8px',padding:'10px',fontSize:'13px',fontWeight:700,cursor:declinouMotivo?'pointer':'not-allowed',fontFamily:'Inter,sans-serif'})
+                    }, "Confirmar", 12 /* STYLE, PROPS */, ["onClick", "disabled"])
+                  ])
+                ])
+              ]))
+            : _createCommentVNode("v-if", true)
         ]),
         _createElementVNode("div", { style: {"flex":"1","overflow-y":"auto","background":"#F8FAFC"} }, [
           _createElementVNode("div", { style: {"max-width":"960px","margin":"0 auto","padding":"24px 28px"} }, [
@@ -1125,7 +1172,7 @@ return function render(_ctx, _cache) {
                               : _createCommentVNode("v-if", true),
                             _createElementVNode("div", { style: {"display":"flex","align-items":"flex-start","gap":"8px","padding":"9px 14px"} }, [
                               _createElementVNode("div", { style: {"width":"7px","height":"7px","border-radius":"50%","background":"#2563EB","flex-shrink":"0","margin-top":"4px"} }),
-                              _createElementVNode("div", { style: {"font-size":"12px","color":"#0F172A","line-height":"1.4"} }, _toDisplayString(candidates.length) + " curriculos triados . taxa de aprovacao: " + _toDisplayString(metrics.total>0?Math.round(metrics.contratados/metrics.total*100):0) + "%", 1 /* TEXT */)
+                              _createElementVNode("div", { style: {"font-size":"12px","color":"#0F172A","line-height":"1.4"} }, _toDisplayString(candidates.length) + " curriculos triados taxa de aprovacao: " + _toDisplayString(metrics.total>0?Math.round(metrics.contratados/metrics.total*100):0) + "%", 1 /* TEXT */)
                             ])
                           ]))
                         : _createCommentVNode("v-if", true)
@@ -1235,7 +1282,7 @@ return function render(_ctx, _cache) {
                               _createElementVNode("span", { style: {"font-size":"9px","font-weight":"700","color":"rgba(255,255,255,.7)","text-transform":"uppercase","letter-spacing":".07em"} }, "Destaques")
                             ]),
                             _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.analysis&&c.analysis.score&&c.analysis.score.total>=80).length) + " candidato(s) com aderencia alta ", 1 /* TEXT */),
-                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score >= 80 pts . prontos para entrevista")
+                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score 80 pts prontos para entrevista")
                           ], 8 /* PROPS */, ["onClick"]))
                         : (_openBlock(), _createElementBlock("div", {
                             key: 1,
@@ -1294,7 +1341,7 @@ return function render(_ctx, _cache) {
                               _createElementVNode("span", { style: {"font-size":"9px","font-weight":"700","color":"#A5B4FC","text-transform":"uppercase","letter-spacing":".07em"} }, "Reaproveitamento")
                             ]),
                             _createElementVNode("div", { style: {"font-size":"12px","font-weight":"600","color":"#fff","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco'&&c.analysis&&c.analysis.score&&c.analysis.score.total>=70).length) + " talento(s) disponiveis ", 1 /* TEXT */),
-                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score >= 70 . prontos para reaproveitamento")
+                            _createElementVNode("div", { style: {"font-size":"10.5px","color":"rgba(255,255,255,.65)"} }, "Score 70 prontos para reaproveitamento")
                           ], 8 /* PROPS */, ["onClick"]))
                         : (_openBlock(), _createElementBlock("div", {
                             key: 5,
@@ -1415,7 +1462,7 @@ return function render(_ctx, _cache) {
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
                                     _createElementVNode("span", {
                                       style: _normalizeStyle({fontSize:'12px',fontWeight:600,color:pending(job.id).length>0?'#EA580C':'#94A3B8'})
-                                    }, _toDisplayString(pending(job.id).length) + _toDisplayString(pending(job.id).length>0?' !':''), 5 /* TEXT, STYLE */)
+                                    }, _toDisplayString(pending(job.id).length) + _toDisplayString(pending(job.id).length>0?' ':''), 5 /* TEXT, STYLE */)
                                   ]),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-size":"12px","color":"#64748B","white-space":"nowrap"} }, _toDisplayString(fmtDate(job.openDate)||'-'), 1 /* TEXT */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
@@ -1729,6 +1776,10 @@ return function render(_ctx, _cache) {
                                   onClick: $event => (candStatusFilter='banco'),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='banco'?'#7C3AED':'#F1F5F9',color:candStatusFilter==='banco'?'#fff':'#64748B'})
                                 }, "Banco", 12 /* STYLE, PROPS */, ["onClick"]),
+                                _createElementVNode("button", {
+                                  onClick: $event => (candStatusFilter='declinou'),
+                                  style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='declinou'?'#7C3AED':'#F1F5F9',color:candStatusFilter==='declinou'?'#fff':'#64748B'})
+                                }, "Declinou", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("select", {
                                   onChange: $event => (candSort=$event.target.value),
                                   style: {"margin-left":"auto","font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#0F172A","background":"#fff","cursor":"pointer"}
@@ -1861,7 +1912,7 @@ return function render(_ctx, _cache) {
                                     (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(vcTrans, (t) => {
                                       return (_openBlock(), _createElementBlock("div", { key: t.to }, [
                                         _createElementVNode("button", {
-                                          onClick: $event => (advanceStatus(viewCand.id,t.to)),
+                                          onClick: $event => (t.to==='declinou'?openDeclinouModal(viewCand.id):advanceStatus(viewCand.id,t.to)),
                                           style: _normalizeStyle({background:t.style==='primary'?'#2563EB':'none',color:t.style==='primary'?'#fff':t.style==='danger'?'#DC2626':'#64748B',border:t.style==='primary'?'none':t.style==='danger'?'1px solid #FCA5A5':'1px solid #E5E7EB',borderRadius:'7px',padding:'6px 12px',fontSize:'12px',cursor:'pointer',fontWeight:t.style==='primary'?600:400,fontFamily:'Inter,sans-serif'})
                                         }, _toDisplayString(t.label), 13 /* TEXT, STYLE, PROPS */, ["onClick"])
                                       ]))
@@ -2131,7 +2182,7 @@ return function render(_ctx, _cache) {
                                                           key: m,
                                                           style: {"display":"flex","gap":"6px","margin-bottom":"4px","align-items":"baseline"}
                                                         }, [
-                                                          _createElementVNode("span", { style: {"color":"#EA580C","font-size":"10px","flex-shrink":"0"} }, "!"),
+                                                          _createElementVNode("span", { style: {"color":"#EA580C","font-size":"10px","flex-shrink":"0"} }),
                                                           _createElementVNode("span", { style: {"font-size":"10.5px","color":"#92400E","line-height":"1.45"} }, _toDisplayString(m), 1 /* TEXT */)
                                                         ]))
                                                       }), 128 /* KEYED_FRAGMENT */))
@@ -2294,6 +2345,34 @@ return function render(_ctx, _cache) {
                                               style: {"padding":"7px 10px","border":"1px solid #E5E7EB","border-radius":"7px","font-size":"12px","font-family":"Inter,sans-serif"}
                                             }, null, 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                           ]),
+                                          _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"10px","margin-bottom":"14px"} }, [
+                                            _createElementVNode("div", null, [
+                                              _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"5px"} }, "Pretensao salarial"),
+                                              _createElementVNode("input", {
+                                                value: getCandField(viewCand.id,'salario'),
+                                                onInput: $event => (setCandSalario(viewCand.id,$event.target.value)),
+                                                placeholder: "Ex: R$ 8.000,00",
+                                                style: {"font-size":"12.5px"}
+                                              }, null, 40 /* PROPS, NEED_HYDRATION */, ["value", "onInput"]),
+                                              _createElementVNode("p", { style: {"font-size":"10px","color":"#94A3B8","margin-top":"3px"} }, "Opcional")
+                                            ]),
+                                            _createElementVNode("div", null, [
+                                              _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"5px"} }, "Disponibilidade"),
+                                              _createElementVNode("select", {
+                                                value: getCandField(viewCand.id,'disponibilidade'),
+                                                onChange: $event => (setCandDisp(viewCand.id,$event.target.value)),
+                                                style: {"font-size":"12.5px"}
+                                              }, [
+                                                _createElementVNode("option", { value: "" }, "Selecione..."),
+                                                (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(DISPONIBILIDADE_OPTS, (d) => {
+                                                  return (_openBlock(), _createElementBlock("option", {
+                                                    key: d,
+                                                    value: d
+                                                  }, _toDisplayString(d), 9 /* TEXT, PROPS */, ["value"]))
+                                                }), 128 /* KEYED_FRAGMENT */))
+                                              ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
+                                            ])
+                                          ]),
                                           _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
@@ -2446,7 +2525,7 @@ return function render(_ctx, _cache) {
                                                           ? (_openBlock(), _createElementBlock("span", {
                                                               key: 0,
                                                               style: {"color":"#EA580C"}
-                                                            }, "!"))
+                                                            }))
                                                           : _createCommentVNode("v-if", true),
                                                         (!isEditing(viewCand.id,'pontosAtencao'))
                                                           ? (_openBlock(), _createElementBlock("span", { key: 1 }, _toDisplayString(p), 1 /* TEXT */))
@@ -2556,7 +2635,7 @@ return function render(_ctx, _cache) {
                                       : _createCommentVNode("v-if", true),
                                     (detTab==='notes')
                                       ? (_openBlock(), _createElementBlock("div", { key: 4 }, [
-                                          _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"12px"} }, "Observacoes internas . RH"),
+                                          _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"12px"} }, "Observacoes internas RH"),
                                           (getNote(viewCand.id))
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 0,
@@ -2686,6 +2765,67 @@ return function render(_ctx, _cache) {
                                     style: {"background":"#FEF2F2","color":"#DC2626","font-size":"12px","padding":"8px 12px","border-radius":"8px","margin-bottom":"12px"}
                                   }, _toDisplayString(error), 1 /* TEXT */))
                                 : _createCommentVNode("v-if", true),
+                              _createElementVNode("div", { style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"12px 14px","margin-bottom":"14px"} }, [
+                                _createElementVNode("p", { style: {"font-size":"9.5px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".07em","margin-bottom":"10px"} }, "A IA ira avaliar"),
+                                _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"6px"} }, [
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-code",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Competencias tecnicas")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-briefcase",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Experiencia profissional")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-users",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Perfil comportamental")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-message-circle",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Comunicacao")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-heart",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Fit cultural")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-trending-up",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Potencial de crescimento")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-check",
+                                      style: {"font-size":"14px","color":"#2563EB","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Compatibilidade com a vaga")
+                                  ]),
+                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
+                                    _createElementVNode("i", {
+                                      class: "ti ti-alert-triangle",
+                                      style: {"font-size":"14px","color":"#EA580C","flex-shrink":"0"}
+                                    }),
+                                    _createTextVNode("Riscos de contratacao")
+                                  ])
+                                ])
+                              ]),
                               _createElementVNode("button", {
                                 onClick: analyze,
                                 disabled: isAnalyzing,
@@ -3047,7 +3187,7 @@ return function render(_ctx, _cache) {
                                   ])
                                 ]),
                                 _createElementVNode("div", { style: {"font-size":"28px","font-weight":"800","color":"#16A34A","letter-spacing":"-.5px","margin-bottom":"3px"} }, _toDisplayString(candidates.filter(c=>c.status==='banco'&&c.score>=80).length), 1 /* TEXT */),
-                                _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B"} }, "Score >= 80 pts")
+                                _createElementVNode("div", { style: {"font-size":"11px","color":"#64748B"} }, "Score 80 pts")
                               ]),
                               _createElementVNode("div", { style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","padding":"16px","position":"relative","overflow":"hidden","box-shadow":"0 1px 3px rgba(15,23,42,.05)"} }, [
                                 _createElementVNode("div", { style: {"position":"absolute","top":"0","left":"0","right":"0","height":"3px","background":"#EA580C","border-radius":"12px 12px 0 0"} }),
@@ -3331,6 +3471,7 @@ const STAGES = [
   {key:'proposta',label:'Proposta enviada',col:'#b45309',bg:'#fef3c7'},
   {key:'contratado',label:'Contratado',col:'#166534',bg:'#dcfce7'},
   {key:'banco',label:'Banco de talentos',col:'#64748b',bg:'#f1f5f9'},
+  {key:'declinou',label:'Declinou',col:'#7c3aed',bg:'#f5f3ff'},
   {key:'reprovado',label:'Reprovado',col:'#991b1b',bg:'#fee2e2'},
 ];
 const TRANSITIONS = {
@@ -3341,15 +3482,18 @@ const TRANSITIONS = {
   entrevista_rh:[
     {to:'entrevista_lider',label:'Aprovado na entrevista RH',style:'primary'},
     {to:'banco',label:'Manter em banco de talentos',style:'secondary'},
+    {to:'declinou',label:'Candidato declinou continuar',style:'warning'},
     {to:'reprovado',label:'Reprovado na entrevista RH',style:'danger'},
   ],
   entrevista_lider:[
     {to:'proposta',label:'Aprovado pelo l\u00edder \u2014 enviar proposta',style:'primary'},
+    {to:'declinou',label:'Candidato declinou continuar',style:'warning'},
     {to:'reprovado',label:'Reprovado pelo l\u00edder',style:'danger'},
   ],
   proposta:[
     {to:'contratado',label:'Proposta aceita \u2014 contratado',style:'primary'},
-    {to:'reprovado',label:'Proposta recusada',style:'danger'},
+    {to:'declinou',label:'Candidato declinou a proposta',style:'warning'},
+    {to:'reprovado',label:'Proposta recusada pelo RH',style:'danger'},
   ],
 };
 
@@ -3977,6 +4121,8 @@ createApp({
         list=list.filter(function(c){return c.status==='reprovado';});
       } else if(candStatusFilter.value==='banco'){
         list=list.filter(function(c){return c.status==='banco';});
+      } else if(candStatusFilter.value==='declinou'){
+        list=list.filter(function(c){return c.status==='declinou';});
       }
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
@@ -4255,6 +4401,40 @@ createApp({
 
     
     // ── Manual candidate + delete ──────────────────────────────────────────
+    // Declinou modal
+    var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
+    var showDeclinouModal=ref(false);
+    var declinouCandId=ref(null);
+    var declinouMotivo=ref('');
+    var declinouObs=ref('');
+
+    function openDeclinouModal(cid){
+      declinouCandId.value=cid;
+      declinouMotivo.value='';
+      declinouObs.value='';
+      showDeclinouModal.value=true;
+    }
+    function confirmDeclinou(){
+      if(!declinouCandId.value||!declinouMotivo.value)return;
+      advanceStatus(declinouCandId.value,'declinou');
+      var n=Object.assign({},notes.value);
+      var existing=n[declinouCandId.value]||'';
+      var sep=existing?'\n\n':'';
+      var stamp='[Declinio - '+new Date().toLocaleDateString('pt-BR')+']';
+      var obs=declinouObs.value.trim();
+      n[declinouCandId.value]=existing+sep+stamp+'\nMotivo: '+declinouMotivo.value+(obs?'\nObs: '+obs:'');
+      notes.value=n;
+      showDeclinouModal.value=false;
+      declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
+    }
+    function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';}
+
+    // Pretensao salarial and disponibilidade (per-candidate, stored in candidates array)
+    var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
+    function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});if(!c)return '';return c[field]||'';}
+    function setCandSalario(cid,val){setCandField(cid,'salario',val);}
+    function setCandDisp(cid,val){setCandField(cid,'disponibilidade',val);}
+
     var showManualModal=ref(false);
     var mf=ref({name:'',email:'',jobId:'',origem:'',note:''});
     var mfError=ref('');
@@ -4346,7 +4526,7 @@ createApp({
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
     return {
-      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
+      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,inPeriod,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
       isAnalyzing,analyzeStep,latestResult,viewCand,error,pipFilter,saveMsg,
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
@@ -4357,7 +4537,7 @@ createApp({
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
-      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
+      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
   }
 }).mount('#app');
