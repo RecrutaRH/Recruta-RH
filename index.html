@@ -1726,9 +1726,9 @@ return function render(_ctx, _cache) {
                           ]))
                         : (_openBlock(), _createElementBlock("div", {
                             key: 1,
-                            style: {"display":"grid","grid-template-columns":"270px 1fr","background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","height":"calc(100vh - 158px)","min-height":"500px"}
+                            style: {"display":"grid","grid-template-columns":"270px 1fr","background":"#fff","border":"1px solid #E5E7EB","border-radius":"12px","min-height":"500px","align-items":"start"}
                           }, [
-                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column"} }, [
+                            _createElementVNode("div", { style: {"border-right":"1px solid #E5E7EB","display":"flex","flex-direction":"column","position":"sticky","top":"0","max-height":"calc(100vh - 140px)","overflow":"hidden"} }, [
                               _createElementVNode("div", { style: {"padding":"12px 12px 0"} }, [
                                 _createElementVNode("div", { style: {"position":"relative"} }, [
                                   _createElementVNode("i", {
@@ -1789,7 +1789,7 @@ return function render(_ctx, _cache) {
                                   _createElementVNode("option", { value: "score_desc" }, "Maior score")
                                 ], 40 /* PROPS, NEED_HYDRATION */, ["onChange"])
                               ]),
-                              _createElementVNode("div", { style: {"flex":"1","overflow":"auto","min-height":"0"} }, [
+                              _createElementVNode("div", { style: {"flex":"1","overflow-y":"auto","min-height":"0"} }, [
                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList((filteredCands||[]), (c) => {
                                   return (_openBlock(), _createElementBlock("div", {
                                     key: c.id,
@@ -2766,7 +2766,7 @@ return function render(_ctx, _cache) {
                                   }, _toDisplayString(error), 1 /* TEXT */))
                                 : _createCommentVNode("v-if", true),
                               _createElementVNode("div", { style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"12px 14px","margin-bottom":"14px"} }, [
-                                _createElementVNode("p", { style: {"font-size":"9.5px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".07em","margin-bottom":"10px"} }, "O que será avaliado:"),
+                                _createElementVNode("p", { style: {"font-size":"9.5px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".07em","margin-bottom":"10px"} }, "O que sera avaliado"),
                                 _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"6px"} }, [
                                   _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"7px","font-size":"12px","color":"#475569"} }, [
                                     _createElementVNode("i", {
