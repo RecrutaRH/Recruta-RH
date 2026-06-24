@@ -1829,9 +1829,9 @@ return function render(_ctx, _cache) {
                                 ]))
                               : (_openBlock(), _createElementBlock("div", {
                                   key: 1,
-                                  style: {"overflow-y":"auto","height":"100%"}
+                                  style: {"display":"flex","flex-direction":"column","max-height":"calc(100vh - 140px)","overflow":"hidden"}
                                 }, [
-                                  _createElementVNode("div", { style: {"padding":"16px 18px","background":"#FAFBFF","border-bottom":"1px solid #E5E7EB"} }, [
+                                  _createElementVNode("div", { style: {"padding":"16px 18px","background":"#FAFBFF","border-bottom":"1px solid #E5E7EB","position":"sticky","top":"0","z-index":"10"} }, [
                                     _createElementVNode("div", { style: {"display":"flex","align-items":"flex-start","gap":"12px","margin-bottom":"12px"} }, [
                                       _createElementVNode("div", { style: {"width":"44px","height":"44px","border-radius":"50%","background":"#2563EB","display":"flex","align-items":"center","justify-content":"center","font-size":"15px","font-weight":"700","color":"#fff"} }, _toDisplayString(initials(viewCand.name)), 1 /* TEXT */),
                                       _createElementVNode("div", { style: {"flex":"1"} }, [
@@ -1908,7 +1908,7 @@ return function render(_ctx, _cache) {
                                         ], 4 /* STYLE */))
                                       : _createCommentVNode("v-if", true)
                                   ]),
-                                  _createElementVNode("div", { style: {"padding":"12px 18px","border-bottom":"1px solid #E5E7EB","display":"flex","align-items":"center","gap":"10px","flex-wrap":"wrap"} }, [
+                                  _createElementVNode("div", { style: {"padding":"12px 18px","border-bottom":"1px solid #E5E7EB","display":"flex","align-items":"center","gap":"10px","flex-wrap":"wrap","position":"sticky","top":"0","z-index":"9","background":"#fff"} }, [
                                     (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(vcTrans, (t) => {
                                       return (_openBlock(), _createElementBlock("div", { key: t.to }, [
                                         _createElementVNode("button", {
@@ -1931,7 +1931,7 @@ return function render(_ctx, _cache) {
                                         ], 8 /* PROPS */, ["onClick"]))
                                       : _createCommentVNode("v-if", true)
                                   ]),
-                                  _createElementVNode("div", { style: {"display":"flex","padding":"0 18px","border-bottom":"1px solid #E5E7EB"} }, [
+                                  _createElementVNode("div", { style: {"display":"flex","padding":"0 18px","border-bottom":"1px solid #E5E7EB","position":"sticky","top":"0","z-index":"8","background":"#fff"} }, [
                                     _createElementVNode("button", {
                                       onClick: $event => (detTab='ai'),
                                       style: _normalizeStyle({padding:'7px 10px',border:'none',background:'none',cursor:'pointer',fontSize:'12px',fontFamily:'Inter,sans-serif',color:detTab==='ai'?'#2563EB':'#64748B',borderBottom:detTab==='ai'?'2px solid #2563EB':'2px solid transparent',marginBottom:'-1px',fontWeight:detTab==='ai'?600:400})
@@ -1975,7 +1975,7 @@ return function render(_ctx, _cache) {
                                         ], 8 /* PROPS */, ["onClick"]))
                                       : _createCommentVNode("v-if", true)
                                   ]),
-                                  _createElementVNode("div", { style: {"overflow":"auto","padding":"14px 18px"} }, [
+                                  _createElementVNode("div", { style: {"overflow-y":"auto","flex":"1","padding":"14px 18px","min-height":"0"} }, [
                                     (detTab==='ai'&&viewCand.analysis)
                                       ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
                                           _createElementVNode("div", { style: {"background":"linear-gradient(135deg,#0F172A,#1E3A8A)","border-radius":"12px","padding":"14px 16px","margin-bottom":"10px","display":"flex","align-items":"center","gap":"14px"} }, [
@@ -4249,7 +4249,7 @@ createApp({
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus=parsed.recommendation==='Avan\u00e7ar para entrevista'?'aguardando_lider':parsed.recommendation==='Manter em banco de talentos'?'banco':'reprovado';
+          var initStatus='aguardando_lider'; // RH decides, AI is advisory only
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4407,13 +4407,7 @@ createApp({
     var declinouCandId=ref(null);
     var declinouMotivo=ref('');
     var declinouObs=ref('');
-
-    function openDeclinouModal(cid){
-      declinouCandId.value=cid;
-      declinouMotivo.value='';
-      declinouObs.value='';
-      showDeclinouModal.value=true;
-    }
+    function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
     function confirmDeclinou(){
       if(!declinouCandId.value||!declinouMotivo.value)return;
       advanceStatus(declinouCandId.value,'declinou');
@@ -4424,12 +4418,11 @@ createApp({
       var obs=declinouObs.value.trim();
       n[declinouCandId.value]=existing+sep+stamp+'\nMotivo: '+declinouMotivo.value+(obs?'\nObs: '+obs:'');
       notes.value=n;
-      showDeclinouModal.value=false;
-      declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
+      showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
     }
     function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';}
 
-    // Pretensao salarial and disponibilidade (per-candidate, stored in candidates array)
+    // Pretensao + Disponibilidade helpers
     var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
     function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});if(!c)return '';return c[field]||'';}
     function setCandSalario(cid,val){setCandField(cid,'salario',val);}
@@ -4526,7 +4519,7 @@ createApp({
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
     return {
-      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,inPeriod,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
+      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
       isAnalyzing,analyzeStep,latestResult,viewCand,error,pipFilter,saveMsg,
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
@@ -4537,7 +4530,7 @@ createApp({
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
-      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
+      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,inPeriod,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
   }
 }).mount('#app');
