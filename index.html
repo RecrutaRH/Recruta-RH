@@ -3969,6 +3969,15 @@ createApp({
     });
     var filteredCands=computed(function(){
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
+      // Status filter
+      var ACTIVE=['aguardando_lider','entrevista_rh','entrevista_lider','proposta','contratado'];
+      if(candStatusFilter.value==='active'){
+        list=list.filter(function(c){return ACTIVE.indexOf(c.status)!==-1;});
+      } else if(candStatusFilter.value==='reprovado'){
+        list=list.filter(function(c){return c.status==='reprovado';});
+      } else if(candStatusFilter.value==='banco'){
+        list=list.filter(function(c){return c.status==='banco';});
+      }
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
       if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
@@ -3976,6 +3985,17 @@ createApp({
         var s=candSearch.value.trim().toLowerCase();
         list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
       }
+      // Sort
+      list=list.slice().sort(function(a,b){
+        if(candSort.value==='date_desc') return new Date(b.submittedAt||0)-new Date(a.submittedAt||0);
+        if(candSort.value==='date_asc')  return new Date(a.submittedAt||0)-new Date(b.submittedAt||0);
+        if(candSort.value==='score_desc'){
+          var sa=(a.analysis&&a.analysis.score&&a.analysis.score.total)||0;
+          var sb=(b.analysis&&b.analysis.score&&b.analysis.score.total)||0;
+          return sb-sa;
+        }
+        return 0;
+      });
       return list;
     });
 
@@ -4187,7 +4207,7 @@ createApp({
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
-    var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta_enviada','contratado'];
+    var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta','contratado'];
     var filtCands=computed(function(){
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
       // Status filter
