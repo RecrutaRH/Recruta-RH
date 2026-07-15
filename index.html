@@ -732,25 +732,6 @@ return function render(_ctx, _cache) {
                 }, "● " + _toDisplayString(saveMsg), 1 /* TEXT */))
               : _createCommentVNode("v-if", true)
           ]),
-          _createElementVNode("div", { style: {"padding":"10px 12px","border-top":"1px solid rgba(255,255,255,.08)","display":"flex","align-items":"center","gap":"9px"} }, [
-            _createElementVNode("div", {
-              style: _normalizeStyle({width:'32px',height:'32px',borderRadius:'50%',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700,color:'#fff',flexShrink:0})
-            }, _toDisplayString(currentUser ? currentUser.firstName.slice(0,2).toUpperCase() : 'RH'), 5 /* TEXT, STYLE */),
-            _createElementVNode("div", { style: {"flex":"1","min-width":"0"} }, [
-              _createElementVNode("div", { style: {"font-size":"11.5px","font-weight":"600","color":"#fff","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"} }, _toDisplayString(currentUser ? currentUser.name : 'Convidado'), 1 /* TEXT */),
-              _createElementVNode("div", { style: {"font-size":"9.5px","color":"rgba(255,255,255,.45)"} }, _toDisplayString(currentUser ? (currentUser.role === "admin" ? "Administrador" : "Recrutador(a)") : ""), 1 /* TEXT */)
-            ]),
-            _createElementVNode("button", {
-              onClick: $event => (rsLogout()),
-              title: "Sair",
-              style: {"background":"none","border":"none","cursor":"pointer","color":"rgba(255,255,255,.5)","padding":"4px","border-radius":"6px","display":"flex","align-items":"center"}
-            }, [
-              _createElementVNode("i", {
-                class: "ti ti-logout",
-                style: {"font-size":"16px"}
-              })
-            ], 8 /* PROPS */, ["onClick"])
-          ]),
           showDeclinouModal
             ? (_openBlock(), _createElementBlock("div", {
                 key: 0,
@@ -761,7 +742,7 @@ return function render(_ctx, _cache) {
                     _createElementVNode("p", { style: {"font-weight":"700","font-size":"16px","color":"#0F172A"} }, "Registrar declinio"),
                     _createElementVNode("button", {
                       onClick: $event => (cancelDeclinou()),
-                      style: {"background":"none","border":"none","cursor":"pointer","font-size":"20px","color":"#94A3B8","line-height":"1"}
+                      style: {"background":"none","border":"none","cursor":"pointer","font-size":"20px","color":"#94A3B8"}
                     }, "x", 8 /* PROPS */, ["onClick"])
                   ]),
                   _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"14px"} }, "Selecione o motivo pelo qual o candidato nao seguiu no processo."),
@@ -797,6 +778,53 @@ return function render(_ctx, _cache) {
                   ])
                 ])
               ]))
+            : _createCommentVNode("v-if", true),
+          showJustModal
+            ? (_openBlock(), _createElementBlock("div", {
+                key: 1,
+                style: {"position":"fixed","inset":"0","background":"rgba(0,0,0,.5)","display":"flex","align-items":"center","justify-content":"center","z-index":"9999"}
+              }, [
+                _createElementVNode("div", { style: {"background":"#fff","border-radius":"14px","padding":"28px","width":"500px","max-width":"calc(100vw - 32px)","border":"1px solid #E5E7EB"} }, [
+                  _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"8px"} }, [
+                    _createElementVNode("p", { style: {"font-weight":"700","font-size":"16px","color":"#0F172A"} }, "Justificar prazo estendido"),
+                    _createElementVNode("button", {
+                      onClick: $event => (cancelJust()),
+                      style: {"background":"none","border":"none","cursor":"pointer","font-size":"20px","color":"#94A3B8"}
+                    }, "x", 8 /* PROPS */, ["onClick"])
+                  ]),
+                  _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"16px","line-height":"1.5"} }, "Selecione o motivo pelo qual o prazo precisou ser estendido."),
+                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"8px"} }, "Motivo *"),
+                  _createElementVNode("div", { style: {"display":"flex","flex-direction":"column","gap":"6px","margin-bottom":"14px"} }, [
+                    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(PRAZO_MOTIVOS, (m) => {
+                      return (_openBlock(), _createElementBlock("button", {
+                        key: m,
+                        onClick: $event => (justMotivo=m),
+                        style: _normalizeStyle({padding:'10px 12px',borderRadius:'8px',border:'1px solid',borderColor:justMotivo===m?'#2563EB':'#E5E7EB',background:justMotivo===m?'#EFF6FF':'#fff',color:justMotivo===m?'#1D4ED8':'#475569',fontSize:'13px',cursor:'pointer',textAlign:'left',fontFamily:'Inter,sans-serif',fontWeight:justMotivo===m?600:400})
+                      }, _toDisplayString(m), 13 /* TEXT, STYLE, PROPS */, ["onClick"]))
+                    }), 128 /* KEYED_FRAGMENT */))
+                  ]),
+                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"5px"} }, "Observacao (opcional)"),
+                  _withDirectives(_createElementVNode("textarea", {
+                    "onUpdate:modelValue": $event => ((justObs) = $event),
+                    rows: "2",
+                    placeholder: "Ex: Aprovacao depende do fechamento do trimestre...",
+                    style: {"margin-bottom":"16px","font-size":"12.5px"}
+                  }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
+                    [_vModelText, justObs]
+                  ]),
+                  _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
+                    _createElementVNode("button", {
+                      onClick: $event => (cancelJust()),
+                      style: {"flex":"1","border":"1px solid #E5E7EB","background":"none","border-radius":"8px","padding":"10px","font-size":"13px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
+                    }, "Cancelar", 8 /* PROPS */, ["onClick"]),
+                    _createElementVNode("button", {
+                      onClick: $event => (saveJustificativa()),
+                      disabled: !justMotivo,
+                      style: _normalizeStyle({flex:1,background:justMotivo?'#2563EB':'#F1F5F9',color:justMotivo?'#fff':'#94A3B8',border:'none',borderRadius:'8px',padding:'10px',fontSize:'13px',fontWeight:700,cursor:justMotivo?'pointer':'not-allowed',fontFamily:'Inter,sans-serif'})
+                    }, "Salvar justificativa", 12 /* STYLE, PROPS */, ["onClick", "disabled"])
+                  ])
+                ])
+              ]))
             : _createCommentVNode("v-if", true)
         ]),
         _createElementVNode("div", { style: {"flex":"1","overflow-y":"auto","background":"#F8FAFC"} }, [
@@ -822,8 +850,8 @@ return function render(_ctx, _cache) {
                       ])
                     ]),
                     _createElementVNode("div", { style: {"max-width":"520px"} }, [
-                      _createElementVNode("div", { style: {"font-size":"11px","font-weight":"600","color":"rgba(255,255,255,.7)","text-transform":"uppercase","letter-spacing":".08em","margin-bottom":"8px"} }, _toDisplayString(greeting()) + ", " + _toDisplayString(currentUser ? currentUser.firstName : "") + "!", 1 /* TEXT */),
-                      _createElementVNode("h1", { style: {"font-size":"28px","font-weight":"800","color":"#fff","margin-bottom":"6px","letter-spacing":"-.4px"} }, _toDisplayString(greeting()) + ", " + _toDisplayString(currentUser ? currentUser.firstName : "RH") + "!", 1 /* TEXT */),
+                      _createElementVNode("div", { style: {"font-size":"11px","font-weight":"600","color":"rgba(255,255,255,.7)","text-transform":"uppercase","letter-spacing":".08em","margin-bottom":"8px"} }, " Bem-vindo de volta"),
+                      _createElementVNode("h1", { style: {"font-size":"28px","font-weight":"800","color":"#fff","margin-bottom":"6px","letter-spacing":"-.4px"} }, "Bom dia, RH!"),
                       _createElementVNode("p", { style: {"font-size":"14px","color":"rgba(255,255,255,.85)","line-height":"1.6","margin-bottom":"20px"} }, [
                         _createTextVNode("Voce tem "),
                         _createElementVNode("strong", { style: {"color":"#fff"} }, _toDisplayString(candidates.filter(c=>c.status==='aguardando_lider').length) + " candidato(s)", 1 /* TEXT */),
@@ -1469,8 +1497,33 @@ return function render(_ctx, _cache) {
                                     (job.status==='aberta')
                                       ? (_openBlock(), _createElementBlock("div", {
                                           key: 0,
-                                          style: _normalizeStyle({fontSize:'11px',fontWeight:500,color:bizDaysSince(job.openDate)>10?'#DC2626':bizDaysSince(job.openDate)>=8?'#EA580C':'#16A34A'})
-                                        }, _toDisplayString(bizDaysSince(job.openDate)) + "d / 10d", 5 /* TEXT, STYLE */))
+                                          style: {"display":"flex","flex-direction":"column","gap":"3px"}
+                                        }, [
+                                          _createElementVNode("span", {
+                                            style: _normalizeStyle({fontSize:'11px',fontWeight:600,color:job.prazoEstendido?'#2563EB':bizDaysSince(job.openDate)>10?'#DC2626':bizDaysSince(job.openDate)>=8?'#EA580C':'#16A34A'})
+                                          }, _toDisplayString(bizDaysSince(job.openDate)) + "d / 10d", 5 /* TEXT, STYLE */),
+                                          (job.prazoEstendido)
+                                            ? (_openBlock(), _createElementBlock("span", {
+                                                key: 0,
+                                                title: job.prazoMotivo+(job.prazoObs?' - '+job.prazoObs:''),
+                                                style: {"font-size":"9.5px","font-weight":"600","color":"#2563EB","background":"#EFF6FF","border-radius":"4px","padding":"1px 5px","white-space":"nowrap","cursor":"default"}
+                                              }, "Prazo estendido", 8 /* PROPS */, ["title"]))
+                                            : _createCommentVNode("v-if", true),
+                                          (!job.prazoEstendido&&bizDaysSince(job.openDate)>10&&job.status==='aberta')
+                                            ? (_openBlock(), _createElementBlock("button", {
+                                                key: 1,
+                                                onClick: _withModifiers($event => (openJustModal(job)), ["stop"]),
+                                                style: {"font-size":"9.5px","color":"#EA580C","background":"#FFF7ED","border":"1px solid #FED7AA","border-radius":"4px","padding":"2px 5px","cursor":"pointer","font-family":"Inter,sans-serif","white-space":"nowrap"}
+                                              }, "Justificar", 8 /* PROPS */, ["onClick"]))
+                                            : _createCommentVNode("v-if", true),
+                                          (job.prazoEstendido)
+                                            ? (_openBlock(), _createElementBlock("button", {
+                                                key: 2,
+                                                onClick: _withModifiers($event => (removeJustificativa(job.id)), ["stop"]),
+                                                style: {"font-size":"9.5px","color":"#94A3B8","background":"none","border":"none","cursor":"pointer","font-family":"Inter,sans-serif","padding":"0","text-decoration":"underline"}
+                                              }, "Remover", 8 /* PROPS */, ["onClick"]))
+                                            : _createCommentVNode("v-if", true)
+                                        ]))
                                       : _createCommentVNode("v-if", true),
                                     (job.status==='aberta')
                                       ? (_openBlock(), _createElementBlock("div", {
@@ -3416,53 +3469,48 @@ return function render(_ctx, _cache) {
 };try{__vueRenderFn=_b(Vue);}catch(e){console.error('Render error:',e);}})();
 </script>
 <script>
-function supabaseCall(action, table, id, data) {
-  return fetch('/api/db', {
+// ── JSONBin.io API functions ──────────────────────────────────────────────────
+function jsonBinCreate(masterKey) {
+  return fetch('https://api.jsonbin.io/v3/b', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action, table, id, data})
-  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': masterKey,
+      'X-Bin-Name': 'R&S RH'
+    },
+    body: JSON.stringify({jobs:[],candidates:[],notes:{}})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ return d.metadata ? d.metadata.id : null; })
+    .catch(function(){ return null; });
 }
-function jsonBinCreate(masterKey) { return Promise.resolve('supabase'); }
 function jsonBinPush(masterKey, binId, data) {
-  if(!data) return Promise.resolve(null);
-  var saves = [
-    supabaseCall('saveMany','jobs',null,data.jobs||[]),
-    supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
-    supabaseCall('setState','app_state','notes',data.notes||{}),
-    supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
-    supabaseCall('setState','app_state','summaries',data.summaries||{}),
-    supabaseCall('setState','app_state','intDates',data.intDates||{}),
-  ];
-  return Promise.all(saves).then(function(){ return {ok:true}; }).catch(function(){ return null; });
+  if(!masterKey || !binId) return Promise.resolve(null);
+  return fetch('https://api.jsonbin.io/v3/b/' + binId, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': masterKey
+    },
+    body: JSON.stringify(data)
+  }).then(function(r){ return r.json(); }).catch(function(){ return null; });
 }
 function jsonBinPull(masterKey, binId) {
-  return Promise.all([
-    supabaseCall('loadAll','jobs'),
-    supabaseCall('loadAll','candidates'),
-    supabaseCall('getState','app_state','notes'),
-    supabaseCall('getState','app_state','transcripts'),
-    supabaseCall('getState','app_state','summaries'),
-    supabaseCall('getState','app_state','intDates'),
-  ]).then(function(results){
-    return {
-      jobs: results[0].data || [],
-      candidates: results[1].data || [],
-      notes: results[2].data || {},
-      transcripts: results[3].data || {},
-      summaries: results[4].data || {},
-      intDates: results[5].data || {}
-    };
-  }).catch(function(){ return null; });
+  if(!masterKey || !binId) return Promise.resolve(null);
+  return fetch('https://api.jsonbin.io/v3/b/' + binId + '/latest', {
+    method: 'GET',
+    headers: { 'X-Master-Key': masterKey }
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ return d.record || null; })
+    .catch(function(){ return null; });
 }
 
 
-// ── JSONBin.io API functions ──────────────────────────────────────────────────
 
 
 
-const DEFAULT_API_KEY = "";
-
+const DEFAULT_API_KEY = "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";
+const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
+const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
 
 const STAGES = [
   {key:'aguardando_lider',label:'Aguardando l\u00edder',col:'#6d28d9',bg:'#ede9fe'},
@@ -3494,6 +3542,9 @@ const TRANSITIONS = {
     {to:'contratado',label:'Proposta aceita \u2014 contratado',style:'primary'},
     {to:'declinou',label:'Candidato declinou a proposta',style:'warning'},
     {to:'reprovado',label:'Proposta recusada pelo RH',style:'danger'},
+  ],
+  contratado:[
+    {to:'declinou',label:'Candidato declinou apos contratacao',style:'warning'},
   ],
 };
 
@@ -3910,10 +3961,8 @@ function generateSummaryPDF(job,candidates){
 
 
 
-
 </script>
 <script>
-
 
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
@@ -3937,7 +3986,6 @@ createApp({
       if(u)u.value='';if(p)p.value='';
     }
     (function(){try{var s=localStorage.getItem('rsrh_user');if(s&&window.RS_USERS){var f=window.RS_USERS.find(function(x){return x.id===s;});if(f){currentUser.value=f;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');}}}catch(e){}})();
-    // Supabase always active
     window._vueSetUser=function(u){currentUser.value=u;var el=document.getElementById('rs-login');if(el)el.classList.add('rs-hidden');};
     var navItems=[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'jobs',label:'Vagas',icon:'ti-briefcase'},{id:'candidates',label:'Candidatos',icon:'ti-users'},{id:'pipeline',label:'Pipeline',icon:'ti-git-merge'},{id:'analyze',label:'Analisar currículo',icon:'ti-file-search'},{id:'banco',label:'Banco de talentos',icon:'ti-database'}];
     var nav=ref('dashboard'),prevNav=ref('dashboard');
@@ -3947,22 +3995,21 @@ createApp({
     var transcripts=ref(lsGet('recruitarh_transcripts',{}));
     var summaries=ref(lsGet('recruitarh_summaries',{}));
     var intDates=ref(lsGet('recruitarh_intdates',{}));
-    var apiKey=ref('server-managed');
-    var showApiModal=ref(false),newApiKey=ref('');
+    var apiKey=ref(DEFAULT_API_KEY||lsGet('recruitarh_apikey',''));
+    var showApiModal=ref(!apiKey.value),newApiKey=ref('');
     var showJobModal=ref(false),editingJob=ref(null);
     var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today()});
     var ejf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:'',closedDate:''});
     var selJobId=ref(''),pdfFile=ref(null),isDragging=ref(false);
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
-    var candStatusFilter=ref('active'),candSort=ref('date_desc');
     var isGenSum=ref(false),genSumStep=ref('');
     var alertTab=ref('cand');
     var detTab=ref('ai');
-    var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
+    var candSearch=ref('');var candStatusFilter=ref('active');var candSort=ref('date_desc');var insightFilter=ref(null);var filterMonth=ref('');
     // JSONBin sync
-    var jbKey=ref('supabase');
-    var jbBin=ref('supabase');
+    var jbKey=ref(DEFAULT_JB_KEY||lsGet('recruitarh_jbkey',''));
+    var jbBin=ref(DEFAULT_JB_BIN||lsGet('recruitarh_jbbin',''));
     var jbStatus=ref('');
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
@@ -4053,12 +4100,15 @@ createApp({
       }).filter(function(o){return o.n>0;});
     });
     function calcSlaStats(){
-      var on=0,near=0,over=0;
+      var on=0,near=0,over=0,overJust=0,overNoJust=0;
       (jobs.value||[]).filter(function(j){return j.status==='aberta';}).forEach(function(j){
         var d=bizDaysSince(j.openDate);
-        if(d>10)over++;else if(d>=8)near++;else on++;
+        if(d>10){
+          over++;
+          if(j.prazoEstendido)overJust++;else overNoJust++;
+        } else if(d>=8)near++;else on++;
       });
-      return {on:on,near:near,over:over};
+      return {on:on,near:near,over:over,overJust:overJust,overNoJust:overNoJust};
     }
     var slaStats=ref(calcSlaStats());
     watch(jobs,function(){slaStats.value=calcSlaStats();},{deep:true});
@@ -4113,10 +4163,13 @@ createApp({
     });
     var filteredCands=computed(function(){
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
-      // Status filter
-      var ACTIVE=['aguardando_lider','entrevista_rh','entrevista_lider','proposta','contratado'];
+      if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
+      if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
+      if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
+      // Status filter from filter bar
+      var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
       if(candStatusFilter.value==='active'){
-        list=list.filter(function(c){return ACTIVE.indexOf(c.status)!==-1;});
+        list=list.filter(function(c){return ACTIVE_STATUSES.indexOf(c.status)!==-1;});
       } else if(candStatusFilter.value==='reprovado'){
         list=list.filter(function(c){return c.status==='reprovado';});
       } else if(candStatusFilter.value==='banco'){
@@ -4124,28 +4177,23 @@ createApp({
       } else if(candStatusFilter.value==='declinou'){
         list=list.filter(function(c){return c.status==='declinou';});
       }
-      if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
-      if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
-      if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
+      // Search
       if(candSearch.value.trim()){
         var s=candSearch.value.trim().toLowerCase();
         list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
       }
       // Sort
-      list=list.slice().sort(function(a,b){
-        if(candSort.value==='date_desc') return new Date(b.submittedAt||0)-new Date(a.submittedAt||0);
-        if(candSort.value==='date_asc')  return new Date(a.submittedAt||0)-new Date(b.submittedAt||0);
-        if(candSort.value==='score_desc'){
-          var sa=(a.analysis&&a.analysis.score&&a.analysis.score.total)||0;
-          var sb=(b.analysis&&b.analysis.score&&b.analysis.score.total)||0;
-          return sb-sa;
-        }
-        return 0;
-      });
+      if(candSort.value==='date_asc'){
+        list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
+      } else if(candSort.value==='score_desc'){
+        list=list.slice().sort(function(a,b){return ((b.analysis&&b.analysis.score&&b.analysis.score.total)||0)-((a.analysis&&a.analysis.score&&a.analysis.score.total)||0);});
+      } else {
+        list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
+      }
       return list;
     });
 
-    function isVagaCrit(job){ return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
+    function isVagaCrit(job){if(job.prazoEstendido)return false; return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
 
     function applyData(d){
       if(!d)return;
@@ -4170,9 +4218,11 @@ createApp({
       });
     }
     function saveSyncConfig(){
-      showSyncModal.value=false;
-      pullSync();
-      flash('Sincronizando com banco de dados...');
+      if(!jbKeyInput.value.trim())return;
+      var key=jbKeyInput.value.trim();
+      var existId=(jbExistingId.value||'').trim();
+      if(existId){jbKey.value=key;jbBin.value=existId;jbKeyInput.value='';jbExistingId.value='';showSyncModal.value=false;pullSync();flash('Conectado! Sincronizando...');}
+      else{jbCreating.value=true;jsonBinCreate(key).then(function(id){if(id){jbKey.value=key;jbBin.value=id;jbKeyInput.value='';jbExistingId.value='';showSyncModal.value=false;pushSync();flash('Compartilhamento ativado!');}else{flash('Erro: verifique a chave JSONBin');}jbCreating.value=false;});}
     }
     function deactivateSync(){jbKey.value='';jbBin.value='';jbStatus.value='';flash('Compartilhamento desativado');}
 
@@ -4244,12 +4294,25 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus='aguardando_lider'; // RH decides, AI is advisory only
+          var parsed=(function(){
+            var clean=raw.replace(/```json|```/g,'').trim();
+            // Try to repair truncated JSON by finding last complete object
+            try{return JSON.parse(clean);}catch(e1){
+              // Attempt to close unclosed JSON
+              var repaired=clean;
+              var opens=(repaired.match(/\{/g)||[]).length;
+              var closes=(repaired.match(/\}/g)||[]).length;
+              for(var i=0;i<opens-closes;i++)repaired+='}';
+              try{return JSON.parse(repaired);}catch(e2){
+                throw new Error('Resposta da IA foi cortada. Tente novamente com um curriculo menor ou em PDF mais simples.');
+              }
+            }
+          })();
+          var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4280,7 +4343,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4353,32 +4416,9 @@ createApp({
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
-    var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta','contratado'];
     var filtCands=computed(function(){
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
-      // Status filter
-      if(candStatusFilter.value==='active'){
-        list=list.filter(function(c){return ACTIVE_STATUSES.indexOf(c.status)!==-1;});
-      } else if(candStatusFilter.value==='reprovado'){
-        list=list.filter(function(c){return c.status==='reprovado';});
-      } else if(candStatusFilter.value==='banco'){
-        list=list.filter(function(c){return c.status==='banco';});
-      }
-      // Job filter
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
-      // Sort
-      list=list.slice().sort(function(a,b){
-        if(candSort.value==='date_desc'){
-          return new Date(b.submittedAt||0)-new Date(a.submittedAt||0);
-        } else if(candSort.value==='date_asc'){
-          return new Date(a.submittedAt||0)-new Date(b.submittedAt||0);
-        } else if(candSort.value==='score_desc'){
-          var sa=(a.analysis&&a.analysis.score&&a.analysis.score.total)||0;
-          var sb=(b.analysis&&b.analysis.score&&b.analysis.score.total)||0;
-          return sb-sa;
-        }
-        return 0;
-      });
       return list;
     });
     var vcTrans=computed(function(){return viewCand.value?(TRANSITIONS[viewCand.value.status]||[]):[];});
@@ -4401,33 +4441,40 @@ createApp({
 
     
     // ── Manual candidate + delete ──────────────────────────────────────────
-    // Declinou modal
+    // ── DECLINOU ─────────────────────────────────────────────────────────
     var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
-    var showDeclinouModal=ref(false);
-    var declinouCandId=ref(null);
-    var declinouMotivo=ref('');
-    var declinouObs=ref('');
+    var showDeclinouModal=ref(false);var declinouCandId=ref(null);var declinouMotivo=ref('');var declinouObs=ref('');
     function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
     function confirmDeclinou(){
       if(!declinouCandId.value||!declinouMotivo.value)return;
       advanceStatus(declinouCandId.value,'declinou');
-      var n=Object.assign({},notes.value);
-      var existing=n[declinouCandId.value]||'';
-      var sep=existing?'\n\n':'';
-      var stamp='[Declinio - '+new Date().toLocaleDateString('pt-BR')+']';
-      var obs=declinouObs.value.trim();
-      n[declinouCandId.value]=existing+sep+stamp+'\nMotivo: '+declinouMotivo.value+(obs?'\nObs: '+obs:'');
-      notes.value=n;
-      showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
+      var n=Object.assign({},notes.value);var existing=n[declinouCandId.value]||'';
+      var sep=existing?'\n\n':'';var obs=declinouObs.value.trim();
+      n[declinouCandId.value]=existing+sep+'[Declinio - '+new Date().toLocaleDateString('pt-BR')+']\nMotivo: '+declinouMotivo.value+(obs?'\nObs: '+obs:'');
+      notes.value=n;showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
     }
     function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';}
-
-    // Pretensao + Disponibilidade helpers
+    // ── PRETENSAO + DISPONIBILIDADE ───────────────────────────────────────
     var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
     function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});if(!c)return '';return c[field]||'';}
     function setCandSalario(cid,val){setCandField(cid,'salario',val);}
     function setCandDisp(cid,val){setCandField(cid,'disponibilidade',val);}
-
+    // ── JUSTIFICATIVA DE PRAZO ────────────────────────────────────────────
+    var PRAZO_MOTIVOS=['Em Etapa de Aprovacao Interna','Em Alinhamento com a Gestao','Em Busca de Talentos Especificos','Em Analise Orcamentaria','Perfil de Alta Complexidade','Pausa Solicitada pelo Gestor','Aguardando Definicao do Escopo'];
+    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
+    function openJustModal(job){justJobId.value=job.id;justMotivo.value=job.prazoMotivo||'';justObs.value=job.prazoObs||'';showJustModal.value=true;}
+    function saveJustificativa(){
+      if(!justJobId.value||!justMotivo.value)return;
+      var idx=jobs.value.findIndex(function(j){return j.id===justJobId.value;});
+      if(idx>=0)jobs.value[idx]=Object.assign({},jobs.value[idx],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value.trim(),prazoJustAt:new Date().toLocaleDateString('pt-BR')});
+      showJustModal.value=false;justJobId.value=null;justMotivo.value='';justObs.value='';pushSync();
+    }
+    function removeJustificativa(jobId){
+      var idx=jobs.value.findIndex(function(j){return j.id===jobId;});
+      if(idx>=0)jobs.value[idx]=Object.assign({},jobs.value[idx],{prazoEstendido:false,prazoMotivo:'',prazoObs:'',prazoJustAt:''});
+      pushSync();
+    }
+    function cancelJust(){showJustModal.value=false;justJobId.value=null;justMotivo.value='';justObs.value='';}
     var showManualModal=ref(false);
     var mf=ref({name:'',email:'',jobId:'',origem:'',note:''});
     var mfError=ref('');
@@ -4519,7 +4566,7 @@ createApp({
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
     return {
-      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,candStatusFilter,candSort,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
+      navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
       isAnalyzing,analyzeStep,latestResult,viewCand,error,pipFilter,saveMsg,
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
@@ -4530,11 +4577,10 @@ createApp({
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
-      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,inPeriod,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
+      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,candStatusFilter,candSort,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,inPeriod,PRAZO_MOTIVOS,showJustModal,justJobId,justMotivo,justObs,openJustModal,saveJustificativa,removeJustificativa,cancelJust,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
   }
 }).mount('#app');
-
 
 
 </script>
