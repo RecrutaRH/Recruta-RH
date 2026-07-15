@@ -3575,7 +3575,7 @@ function jsonBinPull(masterKey, binId) {
 
 
 
-const DEFAULT_API_KEY = "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";
+const DEFAULT_API_KEY = "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";
 const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
 const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
 
@@ -4080,7 +4080,7 @@ createApp({
     var transcripts=ref(lsGet('recruitarh_transcripts',{}));
     var summaries=ref(lsGet('recruitarh_summaries',{}));
     var intDates=ref(lsGet('recruitarh_intdates',{}));
-    var apiKey=ref(DEFAULT_API_KEY||lsGet('recruitarh_apikey',''));
+    var apiKey=ref(lsGet('recruitarh_apikey','')||DEFAULT_API_KEY);
     var showApiModal=ref(!apiKey.value),newApiKey=ref('');
     var showJobModal=ref(false),editingJob=ref(null);
     var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today(),xpFuture:false});
