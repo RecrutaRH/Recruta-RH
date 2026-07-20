@@ -292,7 +292,7 @@ const _Vue = Vue
 
 return function render(_ctx, _cache) {
   with (_ctx) {
-    const { createElementVNode: _createElementVNode, createTextVNode: _createTextVNode, vModelText: _vModelText, withDirectives: _withDirectives, openBlock: _openBlock, createElementBlock: _createElementBlock, createCommentVNode: _createCommentVNode, toDisplayString: _toDisplayString, normalizeStyle: _normalizeStyle, vModelCheckbox: _vModelCheckbox, renderList: _renderList, Fragment: _Fragment, vModelSelect: _vModelSelect, normalizeClass: _normalizeClass, withModifiers: _withModifiers, vShow: _vShow } = _Vue
+    const { createElementVNode: _createElementVNode, createTextVNode: _createTextVNode, vModelText: _vModelText, withDirectives: _withDirectives, openBlock: _openBlock, createElementBlock: _createElementBlock, createCommentVNode: _createCommentVNode, toDisplayString: _toDisplayString, normalizeStyle: _normalizeStyle, renderList: _renderList, Fragment: _Fragment, vModelSelect: _vModelSelect, normalizeClass: _normalizeClass, withModifiers: _withModifiers, vShow: _vShow } = _Vue
 
     return (_openBlock(), _createElementBlock(_Fragment, null, [
       showApiModal
@@ -563,17 +563,6 @@ return function render(_ctx, _cache) {
                 }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
                   [_vModelText, jf.desc]
                 ])
-              ]),
-              _createElementVNode("label", { style: {"display":"flex","align-items":"center","gap":"8px","margin-bottom":"12px","cursor":"pointer","padding":"10px","background":"#F0FDF4","border":"1px solid #BBF7D0","border-radius":"8px"} }, [
-                _withDirectives(_createElementVNode("input", {
-                  type: "checkbox",
-                  "onUpdate:modelValue": $event => ((jf.xpFuture) = $event),
-                  style: {"width":"15px","height":"15px","accent-color":"#2563EB","cursor":"pointer"}
-                }, null, 8 /* PROPS */, ["onUpdate:modelValue"]), [
-                  [_vModelCheckbox, jf.xpFuture]
-                ]),
-                _createElementVNode("span", { style: {"font-size":"13px","color":"#0F172A","font-weight":"500"} }, "Programa XP Future"),
-                _createElementVNode("span", { style: {"font-size":"11px","color":"#16A34A","margin-left":"4px"} }, "ativa classificacao A/B/C/D exclusiva")
               ]),
               _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
                 _createElementVNode("button", {
@@ -2115,122 +2104,9 @@ return function render(_ctx, _cache) {
                                                 _createElementVNode("p", { style: {"font-size":"12px","color":"#1e293b","line-height":"1.7","margin":"0"} }, _toDisplayString(viewCand.analysis.executiveSummary.strengths), 1 /* TEXT */)
                                               ]))
                                             : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis&&viewCand.analysis.xpFuture)
+                                          (viewCand.analysis.score)
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 1,
-                                                style: {"padding":"0"}
-                                              }, [
-                                                _createElementVNode("div", {
-                                                  style: _normalizeStyle([{"display":"flex","align-items":"center","gap":"12px","margin-bottom":"14px","padding":"14px","border-radius":"10px"}, {background:getXpClass(viewCand)==='A'?'#F0FDF4':getXpClass(viewCand)==='B'?'#EFF6FF':getXpClass(viewCand)==='C'?'#FFF7ED':'#FEF2F2'}])
-                                                }, [
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({width:'52px',height:'52px',borderRadius:'10px',background:getXpClass(viewCand)==='A'?'#166534':getXpClass(viewCand)==='B'?'#1D4ED8':getXpClass(viewCand)==='C'?'#92400E':'#991B1B',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:'22px',fontWeight:800,flexShrink:0})
-                                                  }, _toDisplayString(getXpClass(viewCand)||'?'), 5 /* TEXT, STYLE */),
-                                                  _createElementVNode("div", { style: {"flex":"1"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"16px","font-weight":"800","color":"#0F172A","margin":"0"} }, "Perfil " + _toDisplayString(getXpClass(viewCand)||'?'), 1 /* TEXT */),
-                                                    _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin":"3px 0 0"} }, [
-                                                      _createTextVNode("Aderencia ao Programa XP Future: "),
-                                                      _createElementVNode("strong", null, _toDisplayString(viewCand.analysis.xpFuture.aderencia) + "%", 1 /* TEXT */)
-                                                    ])
-                                                  ]),
-                                                  _createElementVNode("select", {
-                                                    onChange: $event => (setXpClassManual(viewCand.id,$event.target.value)),
-                                                    style: {"font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#475569","background":"#fff","cursor":"pointer","flex-shrink":"0"}
-                                                  }, [
-                                                    _createElementVNode("option", { value: "" }, "Perfil da IA"),
-                                                    _createElementVNode("option", { value: "A" }, "Ajustar: A"),
-                                                    _createElementVNode("option", { value: "B" }, "Ajustar: B"),
-                                                    _createElementVNode("option", { value: "C" }, "Ajustar: C"),
-                                                    _createElementVNode("option", { value: "D" }, "Ajustar: D")
-                                                  ], 40 /* PROPS, NEED_HYDRATION */, ["onChange"])
-                                                ], 4 /* STYLE */),
-                                                _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr 1fr","gap":"8px","margin-bottom":"14px"} }, [
-                                                  _createElementVNode("div", { style: {"background":"#F8FAFC","border-radius":"8px","padding":"10px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","margin":"0 0 4px"} }, "Universidade"),
-                                                    _createElementVNode("p", { style: {"font-size":"12px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.xpFuture.universidade||'Nao identificada'), 1 /* TEXT */),
-                                                    _createElementVNode("p", { style: {"font-size":"10px","color":"#64748B","margin":"2px 0 0"} }, _toDisplayString(viewCand.analysis.xpFuture.estrelas) + " estrelas", 1 /* TEXT */)
-                                                  ]),
-                                                  _createElementVNode("div", { style: {"background":"#F8FAFC","border-radius":"8px","padding":"10px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","margin":"0 0 4px"} }, "Empresa"),
-                                                    _createElementVNode("p", {
-                                                      style: _normalizeStyle([{"font-size":"12px","font-weight":"600","margin":"0"}, {color:viewCand.analysis.xpFuture.empresaValor1000===true?'#166534':viewCand.analysis.xpFuture.empresaValor1000===false?'#991B1B':'#0F172A'}])
-                                                    }, _toDisplayString(viewCand.analysis.xpFuture.empresaAtual||'Nao identificada'), 5 /* TEXT, STYLE */),
-                                                    _createElementVNode("p", {
-                                                      style: _normalizeStyle([{"font-size":"10px","margin":"2px 0 0"}, {color:viewCand.analysis.xpFuture.empresaValor1000===true?'#166534':'#DC2626'}])
-                                                    }, _toDisplayString(viewCand.analysis.xpFuture.empresaValor1000===true?'Valor 1000 / Banco':'Fora do perfil'), 5 /* TEXT, STYLE */)
-                                                  ]),
-                                                  _createElementVNode("div", { style: {"background":"#F8FAFC","border-radius":"8px","padding":"10px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","margin":"0 0 4px"} }, "Curso"),
-                                                    _createElementVNode("p", { style: {"font-size":"12px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.xpFuture.curso||'Nao identificado'), 1 /* TEXT */),
-                                                    _createElementVNode("p", {
-                                                      style: _normalizeStyle([{"font-size":"10px","margin":"2px 0 0"}, {color:viewCand.analysis.xpFuture.cursoPrioritario?'#166534':'#64748B'}])
-                                                    }, _toDisplayString(viewCand.analysis.xpFuture.cursoPrioritario?'Prioritario':'Boa aderencia'), 5 /* TEXT, STYLE */)
-                                                  ])
-                                                ]),
-                                                _createElementVNode("div", { style: {"background":"#F8FAFC","border-radius":"8px","padding":"12px","margin-bottom":"14px"} }, [
-                                                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin":"0 0 6px"} }, "Justificativa"),
-                                                  _createElementVNode("p", { style: {"font-size":"12.5px","color":"#0F172A","line-height":"1.6","margin":"0"} }, _toDisplayString(viewCand.analysis.xpFuture.justificativa), 1 /* TEXT */)
-                                                ]),
-                                                _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"10px","margin-bottom":"14px"} }, [
-                                                  _createElementVNode("div", { style: {"background":"#F0FDF4","border-radius":"8px","padding":"12px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#166534","text-transform":"uppercase","letter-spacing":".06em","margin":"0 0 8px"} }, "Pontos Fortes"),
-                                                    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(viewCand.analysis.xpFuture.pontosFortes, (p, i) => {
-                                                      return (_openBlock(), _createElementBlock("div", {
-                                                        key: i,
-                                                        style: {"display":"flex","gap":"6px","margin-bottom":"5px","font-size":"12px","color":"#0F172A"}
-                                                      }, [
-                                                        _createElementVNode("span", { style: {"color":"#16A34A","flex-shrink":"0"} }, "+"),
-                                                        _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                      ]))
-                                                    }), 128 /* KEYED_FRAGMENT */))
-                                                  ]),
-                                                  _createElementVNode("div", { style: {"background":"#FFF7ED","border-radius":"8px","padding":"12px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#92400E","text-transform":"uppercase","letter-spacing":".06em","margin":"0 0 8px"} }, "Pontos de Atencao"),
-                                                    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(viewCand.analysis.xpFuture.pontosAtencao, (p, i) => {
-                                                      return (_openBlock(), _createElementBlock("div", {
-                                                        key: i,
-                                                        style: {"display":"flex","gap":"6px","margin-bottom":"5px","font-size":"12px","color":"#0F172A"}
-                                                      }, [
-                                                        _createElementVNode("span", { style: {"color":"#EA580C","flex-shrink":"0"} }, "!"),
-                                                        _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                      ]))
-                                                    }), 128 /* KEYED_FRAGMENT */))
-                                                  ])
-                                                ]),
-                                                _createElementVNode("div", { style: {"margin-bottom":"14px"} }, [
-                                                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin":"0 0 8px"} }, "Competencias identificadas"),
-                                                  _createElementVNode("div", { style: {"display":"flex","flex-wrap":"wrap","gap":"6px"} }, [
-                                                    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(viewCand.analysis.xpFuture.competencias, (c, i) => {
-                                                      return (_openBlock(), _createElementBlock("span", {
-                                                        key: i,
-                                                        style: {"font-size":"11px","background":"#EFF6FF","color":"#1D4ED8","padding":"3px 10px","border-radius":"99px","font-weight":"500"}
-                                                      }, _toDisplayString(c), 1 /* TEXT */))
-                                                    }), 128 /* KEYED_FRAGMENT */))
-                                                  ])
-                                                ]),
-                                                _createElementVNode("div", null, [
-                                                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin":"0 0 8px"} }, "Perguntas sugeridas para entrevista"),
-                                                  (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(viewCand.analysis.xpFuture.perguntasEntrevista, (q, i) => {
-                                                    return (_openBlock(), _createElementBlock("div", {
-                                                      key: i,
-                                                      style: {"display":"flex","gap":"8px","margin-bottom":"8px","font-size":"12.5px","color":"#0F172A","line-height":"1.5"}
-                                                    }, [
-                                                      _createElementVNode("span", { style: {"color":"#2563EB","font-weight":"700","flex-shrink":"0"} }, _toDisplayString(i+1) + ".", 1 /* TEXT */),
-                                                      _createElementVNode("span", null, _toDisplayString(q), 1 /* TEXT */)
-                                                    ]))
-                                                  }), 128 /* KEYED_FRAGMENT */))
-                                                ]),
-                                                (viewCand.xpClassManual)
-                                                  ? (_openBlock(), _createElementBlock("p", {
-                                                      key: 0,
-                                                      style: {"font-size":"10px","color":"#2563EB","margin-top":"10px","font-style":"italic"}
-                                                    }, "* Classificacao ajustada pelo RH"))
-                                                  : _createCommentVNode("v-if", true)
-                                              ]))
-                                            : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis.score&&!viewCand.analysis.xpFuture)
-                                            ? (_openBlock(), _createElementBlock("div", {
-                                                key: 2,
                                                 style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"7px","margin-bottom":"10px"}
                                               }, [
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList([{l:'Hard Skills',v:viewCand.analysis.score.hardSkills||0,m:50,ic:'ti-code'},{l:'Experiencia',v:viewCand.analysis.score.experience||0,m:25,ic:'ti-briefcase'},{l:'Soft Skills',v:viewCand.analysis.score.softSkills||0,m:15,ic:'ti-users'},{l:'Fit Cultural',v:viewCand.analysis.score.culturalFit||0,m:10,ic:'ti-heart'}], (d) => {
@@ -2271,7 +2147,7 @@ return function render(_ctx, _cache) {
                                                 }),
                                                 _createTextVNode(" Competencias Tecnicas")
                                               ]),
-                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.hardSkills&&viewCand.analysis.candidateAnalysis.hardSkills.length&&!viewCand.analysis.xpFuture)
+                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.hardSkills&&viewCand.analysis.candidateAnalysis.hardSkills.length)
                                                 ? (_openBlock(), _createElementBlock("div", {
                                                     key: 0,
                                                     style: {"display":"flex","flex-wrap":"wrap","gap":"4px"}
@@ -2296,7 +2172,7 @@ return function render(_ctx, _cache) {
                                                 }),
                                                 _createTextVNode(" Perfil Comportamental")
                                               ]),
-                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.softSkills&&viewCand.analysis.candidateAnalysis.softSkills.length&&!viewCand.analysis.xpFuture)
+                                              (viewCand.analysis.candidateAnalysis&&viewCand.analysis.candidateAnalysis.softSkills&&viewCand.analysis.candidateAnalysis.softSkills.length)
                                                 ? (_openBlock(), _createElementBlock("div", {
                                                     key: 0,
                                                     style: {"display":"flex","flex-wrap":"wrap","gap":"4px"}
@@ -2314,9 +2190,9 @@ return function render(_ctx, _cache) {
                                                   }, "-"))
                                             ])
                                           ]),
-                                          (viewCand.analysis.comparison&&!viewCand.analysis.xpFuture)
+                                          (viewCand.analysis.comparison)
                                             ? (_openBlock(), _createElementBlock("div", {
-                                                key: 3,
+                                                key: 2,
                                                 style: {"display":"grid","grid-template-columns":"1fr 1fr","gap":"8px","margin-bottom":"10px"}
                                               }, [
                                                 (viewCand.analysis.comparison.matched&&viewCand.analysis.comparison.matched.length)
@@ -2367,9 +2243,9 @@ return function render(_ctx, _cache) {
                                                   : _createCommentVNode("v-if", true)
                                               ]))
                                             : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning&&!viewCand.analysis.xpFuture)
+                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
                                             ? (_openBlock(), _createElementBlock("div", {
-                                                key: 4,
+                                                key: 3,
                                                 style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"10px 12px"}
                                               }, [
                                                 _createElementVNode("div", { style: {"font-size":"9px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".07em","margin-bottom":"5px","display":"flex","align-items":"center","gap":"4px"} }, [
@@ -3608,15 +3484,14 @@ function supabaseCall(action, table, id, data) {
 function jsonBinCreate(masterKey) { return Promise.resolve("supabase"); }
 function jsonBinPush(masterKey, binId, data) {
   if(!data) return Promise.resolve(null);
-  var saves = [
+  return Promise.all([
     supabaseCall('saveMany','jobs',null,data.jobs||[]),
     supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
     supabaseCall('setState','app_state','notes',data.notes||{}),
     supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
     supabaseCall('setState','app_state','summaries',data.summaries||{}),
     supabaseCall('setState','app_state','intDates',data.intDates||{}),
-  ];
-  return Promise.all(saves).then(function(){ return {ok:true}; }).catch(function(){ return null; });
+  ]).then(function(){ return {ok:true}; }).catch(function(){ return null; });
 }
 function jsonBinPull(masterKey, binId) {
   return Promise.all([
@@ -3628,12 +3503,12 @@ function jsonBinPull(masterKey, binId) {
     supabaseCall('getState','app_state','intDates'),
   ]).then(function(results){
     return {
-      jobs: results[0].data || [],
-      candidates: results[1].data || [],
-      notes: results[2].data || {},
-      transcripts: results[3].data || {},
-      summaries: results[4].data || {},
-      intDates: results[5].data || {}
+      jobs: results[0].data||[],
+      candidates: results[1].data||[],
+      notes: results[2].data||{},
+      transcripts: results[3].data||{},
+      summaries: results[4].data||{},
+      intDates: results[5].data||{}
     };
   }).catch(function(){ return null; });
 }
@@ -3643,8 +3518,8 @@ function jsonBinPull(masterKey, binId) {
 
 
 const DEFAULT_API_KEY = "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";
-
-
+const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
+const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
 
 const STAGES = [
   {key:'aguardando_lider',label:'Aguardando l\u00edder',col:'#6d28d9',bg:'#ede9fe'},
@@ -3653,7 +3528,6 @@ const STAGES = [
   {key:'proposta',label:'Proposta enviada',col:'#b45309',bg:'#fef3c7'},
   {key:'contratado',label:'Contratado',col:'#166534',bg:'#dcfce7'},
   {key:'banco',label:'Banco de talentos',col:'#64748b',bg:'#f1f5f9'},
-  {key:'declinou',label:'Declinou',col:'#7c3aed',bg:'#f5f3ff'},
   {key:'reprovado',label:'Reprovado',col:'#991b1b',bg:'#fee2e2'},
 ];
 const TRANSITIONS = {
@@ -3664,21 +3538,15 @@ const TRANSITIONS = {
   entrevista_rh:[
     {to:'entrevista_lider',label:'Aprovado na entrevista RH',style:'primary'},
     {to:'banco',label:'Manter em banco de talentos',style:'secondary'},
-    {to:'declinou',label:'Candidato declinou continuar',style:'warning'},
     {to:'reprovado',label:'Reprovado na entrevista RH',style:'danger'},
   ],
   entrevista_lider:[
     {to:'proposta',label:'Aprovado pelo l\u00edder \u2014 enviar proposta',style:'primary'},
-    {to:'declinou',label:'Candidato declinou continuar',style:'warning'},
     {to:'reprovado',label:'Reprovado pelo l\u00edder',style:'danger'},
   ],
   proposta:[
     {to:'contratado',label:'Proposta aceita \u2014 contratado',style:'primary'},
-    {to:'declinou',label:'Candidato declinou a proposta',style:'warning'},
-    {to:'reprovado',label:'Proposta recusada pelo RH',style:'danger'},
-  ],
-  contratado:[
-    {to:'declinou',label:'Candidato declinou apos contratacao',style:'warning'},
+    {to:'reprovado',label:'Proposta recusada',style:'danger'},
   ],
 };
 
@@ -3720,9 +3588,6 @@ function buildMailto(job,candidates){
   return 'mailto:'+(job.leaderEmail||'')+'?subject='+subject+'&body='+encodeURIComponent(body);
 }
 function buildPrompt(job){
-  if(job.xpFuture){
-    return 'Voce e um especialista em selecao de talentos para o mercado financeiro.\nAnalise o curriculo do candidato EXCLUSIVAMENTE com base nos criterios do Programa XP Future descritos abaixo.\nNAO use criterios de Hard Skills, Soft Skills, Fit Cultural ou score ponderado.\nNAO inclua campos de score, classification, recommendation ou culturalFit no JSON.\n\n=== CRITERIOS DO PROGRAMA XP FUTURE ===\n\nCURSOS PRIORITARIOS: Administracao, Economia, Ciencias Contabeis, Engenharia (todas)\nCURSOS COM BOA ADERENCIA: Direito, Estatistica, Matematica, Sistemas de Informacao, Ciencia da Computacao, Relacoes Internacionais, Marketing\n\nUNIVERSIDADES 5 ESTRELAS EM Adm/Eco/Eng/Cont (Guia Estadao 2024):\nUFC, UFG, Unifei, UFLA, UFV, UFMS, UFPR, UniAndrade, ESPM, FGV, Ibmec, Unisinos, Udesc, UFSC, Unesp, Unicamp, USP, FIA, Mackenzie, UFSCar\n\nUNIVERSIDADES 4 ESTRELAS EM Adm/Eco/Eng/Cont:\nFipecafi, PUC Minas, PUCPR, UCDB, UCS, UFMA, UFPI, Uneb, UniEvangélica, Unilago, Unipam, Unipar, Unisinos, Univali, Unoeste, UP, UTP, Fecap, Trevisan, Insper\n\nUNIVERSIDADES RECONHECIDAS NACIONALMENTE (tratar como 4-5 estrelas se nao listada acima):\nUSP, FGV, Insper, Mackenzie, PUC-Rio, PUC-SP, PUC Minas, UFRJ, UFMG, UFRGS, Unicamp, UFPR, ESPM, Ibmec, FEA-USP\n\nEMPRESAS DO VALOR 1000 (2024) - lista das maiores do Brasil:\nPetrobras, JBS, Raízen, Vale, Vibra, Cosan, Marfrig, Ultrapar, Cargill, Grupo Carrefour Brasil, Bunge Alimentos, Ambev, Stellantis, Cofco International, Braskem, ArcelorMittal, Gerdau, Assaí, Copersucar, BRF, Shell, Telefônica Brasil, Rede D\'Or, Claro Participações, CSN, Amaggi, Neoenergia, Acelen, Louis Dreyfus, Grupo Enel, Equatorial Energia, Suzano, CPFL Energia, Mercado Livre, Eletrobras, Cemig, Magazine Luiza, Volkswagen, RD Saúde, WEG, Grupo Simpar, Latam, Localiza&Co., Grupo Casas Bahia, Energisa, Mosaic Fertilizantes, Coamo, Honda, Usiminas, Samsung, Minerva Foods, Grupo Mateus, Natura, Votorantim Cimentos, Embraer, Sabesp, Syngenta, TIM, C. Vale, Lar, Nestlé, Copel, Basf, Aurora, Coca-Cola Femsa Brasil, GPA, Correios, Fertipar, Grupo CCR, Gol Linhas Aéreas, Azul, Yara Brasil, Klabin, EDP, Comexport, CNH, Volvo do Brasil, PagBank, ECTP, Globo, Iochpe-Maxion, Renault, Grupo Dasa, Petrogal, Grupo Light, Drogarias DPSP, Itaipu, ALE Combustíveis, Lojas Renner, Nexa Resources, Comigo, Volkswagen Caminhões e Ônibus, Cocamar, Atem, Novelis, Grupo Águia Branca, Anglo American Minério de Ferro Brasil, Sotreq, Prio, Whirlpool, CBMM, Tupy, Stone, Camil, Farmácias Pague Menos, Viveo, Larco, Inpasa Agroindustrial, Rumo, Randoncorp, M. Dias Branco, Refinaria da Amazônia, Super Muffato, ENGIE Brasil Energia, Hospital São Paulo, Grupo GPS, Cielo, Celesc, Copa Energia, Hydro Alunorte, Eneva, Sertrading, Cencosud, Rede, ALZ Grãos, Electrolux, Oi, Solar Bebidas, Copacol, AgroGalaxy, Havan, AGCO Brasil, SLC, EloPar, Eurofarma, VLI, TAG, 3tentos, B3, Ecorodovias, Guararapes, Profarma, Cooperalfa, Timbro Trading, IFood, Aegea Saneamento, Bianchini, Grupo Saga, McDonald\'s, Cooperativa Integrada, Grupo Piracanjuba, FS Agrisolutions, Repsol Sinopec Brasil, Grupo NC Farma, BP Bunge, Hypera Pharma, Grupo 3corações, Lavoro, Caramuru Alimentos, Cálamo, Samarco, Coopercitrus, Belagrícola, ZF, MRV&CO, Copasa MG, Vallourec, Gazin, Dexco, NTS, CBA, Grupo Koch, DMA, Agrária, Be8, Bayer, BF Participações, Alcoa, Grupo SBF, Petrobahia, São Martinho, Zaffari & Bourbon, Cibra, C&A, Tereos Açúcar e Energia Brasil, Grupo Atvos, Marcopolo, Porto Sudeste, Bosch, Tenda Atacado, Rodoil, Grupo Fleury, MRS Logística, Cooxupé, Valgroup, Aperam Inox América do Sul, Sanepar, Cooperativa Frísia, Cyrela, ISA CTEEP, Auren Energia, Évora, Grupo Arteris, CTG Brasil, Elfa Medicamentos, Allied Tecnologia, V.tal, Cogna, Potencial, Eldorado Brasil, 3R Petroleum, Rodobens, CEG, Coasul, Pfizer, Kinross, Castrolanda, Grupo Martins, Savegnago, Copasul, Oncoclínicas, Oleoplan, Albras, Citrosuco, Hospital Israelita Albert Einstein, Frimesa, Grupo de Moda Soma, Cotrijal, Heringer, Zemax Log, Oxiteno, Coopavel, Grupo Lincoln Junqueira, Agro Amazônia, Condor Super Center, Yduqs, Pernambucanas, Corsan, FMC, Refit, Embasa, Cocari, AmE, Novartis Biociências, Lojas Cem, Aché, Sanofi Medley, Araguaia, Tigre, Grupo Unipar, Sylvamo, Serasa Experian, Grupo Ambipar, Arezzo, Tambasa, Olfar, Comerc Energia, BRK Ambiental, EISA, Roche, Elcano, Totvs, Grupo Aço Cearense, Dimed, Grupo Lider, Delly\'s Food Service, Usina Coruripe, Coca-Cola Andina Brasil, Copercana, Copercampos, SAP, Mahle Metal Leve, Sonda Supermercados, ICL, Record, Innova, Smartfit, CMOC Brasil, Líder, Adama, Alvoar, Intelbras, Calçados Beira Rio, Grupo Cereal, TT Work, SMR Participações, OEC, Ihara, State Grid Brazil Holding, Fazenda São Benedito, Rhodia Brasil, Grupo Dass, Embrapa, Tenarisconfab, Gestamp Brasil, American Tower do Brasil, Unidas, União Química, CSD, Dia Brasil, Positivo, Sumitomo Chemical, Capal, Tradener, Zamp, Supermercado Bahamas, Agrofel, Esho, Alpargatas, Anima, Atakarejo, FUABC, Bahiagás, Gasmig, Drogaria Araujo, Fast Shop, Elétron Energy, Columbia Trading, Getnet, InterCement Brasil, Verzani e Sandrini, Grupo Multi, Zilor, Saneago, Grupo Adecoagro, Manserv, GTFoods, Delta Sucroenergia, AES Brasil, Cotrisal, Grupo Bemol, Cigás, Arroz Brejeiro, Jirau Energia, Supermercados ABC, Grupo Alubar, Taesa, Copérdia, Facchini, Cenibra, Alupar, Termomecânica, Fuga, Ajinomoto do Brasil, Hospital Sírio-Libanês, Karoon Energy, Jacto, J. Macêdo, Serpro, Cedae, Colombo Agroindústria, Supermercado Angeloni, Petz, TCL Semp, CEG Rio, Petrovia, Giassi, Bem Brasil Alimentos, South32 Minerals, Frigol, Vigor, Mexichem Brasil, Pedra Agroindustrial, Super Mercado Zona Sul, Serena Energia, Potencial Biodiesel, Acciona Construcción, São Salvador Alimentos, Stihl, Grupo Montesanto Tavares, Even, LM, CJ Selecta, Cisa Trading, Grupo Comporte, Coagril, Invepar, Construtora Tenda, Berneck, Rissul, Cury, Afya, TecBan, Arcelormittal Gonvarri, Vibra Agroindustrial, Copagril, Abbott, Aeris Energy, Compesa, Vulcabras, Cagece, São Camilo, PetroRecôncavo, Heinz, Logicalis Latin America, Buffon, Fortbras, Algar Telecom, Atlas Schindler, Anglo American Níquel Brasil, Comlurb, Grupo Allos, Sapore, Mataboi Alimentos, Evonik, Eucatex, EDF Norte Fluminense, Vipal Borrachas, Oba Hortifruti, Alpek Polyester, DPaschoal, Rede 7, Libbs, Cobasi, Grupo Magnesita, Cocal, Cerradinho, Rede Santa Catarina, Metal Group, Anglogold Ashanti, G10 Transportes, Drogarias Nissei, Arauco, CMAA, Plena Alimentos, Coop, Atento Brasil, Vicunha Têxtil, Toyo Setal, Ipiranga Agroindustrial, Distribuidora Rio Branco de Petróleo, Cejam, Santher, Ferbasa, Grendene, Wilson Sons, Kalunga, Unifertil, Grupo Melo Cordeiro, Lojas Quero Quero, WLM, Mili, Belenus, Holambra, Direcional Engenharia, Cantu Store, Usina Santa Isabel, Iguá, Log-In, Petronas, Distribuidora Automotiva, Zoetis, Metrô, Cotripal, Merck, Caesb, Coopertradição, Cruzeiro do Sul Educacional, Friato, Flora, Villares Metals, Distribuidora Santa Lúcia, Kora Saúde, Picpay, Valid, Grupo Cimed, CPTM, Via Holding, Frisa, Baterias Moura, Grupo Stefanini, IMC, Solví, Rima, Prodesp, Arco Brasil, Portobello, Grupo Plaenge, Rede Mater Dei, Vivara, GJA Indústrias, Mineração Maracá, GEES, BP A Beneficência Portuguesa de São Paulo, Grupo Bazan, Santos Brasil, Grupo GDM, Coopermota, NCPAR, Binatural, Dufrio, Josapar, SC Gás, Galp Energia, Agribrasil, Grupo CVLB, FQM, AMG Brasil, Aura Minerals Inc., Boa Safra, Matrix Energia Participações, Plano&Plano, Scheffer, Hydro Paragominas, CBC, Tuper, Esfera, Cocatrel, Multiplan Empreendimentos, Ruff CJ, OCS Investimentos, Prati-Donaduzzi, Hospital Care, Romagnole, Grupo Salta, Metalfrio, Vitru Educação, Conasa, SPIC Brasil, Nortox, Deten, Viterra Bioenergia, Maqcampo, Barra Mansa Alimentos, Grupo Marquise, ES Gás, Camda, Pamplona, Nitro Química, Schulz, Veracel, Lojas Colombo, Hidrovias do Brasil, Mason Holdings, Grupo CBO, Grupo Águas do Brasil, Dataprev, Jalles Machado, HCPA, Pastifício Selmi, AeC Contact Center, Panatlântica, Granja Faria, Constellation, Braspress, Bristol-Myers Squibb, Prosegur Brasil, Festval, Alibem, Hospital Conceição, Andrade Gutierrez Engenharia, Ser Educacional, Marilan, China Brasil Tabacos, Grupo Carbel, Bamaq, Zaraplast, Casa dos Ventos, Aethra, Construcap, Taurus Armas, Cooperativa Agroindustrial Bom Jesus, Grupo Balbo, Bivi, Kingspan Isoeste, Tivit, Qualicorp, Dexxos Par, OMNI Táxi Aéreo, Grupo Olho D\'Água, Química Anastacio, AVB Aço Verde do Brasil, Clealco, Grupo Madero, Usina Cerradão, Tristão, A. C. Camargo Cancer Center, Usina Batatais, FGV, Solfarma, Pesa, Casa do Adubo, McLarty Maia, Total Express, InBetta, Pluxee, Ourofino Agrociência, Krona Participações, Maqnelson Agrícola, Grupo Marisa, OceanPact, Unicafé, Usina Nardini, Transpanorama Transportes, Casan, Bartofil Distribuidora, Melhoramentos Norte do Paraná, Grupo Alloha Fibra, Lorenzetti, Nokia Solutions, BBM, Grupo Almaviva, Mineração Caraíba, BR Autoparts, Irani, JHSF, Origem Energia, BTP, Tegma, Trombini, Ocyan, Brasal, Suécia Veículos, Autoridade Portuária de Santos, Ciplan, Laboratório Teuto, Usina Santa Adélia, Cirion, CI&T, Coonagro, Correcta, Kepler Weber, Uisa, Cocapec, Sandvik Holding, Guanabara Diesel, Ascenty, Eletrozema, Lupo, Guararapes Painéis, Scherer, Atmosfera, Grupo Eurobike, Infraero, Auriverde, CVC Corp, Prumo, MGS, Agroterenas, Nadir, Bombril, Cotriel, Elekeiroz, Diálogo Engenharia, BBTS, LPA, Alpek Polyester Brasil, São Carlos, Copergás, PPE, Petrocoque, Furukawa, Cervejaria Cidade Imperial, Penha, Ticket, Descarbonize Soluções, Enauta, ECB, IBQ Indústrias Químicas, Eixo SP Concessionária de Rodovias, Cagepa, Mills, Primato, Blau Farmacêutica, Mackenzie, Casa da Moeda do Brasil, Nuclea, Armac, FTD, Ferro Mineração, Construtora Barbosa Mello, Estapar, Administradora Geral de Estacionamentos, Patrimar, Imec, Expresso Nepomuceno, Dafiti, Grupo Enesa, Expocaccer, Leite Jussara, Brasilagro, Adami, Hospital Moinhos de Vento, Moinhos Cruzeiro do Sul, Daiichi Sankyo Brasil, A. Yoshii Engenharia, Usina Santa Fé, Trinity, Grupo Granado, Segurpro Vigilância, Kroma Energia, Grupo Diniz, EGTC Infra, Teleperformance, Passarelli Engenharia e Construção, Progen, Camnpal, Arcom, Mor, Transporte Rodoviário 1500, Jadlog, Morro do Ipê, Nórdica Veículos, Hospital Alemão Oswaldo Cruz, Bemobi, Associação das Pioneiras Sociais, Grupo Maringá, Distribuidora Fartura, U&M Mineração e Construção, Simpress, LWSA, AB Concessões, Usina Caeté, Cimento Itambé, PMZ Distribuidora, Mineração Taboca, Gomes da Costa, Helbor, Telemont, Fagundes Mineração, Tegra, São Braz, Dori Alimentos, Sanasa, Apsen Farmacêutica, Ecourbis, Rota das Bandeiras, Moinho Cearense, Norsul, Cotricampo, Lunelli Participações, RIP Serviços Industriais, Grupo Sponchiado Veículos, TCP, Protege, Cacique, Brisanet, Cotrisul, Romi, Álya, Estrela, Birla Carbon, Orquídea Alimentos, Coagru, Lwart, Fosnor, Soufer Industrial, Usina Lins, PUC PR, Melnick, Coopercarga, CGNBE, Alliança Saúde, AENA Nordeste do Brasil, Hmobi Participações, Grupo Cesari, Pacaembu Construtora, Ri Happy, Cesan, CET, Sika, Copobras, Neodent, Cotrisel, Leo Madeiras, Iguatemi, Rede Sol Fuel, Portonave, Capebe, Moura Dubeux, Brasif, SBT, Cassol, Avivar Alimentos, Grupo Sabin, Brasilgráfica, B. Braun, Supermercados Avenida, Eternit, HCor, Baumgart, Wiz Co, Santa Joana, Geopar Geosol, Cedro Têxtil, Veste, Gafisa, Grupo Marche, Grupo HTB, CBF, Ápia, Dox Brasil, Oxicur Participações, EZTEC, Grupo Gondaski, Tok & Stok, Transportes Imediato, Moinhos Anaconda, Ticket Log, Belem Bioenergia Brasil, Infracommerce, Agrícola Famosa, Hitss do Brasil, Coprodia, Povoação Energia, Concremat, Inspira Mudança, Brasdiesel, Ferroport, Iaco Agrícola, Milplan, Trisul, Priner, Minasligas, Asperbras, Orígeo, Providência, Multilog, Triunfo, FG Empreendimentos, INB, Grupo MIP, You Inc., Consag Engenharia, Helibras, Usina São Manoel, Coplana, Grupo Embramaco, Commit, Espaçolaser, Construtora Castilho, Líder Aviação, USJ Açúcar e Álcool, Argo Energia, XP Energia, Minasmáquinas, Grupo Kallas, Da Mata Açúcar e Álcool, Bauminas, Privalia, Padovas, Gás Natural São Paulo Sul, Grupo Ferrari, Caern, Desktop, Sanofi Consumer Healthcare, Montecitrus, Compagás, Sisnergy, Grupo Fragnani, First, Engepack São Paulo, Paranapanema, Capgemini, ONE Desenvolvimento Imobiliário, Bevap Participações, Neon Pagamentos, Brasilata, Racional Engenharia, Grupo Ferrolene, Novo Mundo, Lubrizol, Liasa, Emccamp Residencial, Leveros, Servopa, Europ Assistance Brasil, Rivelli Alimentos, Plascar, Hydro Extrusion Brasil, Editora Globo, Sker, Ourofino Saúde Animal, Brametal, Todeschini, Eletromídia, Soares Penido, Tramontina Multi, Supera Farma, FGR Incorporações, Grupo Belcar, Viena Siderúrgica, Vilma Alimentos, Kuhn do Brasil, Mangels, Morlan, Mitre Realty, PUC Minas, Ibema, Grupo Vero, SG Comércio Exterior, PUC Campinas, Supra, Oceânica, Lavvi Incorporadora, Patriani Empreendimentos Imobiliários, AESC, WDC Networks, Aterpa, Entrevias, Rivesa, Viracopos Aeroportos Brasil, Electra, Painco, Sapura Navegação, Mercadomóveis, Cia. Muller de Bebidas, Sansuy, Dedini, Unifique, Gi Group, Grand Point, CCS, Grupo Açotubo, AB Comércio de Insumos, Serra Grande, South Service, Adata, Esmaltec, Greenbrier Maxion, Agis Construção, Algar TI, Bionergética Aroeira, BSP Empreendimentos Imobiliários, Grupo Safira, Grupo BBF, Vidroporto Embalagens, NAV Brasil, Faber-Castell, Pettenati, CCA, Mundial, Senior Sistemas, Cap TC Torres e Participações, Paschoalotto, Tempo USS, Zup, Sipcam-Nichino, Boa Vista, Saint-Gobain Canalização, Delga, Construtora JL, PortosRio, Haganá, VR, Zenvia, PUC Rio, EQS Engenharia, KSB, Grupo Schio, GPE, Clínicas do Brasil, Brasbunker, GS Inima Brasil, Bandeirantes Deicmar, Coopama, Usina São Domingos, FBS Construção Civil e Pavimentação, Polo Films, CBL, Saudali, Koppert, Conservas Oderich, Carmelo Fior, Deso, Grupo Orizon, Rio Quente Empreendimentos, Sascar, Asa Branca, Embraport, Toledo do Brasil, Basequimica, Kicaldo, Grupo Wine, Baldo, RJA, Vale do Verdão, Geolab, Rassini NHK Automotive, Cinpal, NSTech, UCB, Brasil TecPar, Vittia, Infineum Brasil, Brz Empreendimentos, Supermercados Joanin, Unilider, Ocrim, Beneficência Nipo-Brasileira de São Paulo, Sequoia Transportes, JCPM Shopping Centers, Sanesul, Lojas Koerich, Santa Casa de Misericórdia de Belo Horizonte, Grupo Nortis, Leitesol, SAAM, CCAB Agro\n\nATENCAO: Bancos tradicionais como Itau, Bradesco, Banco do Brasil, Caixa, Santander, XP Inc., BTG Pactual, Nubank, Inter, C6, Safra, Modal, Warren, Rico, Guide, Ativa\nTAMBEM sao referencias validas mesmo nao constando na lista acima (setor financeiro e excluido do Valor 1000 por criterio editorial).\n\n=== REGRAS DE CLASSIFICACAO ===\n\nPERFIL A: Universidade 4-5 estrelas + curso Adm/Eco/Eng/Cont + empresa Valor 1000 ou banco de grande porte + salario acima de R$10.000 (quando informado)\nPERFIL B - OPCAO 1: Universidade 3 estrelas + curso Adm/Eco/Eng/Cont + empresa Valor 1000 ou banco\nPERFIL B - OPCAO 2: Universidade 4-5 estrelas + qualquer curso + empresa Valor 1000 ou banco\nPERFIL C: Universidade 3 estrelas + qualquer graduacao + empresa Valor 1000 ou banco\nPERFIL D: Universidade abaixo de 3 estrelas, ou empresa nao aderente, ou pouca experiencia, ou baixa aderencia comercial\n\nREGRA IMPORTANTE: Nunca elimine por criterio nao identificado. Registre como \'Informacao nao identificada no curriculo\'.\nForte experiencia comercial pode compensar criterios academicos menores - destaque isso na justificativa.\n\n=== RETORNE APENAS ESTE JSON ===\n{\"candidateName\":\"\",\"candidateEmail\":\"\",\"xpFuture\":{\"perfil\":\"A\",\"aderencia\":85,\"justificativa\":\"...\",\"universidade\":\"...\",\"estrelas\":\"5\",\"curso\":\"...\",\"cursoPrioritario\":true,\"empresaValor1000\":true,\"empresaAtual\":\"...\",\"salarioAcima10k\":null,\"pontosFortes\":[\"...\",\"...\",\"...\"],\"pontosAtencao\":[\"...\",\"...\",\"...\"],\"competencias\":[\"...\",\"...\",\"...\"],\"perguntasEntrevista\":[\"...\",\"...\",\"...\",\"...\",\"...\"]}}\n\nDESCRICAO DA VAGA:'+(job.descr||job.desc||'');
-  }
   return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência em avaliação de perfis executivos.\n'
     +'Analise o currículo do candidato com profundidade consultiva e retorne APENAS JSON válido, sem markdown.\n\n'
     +'VAGA: '+job.title+' | '+(job.dept||'')+'\n'+job.desc+'\n\n'
@@ -3753,27 +3618,8 @@ function buildPrompt(job){
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
     +'- executiveSummary.reasoning: justificativa clara da recomendação em 2-3 frases\n'
     +'- comparison.matched: habilidades e experiências CONFIRMADAS no currículo (array de strings)\n'
-    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)'
-    +(job.xpFuture ? ('\\n\\n=== CLASSIFICACAO XP FUTURE ===\\n'
-    +'Esta vaga e do Programa de Formacao Comercial XP Future. Alem da analise padrao, inclua obrigatoriamente a classificacao estrutural do candidato.\\n\\n'
-    +'CRITERIOS (INDEPENDENTE do score de aderencia):\\n'
-    +'Perfil A: curso Adm/Eco/Eng/Cont com 4 ou 5 estrelas no Guia Estadao + empresa Valor 1000 + salario atual acima de R$10.000\\n'
-    +'Perfil B: curso Adm/Eco/Eng/Cont com 3 estrelas + empresa Valor 1000 | OU 4-5 estrelas em qualquer curso + empresa Valor 1000\\n'
-    +'Perfil C: qualquer curso com 3 estrelas + empresa Valor 1000\\n'
-    +'Perfil D: faculdade abaixo de 3 estrelas ou nao listada, OU empresa fora do Valor 1000\\n\\n'
-    +'FACULDADES 5 ESTRELAS em Adm: UFC,UFG,Unifei,UFLA,UFV,UFMS,UFPR,UniAndrade,ESPM,FGV,Ibmec,Unisinos,Udesc,UFSC,Unesp,Unicamp,USP,FIA,Mackenzie,UFSCar\\n'
-    +'FACULDADES 4 ESTRELAS em Adm: Fipecafi,PUC Minas,PUCPR,UCDB,UCS,UFMA,UFPI,Uneb,Unicesumar,UniEvangelica,Unilago,Unipam,Unipar,Unisinos,Univali,Unoeste,UP,UTP,Estacio,Iesb,FAM-SP\\n'
-    +'FACULDADES 5 ESTRELAS em Contabeis: Unifor,UFV,UFCG,UFPR,UFSC,Unimar,Unifesp,USP\\n'
-    +'FACULDADES 4 ESTRELAS em Contabeis: Fipecafi,PUC Goias,PUC Minas,PUCPR,Senac SP,Trevisan,UCS,UFF,UFRJ,Unisinos,Univali,UnP\\n'
-    +'FACULDADES 5 ESTRELAS em Engenharia: ITA,USP,Unicamp,UFSCar,UFRJ,UFRGS,UFSM,Unesp,Unifei,UFPR,UTFPR,UFSC,UFLA,UFU,UFV,UFMS,UFPA,UFPB,UFG,FEI,UFJF\\n'
-    +'FACULDADES 5 ESTRELAS em Economia: USP FEA,FGV EPGE/EESP,Unicamp\\n'
-    +'FACULDADES 4 ESTRELAS em Economia: FECAP,PUC-Rio,UnB,UFMG,UFPE,UFC\\n\\n'
-    +'VALOR 1000 (2024) - empresas da lista: Petrobras, JBS, Raízen, Vale, Vibra, Cosan, Marfrig, Ultrapar, Cargill, Grupo Carrefour Brasil, Bunge Alimentos, Ambev, Stellantis, Cofco International, Braskem, ArcelorMittal, Gerdau, Assaí, Copersucar, BRF, Shell, Telefônica Brasil, Rede D\'Or, Claro Participações, CSN, Amaggi, Neoenergia, Acelen, Louis Dreyfus, Grupo Enel, Equatorial Energia, Suzano, CPFL Energia, Mercado Livre, Eletrobras, Cemig, Magazine Luiza, Volkswagen, RD Saúde, WEG, Grupo Simpar, Latam, Localiza&Co., Grupo Casas Bahia, Energisa, Mosaic Fertilizantes, Coamo, Honda, Usiminas, Samsung, Minerva Foods, Grupo Mateus, Natura, Votorantim Cimentos, Embraer, Sabesp, Syngenta, TIM, C. Vale, Lar, Nestlé, Copel, Basf, Aurora, Coca-Cola Femsa Brasil, GPA, Correios, Fertipar, Grupo CCR, Gol Linhas Aéreas, Azul, Yara Brasil, Klabin, EDP, Comexport, CNH, Volvo do Brasil, PagBank, ECTP, Globo, Iochpe-Maxion, Renault, Grupo Dasa, Petrogal, Grupo Light, Drogarias DPSP, Itaipu, ALE Combustíveis, Lojas Renner, Nexa Resources, Comigo, Volkswagen Caminhões e Ônibus, Cocamar, Atem, Novelis, Grupo Águia Branca, Anglo American Minério de Ferro Brasil, Sotreq, Prio, Whirlpool, CBMM, Tupy, Stone, Camil, Farmácias Pague Menos, Viveo, Larco, Inpasa Agroindustrial, Rumo, Randoncorp, M. Dias Branco, Refinaria da Amazônia, Super Muffato, ENGIE Brasil Energia, Hospital São Paulo, Grupo GPS, Cielo, Celesc, Copa Energia, Hydro Alunorte, Eneva, Sertrading, Cencosud, Rede, ALZ Grãos, Electrolux, Oi, Solar Bebidas, Copacol, AgroGalaxy, Havan, AGCO Brasil, SLC, EloPar, Eurofarma, VLI, TAG, 3tentos, B3, Ecorodovias, Guararapes, Profarma, Cooperalfa, Timbro Trading, IFood, Aegea Saneamento, Bianchini, Grupo Saga, McDonald\'s, Cooperativa Integrada, Grupo Piracanjuba, FS Agrisolutions, Repsol Sinopec Brasil, Grupo NC Farma, BP Bunge, Hypera Pharma, Grupo 3corações, Lavoro, Caramuru Alimentos, Cálamo, Samarco, Coopercitrus, Belagrícola, ZF, MRV&CO, Copasa MG, Vallourec, Gazin, Dexco, NTS, CBA, Grupo Koch, DMA, Agrária, Be8, Bayer, BF Participações, Alcoa, Grupo SBF, Petrobahia, São Martinho, Zaffari & Bourbon, Cibra, C&A, Tereos Açúcar e Energia Brasil, Grupo Atvos, Marcopolo, Porto Sudeste, Bosch, Tenda Atacado, Rodoil, Grupo Fleury, MRS Logística, Cooxupé, Valgroup, Aperam Inox América do Sul, Sanepar, Cooperativa Frísia, Cyrela, ISA CTEEP, Auren Energia, Évora, Grupo Arteris, CTG Brasil, Elfa Medicamentos, Allied Tecnologia, V.tal, Cogna, Potencial, Eldorado Brasil, 3R Petroleum, Rodobens, CEG, Coasul, Pfizer, Kinross, Castrolanda, Grupo Martins, Savegnago, Copasul, Oncoclínicas, Oleoplan, Albras, Citrosuco, Hospital Israelita Albert Einstein, Frimesa, Grupo de Moda Soma, Cotrijal, Heringer, Zemax Log, Oxiteno, Coopavel, Grupo Lincoln Junqueira, Agro Amazônia, Condor Super Center, Yduqs, Pernambucanas, Corsan, FMC, Refit, Embasa, Cocari, AmE, Novartis Biociências, Lojas Cem, Aché, Sanofi Medley, Araguaia, Tigre, Grupo Unipar, Sylvamo, Serasa Experian, Grupo Ambipar, Arezzo, Tambasa, Olfar, Comerc Energia, BRK Ambiental, EISA, Roche, Elcano, Totvs, Grupo Aço Cearense, Dimed, Grupo Lider, Delly\'s Food Service, Usina Coruripe, Coca-Cola Andina Brasil, Copercana, Copercampos, SAP, Mahle Metal Leve, Sonda Supermercados, ICL, Record, Innova, Smartfit, CMOC Brasil, Líder, Adama, Alvoar, Intelbras, Calçados Beira Rio, Grupo Cereal, TT Work, SMR Participações, OEC, Ihara, State Grid Brazil Holding, Fazenda São Benedito, Rhodia Brasil, Grupo Dass, Embrapa, Tenarisconfab, Gestamp Brasil, American Tower do Brasil, Unidas, União Química, CSD, Dia Brasil, Positivo, Sumitomo Chemical, Capal, Tradener, Zamp, Supermercado Bahamas, Agrofel, Esho, Alpargatas, Anima, Atakarejo, FUABC, Bahiagás, Gasmig, Drogaria Araujo, Fast Shop, Elétron Energy, Columbia Trading, Getnet, InterCement Brasil, Verzani e Sandrini, Grupo Multi, Zilor, Saneago, Grupo Adecoagro, Manserv, GTFoods, Delta Sucroenergia, AES Brasil, Cotrisal, Grupo Bemol, Cigás, Arroz Brejeiro, Jirau Energia, Supermercados ABC, Grupo Alubar, Taesa, Copérdia, Facchini, Cenibra, Alupar, Termomecânica, Fuga, Ajinomoto do Brasil, Hospital Sírio-Libanês, Karoon Energy, Jacto, J. Macêdo, Serpro, Cedae, Colombo Agroindústria, Supermercado Angeloni, Petz, TCL Semp, CEG Rio, Petrovia, Giassi, Bem Brasil Alimentos, South32 Minerals, Frigol, Vigor, Mexichem Brasil, Pedra Agroindustrial, Super Mercado Zona Sul, Serena Energia, Potencial Biodiesel, Acciona Construcción, São Salvador Alimentos, Stihl, Grupo Montesanto Tavares, Even, LM, CJ Selecta, Cisa Trading, Grupo Comporte, Coagril, Invepar, Construtora Tenda, Berneck, Rissul, Cury, Afya, TecBan, Arcelormittal Gonvarri, Vibra Agroindustrial, Copagril, Abbott, Aeris Energy, Compesa, Vulcabras, Cagece, São Camilo, PetroRecôncavo, Heinz, Logicalis Latin America, Buffon, Fortbras, Algar Telecom, Atlas Schindler, Anglo American Níquel Brasil, Comlurb, Grupo Allos, Sapore, Mataboi Alimentos, Evonik, Eucatex, EDF Norte Fluminense, Vipal Borrachas, Oba Hortifruti, Alpek Polyester, DPaschoal, Rede 7, Libbs, Cobasi, Grupo Magnesita, Cocal, Cerradinho, Rede Santa Catarina, Metal Group, Anglogold Ashanti, G10 Transportes, Drogarias Nissei, Arauco, CMAA, Plena Alimentos, Coop, Atento Brasil, Vicunha Têxtil, Toyo Setal, Ipiranga Agroindustrial, Distribuidora Rio Branco de Petróleo, Cejam, Santher, Ferbasa, Grendene, Wilson Sons, Kalunga, Unifertil, Grupo Melo Cordeiro, Lojas Quero Quero, WLM, Mili, Belenus, Holambra, Direcional Engenharia, Cantu Store, Usina Santa Isabel, Iguá, Log-In, Petronas, Distribuidora Automotiva, Zoetis, Metrô, Cotripal, Merck, Caesb, Coopertradição, Cruzeiro do Sul Educacional, Friato, Flora, Villares Metals, Distribuidora Santa Lúcia, Kora Saúde, Picpay, Valid, Grupo Cimed, CPTM, Via Holding, Frisa, Baterias Moura, Grupo Stefanini, IMC, Solví, Rima, Prodesp, Arco Brasil, Portobello, Grupo Plaenge, Rede Mater Dei, Vivara, GJA Indústrias, Mineração Maracá, GEES, BP A Beneficência Portuguesa de São Paulo, Grupo Bazan, Santos Brasil, Grupo GDM, Coopermota, NCPAR, Binatural, Dufrio, Josapar, SC Gás, Galp Energia, Agribrasil, Grupo CVLB, FQM, AMG Brasil, Aura Minerals Inc., Boa Safra, Matrix Energia Participações, Plano&Plano, Scheffer, Hydro Paragominas, CBC, Tuper, Esfera, Cocatrel, Multiplan Empreendimentos, Ruff CJ, OCS Investimentos, Prati-Donaduzzi, Hospital Care, Romagnole, Grupo Salta, Metalfrio, Vitru Educação, Conasa, SPIC Brasil, Nortox, Deten, Viterra Bioenergia, Maqcampo, Barra Mansa Alimentos, Grupo Marquise, ES Gás, Camda, Pamplona, Nitro Química, Schulz, Veracel, Lojas Colombo, Hidrovias do Brasil, Mason Holdings, Grupo CBO, Grupo Águas do Brasil, Dataprev, Jalles Machado, HCPA, Pastifício Selmi, AeC Contact Center, Panatlântica, Granja Faria, Constellation, Braspress, Bristol-Myers Squibb, Prosegur Brasil, Festval, Alibem, Hospital Conceição, Andrade Gutierrez Engenharia, Ser Educacional, Marilan, China Brasil Tabacos, Grupo Carbel, Bamaq, Zaraplast, Casa dos Ventos, Aethra, Construcap, Taurus Armas, Cooperativa Agroindustrial Bom Jesus, Grupo Balbo, Bivi, Kingspan Isoeste, Tivit, Qualicorp, Dexxos Par, OMNI Táxi Aéreo, Grupo Olho D\'Água, Química Anastacio, AVB Aço Verde do Brasil, Clealco, Grupo Madero, Usina Cerradão, Tristão, A. C. Camargo Cancer Center, Usina Batatais, FGV, Solfarma, Pesa, Casa do Adubo, McLarty Maia, Total Express, InBetta, Pluxee, Ourofino Agrociência, Krona Participações, Maqnelson Agrícola, Grupo Marisa, OceanPact, Unicafé, Usina Nardini, Transpanorama Transportes, Casan, Bartofil Distribuidora, Melhoramentos Norte do Paraná, Grupo Alloha Fibra, Lorenzetti, Nokia Solutions, BBM, Grupo Almaviva, Mineração Caraíba, BR Autoparts, Irani, JHSF, Origem Energia, BTP, Tegma, Trombini, Ocyan, Brasal, Suécia Veículos, Autoridade Portuária de Santos, Ciplan, Laboratório Teuto, Usina Santa Adélia, Cirion, CI&T, Coonagro, Correcta, Kepler Weber, Uisa, Cocapec, Sandvik Holding, Guanabara Diesel, Ascenty, Eletrozema, Lupo, Guararapes Painéis, Scherer, Atmosfera, Grupo Eurobike, Infraero, Auriverde, CVC Corp, Prumo, MGS, Agroterenas, Nadir, Bombril, Cotriel, Elekeiroz, Diálogo Engenharia, BBTS, LPA, Alpek Polyester Brasil, São Carlos, Copergás, PPE, Petrocoque, Furukawa, Cervejaria Cidade Imperial, Penha, Ticket, Descarbonize Soluções, Enauta, ECB, IBQ Indústrias Químicas, Eixo SP Concessionária de Rodovias, Cagepa, Mills, Primato, Blau Farmacêutica, Mackenzie, Casa da Moeda do Brasil, Nuclea, Armac, FTD, Ferro Mineração, Construtora Barbosa Mello, Estapar, Administradora Geral de Estacionamentos, Patrimar, Imec, Expresso Nepomuceno, Dafiti, Grupo Enesa, Expocaccer, Leite Jussara, Brasilagro, Adami, Hospital Moinhos de Vento, Moinhos Cruzeiro do Sul, Daiichi Sankyo Brasil, A. Yoshii Engenharia, Usina Santa Fé, Trinity, Grupo Granado, Segurpro Vigilância, Kroma Energia, Grupo Diniz, EGTC Infra, Teleperformance, Passarelli Engenharia e Construção, Progen, Camnpal, Arcom, Mor, Transporte Rodoviário 1500, Jadlog, Morro do Ipê, Nórdica Veículos, Hospital Alemão Oswaldo Cruz, Bemobi, Associação das Pioneiras Sociais, Grupo Maringá, Distribuidora Fartura, U&M Mineração e Construção, Simpress, LWSA, AB Concessões, Usina Caeté, Cimento Itambé, PMZ Distribuidora, Mineração Taboca, Gomes da Costa, Helbor, Telemont, Fagundes Mineração, Tegra, São Braz, Dori Alimentos, Sanasa, Apsen Farmacêutica, Ecourbis, Rota das Bandeiras, Moinho Cearense, Norsul, Cotricampo, Lunelli Participações, RIP Serviços Industriais, Grupo Sponchiado Veículos, TCP, Protege, Cacique, Brisanet, Cotrisul, Romi, Álya, Estrela, Birla Carbon, Orquídea Alimentos, Coagru, Lwart, Fosnor, Soufer Industrial, Usina Lins, PUC PR, Melnick, Coopercarga, CGNBE, Alliança Saúde, AENA Nordeste do Brasil, Hmobi Participações, Grupo Cesari, Pacaembu Construtora, Ri Happy, Cesan, CET, Sika, Copobras, Neodent, Cotrisel, Leo Madeiras, Iguatemi, Rede Sol Fuel, Portonave, Capebe, Moura Dubeux, Brasif, SBT, Cassol, Avivar Alimentos, Grupo Sabin, Brasilgráfica, B. Braun, Supermercados Avenida, Eternit, HCor, Baumgart, Wiz Co, Santa Joana, Geopar Geosol, Cedro Têxtil, Veste, Gafisa, Grupo Marche, Grupo HTB, CBF, Ápia, Dox Brasil, Oxicur Participações, EZTEC, Grupo Gondaski, Tok & Stok, Transportes Imediato, Moinhos Anaconda, Ticket Log, Belem Bioenergia Brasil, Infracommerce, Agrícola Famosa, Hitss do Brasil, Coprodia, Povoação Energia, Concremat, Inspira Mudança, Brasdiesel, Ferroport, Iaco Agrícola, Milplan, Trisul, Priner, Minasligas, Asperbras, Orígeo, Providência, Multilog, Triunfo, FG Empreendimentos, INB, Grupo MIP, You Inc., Consag Engenharia, Helibras, Usina São Manoel, Coplana, Grupo Embramaco, Commit, Espaçolaser, Construtora Castilho, Líder Aviação, USJ Açúcar e Álcool, Argo Energia, XP Energia, Minasmáquinas, Grupo Kallas, Da Mata Açúcar e Álcool, Bauminas, Privalia, Padovas, Gás Natural São Paulo Sul, Grupo Ferrari, Caern, Desktop, Sanofi Consumer Healthcare, Montecitrus, Compagás, Sisnergy, Grupo Fragnani, First, Engepack São Paulo, Paranapanema, Capgemini, ONE Desenvolvimento Imobiliário, Bevap Participações, Neon Pagamentos, Brasilata, Racional Engenharia, Grupo Ferrolene, Novo Mundo, Lubrizol, Liasa, Emccamp Residencial, Leveros, Servopa, Europ Assistance Brasil, Rivelli Alimentos, Plascar, Hydro Extrusion Brasil, Editora Globo, Sker, Ourofino Saúde Animal, Brametal, Todeschini, Eletromídia, Soares Penido, Tramontina Multi, Supera Farma, FGR Incorporações, Grupo Belcar, Viena Siderúrgica, Vilma Alimentos, Kuhn do Brasil, Mangels, Morlan, Mitre Realty, PUC Minas, Ibema, Grupo Vero, SG Comércio Exterior, PUC Campinas, Supra, Oceânica, Lavvi Incorporadora, Patriani Empreendimentos Imobiliários, AESC, WDC Networks, Aterpa, Entrevias, Rivesa, Viracopos Aeroportos Brasil, Electra, Painco, Sapura Navegação, Mercadomóveis, Cia. Muller de Bebidas, Sansuy, Dedini, Unifique, Gi Group, Grand Point, CCS, Grupo Açotubo, AB Comércio de Insumos, Serra Grande, South Service, Adata, Esmaltec, Greenbrier Maxion, Agis Construção, Algar TI, Bionergética Aroeira, BSP Empreendimentos Imobiliários, Grupo Safira, Grupo BBF, Vidroporto Embalagens, NAV Brasil, Faber-Castell, Pettenati, CCA, Mundial, Senior Sistemas, Cap TC Torres e Participações, Paschoalotto, Tempo USS, Zup, Sipcam-Nichino, Boa Vista, Saint-Gobain Canalização, Delga, Construtora JL, PortosRio, Haganá, VR, Zenvia, PUC Rio, EQS Engenharia, KSB, Grupo Schio, GPE, Clínicas do Brasil, Brasbunker, GS Inima Brasil, Bandeirantes Deicmar, Coopama, Usina São Domingos, FBS Construção Civil e Pavimentação, Polo Films, CBL, Saudali, Koppert, Conservas Oderich, Carmelo Fior, Deso, Grupo Orizon, Rio Quente Empreendimentos, Sascar, Asa Branca, Embraport, Toledo do Brasil, Basequimica, Kicaldo, Grupo Wine, Baldo, RJA, Vale do Verdão, Geolab, Rassini NHK Automotive, Cinpal, NSTech, UCB, Brasil TecPar, Vittia, Infineum Brasil, Brz Empreendimentos, Supermercados Joanin, Unilider, Ocrim, Beneficência Nipo-Brasileira de São Paulo, Sequoia Transportes, JCPM Shopping Centers, Sanesul, Lojas Koerich, Santa Casa de Misericórdia de Belo Horizonte, Grupo Nortis, Leitesol, SAAM, CCAB Agro\\n\\n'
-    +'ATENCAO: Bancos tradicionais (Itau,Bradesco,Banco do Brasil,Caixa,Santander,XP Inc.,BTG Pactual,Nubank,Inter,etc) NAO constam do Valor 1000. Se o candidato vier de banco, marque empresaValor1000=false.\\n\\n'
-    +'Adicione ao JSON retornado o campo: "xpFuture":{"perfil":"A","justificativa":"explicacao 1-2 frases","universidade":"nome","estrelas":"5","curso":"nome","empresaValor1000":true,"empresaAtual":"nome","salarioAcima10k":null}\\n'
-    +'Onde estrelas pode ser: 5,4,3,abaixo de 3,nao identificada | salarioAcima10k: true,false ou null') : '');
+    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
-
 
 function buildInterviewPrompt(candidate,transcript){
   var ctx = '';
@@ -4153,22 +3999,35 @@ createApp({
     var transcripts=ref(lsGet('recruitarh_transcripts',{}));
     var summaries=ref(lsGet('recruitarh_summaries',{}));
     var intDates=ref(lsGet('recruitarh_intdates',{}));
-    var apiKey=ref(lsGet('recruitarh_apikey','')||DEFAULT_API_KEY);
+    var apiKey=ref(DEFAULT_API_KEY||lsGet('recruitarh_apikey',''));
     var showApiModal=ref(!apiKey.value),newApiKey=ref('');
     var showJobModal=ref(false),editingJob=ref(null);
-    var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today(),xpFuture:false});
-    var ejf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:'',closedDate:'',xpFuture:false});
+    var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today()});
+    var ejf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:'',closedDate:''});
     var selJobId=ref(''),pdfFile=ref(null),isDragging=ref(false);
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
     var isGenSum=ref(false),genSumStep=ref('');
     var alertTab=ref('cand');
     var detTab=ref('ai');
-    var candSearch=ref('');var candStatusFilter=ref('active');var candSort=ref('date_desc');var insightFilter=ref(null);var filterMonth=ref('');
+    var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
     // JSONBin sync
     var jbKey=ref('supabase');
     var jbBin=ref('supabase');
     var jbStatus=ref('');
+    var candStatusFilter=ref('active');
+    var candSort=ref('date_desc');
+    var showDeclinouModal=ref(false);
+    var declinouCandId=ref(null);
+    var declinouMotivo=ref('');
+    var declinouObs=ref('');
+    var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
+    var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
+    var showJustModal=ref(false);
+    var justJobId=ref(null);
+    var justMotivo=ref('');
+    var justObs=ref('');
+    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
     var jbCreating=ref(false);
@@ -4258,15 +4117,12 @@ createApp({
       }).filter(function(o){return o.n>0;});
     });
     function calcSlaStats(){
-      var on=0,near=0,over=0,overJust=0,overNoJust=0;
+      var on=0,near=0,over=0;
       (jobs.value||[]).filter(function(j){return j.status==='aberta';}).forEach(function(j){
         var d=bizDaysSince(j.openDate);
-        if(d>10){
-          over++;
-          if(j.prazoEstendido)overJust++;else overNoJust++;
-        } else if(d>=8)near++;else on++;
+        if(d>10)over++;else if(d>=8)near++;else on++;
       });
-      return {on:on,near:near,over:over,overJust:overJust,overNoJust:overNoJust};
+      return {on:on,near:near,over:over};
     }
     var slaStats=ref(calcSlaStats());
     watch(jobs,function(){slaStats.value=calcSlaStats();},{deep:true});
@@ -4324,34 +4180,14 @@ createApp({
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
       if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
-      // Status filter from filter bar
-      var ACTIVE_STATUSES=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
-      if(candStatusFilter.value==='active'){
-        list=list.filter(function(c){return ACTIVE_STATUSES.indexOf(c.status)!==-1;});
-      } else if(candStatusFilter.value==='reprovado'){
-        list=list.filter(function(c){return c.status==='reprovado';});
-      } else if(candStatusFilter.value==='banco'){
-        list=list.filter(function(c){return c.status==='banco';});
-      } else if(candStatusFilter.value==='declinou'){
-        list=list.filter(function(c){return c.status==='declinou';});
-      }
-      // Search
       if(candSearch.value.trim()){
         var s=candSearch.value.trim().toLowerCase();
         list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
       }
-      // Sort
-      if(candSort.value==='date_asc'){
-        list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
-      } else if(candSort.value==='score_desc'){
-        list=list.slice().sort(function(a,b){return ((b.analysis&&b.analysis.score&&b.analysis.score.total)||0)-((a.analysis&&a.analysis.score&&a.analysis.score.total)||0);});
-      } else {
-        list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
-      }
       return list;
     });
 
-    function isVagaCrit(job){if(job.prazoEstendido)return false; return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
+    function isVagaCrit(job){ return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
 
     function applyData(d){
       if(!d)return;
@@ -4418,8 +4254,8 @@ createApp({
     // ── Jobs ──────────────────────────────────────────────────────────────
     function addJob(){
       if(!jf.value.title.trim()||!jf.value.desc.trim())return;
-      jobs.value.push({id:Date.now()+'',title:jf.value.title,dept:jf.value.dept,desc:jf.value.desc,leaderEmail:jf.value.leaderEmail,openDate:jf.value.openDate||today(),status:'aberta',xpFuture:jf.value.xpFuture||false});
-      jf.value={title:'',dept:'',desc:'',leaderEmail:'',openDate:today(),xpFuture:false};
+      jobs.value.push({id:Date.now()+'',title:jf.value.title,dept:jf.value.dept,desc:jf.value.desc,leaderEmail:jf.value.leaderEmail,openDate:jf.value.openDate||today(),status:'aberta'});
+      jf.value={title:'',dept:'',desc:'',leaderEmail:'',openDate:today()};
       showJobModal.value=false;flash('Vaga criada');pushSync();
     }
     function openEdit(job){editingJob.value=job;ejf.value={title:job.title,dept:job.dept||'',desc:job.desc,leaderEmail:job.leaderEmail||'',openDate:job.openDate||today(),closedDate:job.closedDate||''};}
@@ -4450,25 +4286,12 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var parsed=(function(){
-            var clean=raw.replace(/```json|```/g,'').trim();
-            // Try to repair truncated JSON by finding last complete object
-            try{return JSON.parse(clean);}catch(e1){
-              // Attempt to close unclosed JSON
-              var repaired=clean;
-              var opens=(repaired.match(/\{/g)||[]).length;
-              var closes=(repaired.match(/\}/g)||[]).length;
-              for(var i=0;i<opens-closes;i++)repaired+='}';
-              try{return JSON.parse(repaired);}catch(e2){
-                throw new Error('Resposta da IA foi cortada. Tente novamente com um curriculo menor ou em PDF mais simples.');
-              }
-            }
-          })();
-          var initStatus='aguardando_lider';
+          var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+          var initStatus=parsed.recommendation==='Avan\u00e7ar para entrevista'?'aguardando_lider':parsed.recommendation==='Manter em banco de talentos'?'banco':'reprovado';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4499,7 +4322,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4597,52 +4420,6 @@ createApp({
 
     
     // ── Manual candidate + delete ──────────────────────────────────────────
-    // ── DECLINOU ─────────────────────────────────────────────────────────
-    var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
-    var showDeclinouModal=ref(false);var declinouCandId=ref(null);var declinouMotivo=ref('');var declinouObs=ref('');
-    function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
-    function confirmDeclinou(){
-      if(!declinouCandId.value||!declinouMotivo.value)return;
-      advanceStatus(declinouCandId.value,'declinou');
-      var n=Object.assign({},notes.value);var existing=n[declinouCandId.value]||'';
-      var sep=existing?'\n\n':'';var obs=declinouObs.value.trim();
-      n[declinouCandId.value]=existing+sep+'[Declinio - '+new Date().toLocaleDateString('pt-BR')+']\nMotivo: '+declinouMotivo.value+(obs?'\nObs: '+obs:'');
-      notes.value=n;showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';
-    }
-    function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;declinouMotivo.value='';declinouObs.value='';}
-    // ── PRETENSAO + DISPONIBILIDADE ───────────────────────────────────────
-    var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
-    function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});if(!c)return '';return c[field]||'';}
-    function setCandSalario(cid,val){setCandField(cid,'salario',val);}
-    function setCandDisp(cid,val){setCandField(cid,'disponibilidade',val);}
-    // ── JUSTIFICATIVA DE PRAZO ────────────────────────────────────────────
-    var PRAZO_MOTIVOS=['Em Etapa de Aprovacao Interna','Em Alinhamento com a Gestao','Em Busca de Talentos Especificos','Em Analise Orcamentaria','Perfil de Alta Complexidade','Pausa Solicitada pelo Gestor','Aguardando Definicao do Escopo'];
-    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
-    function openJustModal(job){justJobId.value=job.id;justMotivo.value=job.prazoMotivo||'';justObs.value=job.prazoObs||'';showJustModal.value=true;}
-    // XP Future classification helpers
-    function getXpClass(cand){
-      if(cand.xpClassManual)return cand.xpClassManual;
-      if(cand.analysis&&cand.analysis.xpFuture)return cand.analysis.xpFuture.perfil;
-      return null;
-    }
-    function setXpClassManual(cid,val){
-      var i=candidates.value.findIndex(function(c){return c.id===cid;});
-      if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{xpClassManual:val||null});
-      pushSync();
-    }
-
-    function saveJustificativa(){
-      if(!justJobId.value||!justMotivo.value)return;
-      var idx=jobs.value.findIndex(function(j){return j.id===justJobId.value;});
-      if(idx>=0)jobs.value[idx]=Object.assign({},jobs.value[idx],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value.trim(),prazoJustAt:new Date().toLocaleDateString('pt-BR')});
-      showJustModal.value=false;justJobId.value=null;justMotivo.value='';justObs.value='';pushSync();
-    }
-    function removeJustificativa(jobId){
-      var idx=jobs.value.findIndex(function(j){return j.id===jobId;});
-      if(idx>=0)jobs.value[idx]=Object.assign({},jobs.value[idx],{prazoEstendido:false,prazoMotivo:'',prazoObs:'',prazoJustAt:''});
-      pushSync();
-    }
-    function cancelJust(){showJustModal.value=false;justJobId.value=null;justMotivo.value='';justObs.value='';}
     var showManualModal=ref(false);
     var mf=ref({name:'',email:'',jobId:'',origem:'',note:''});
     var mfError=ref('');
@@ -4733,6 +4510,36 @@ createApp({
     }
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
+    // Declinou
+    function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
+    function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;}
+    function confirmDeclinou(){
+      if(!declinouMotivo.value)return;
+      var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});
+      if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});}
+      showDeclinouModal.value=false;declinouCandId.value=null;pushSync();
+    }
+    // SLA Justificativa
+    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
+    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
+    function openJustModal(job){justJobId.value=job.id;justMotivo.value='';justObs.value='';showJustModal.value=true;}
+    function cancelJust(){showJustModal.value=false;justJobId.value=null;}
+    function saveJustificativa(){
+      if(!justMotivo.value)return;
+      var i=jobs.value.findIndex(function(j){return j.id===justJobId.value;});
+      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value});
+      showJustModal.value=false;justJobId.value=null;pushSync();
+    }
+    function removeJustificativa(jid){
+      var i=jobs.value.findIndex(function(j){return j.id===jid;});
+      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});
+      pushSync();
+    }
+    // Pretensao + Disponibilidade
+    function setCandSalario(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{salario:val});pushSync();}}
+    function setCandDisp(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{disponibilidade:val});pushSync();}}
+    function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?c[field]||'':('')}
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4745,7 +4552,7 @@ createApp({
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
-      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,candStatusFilter,candSort,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,showDeclinouModal,declinouCandId,declinouMotivo,declinouObs,openDeclinouModal,confirmDeclinou,cancelDeclinou,DECLINOU_MOTIVOS,DISPONIBILIDADE_OPTS,getCandField,setCandSalario,setCandDisp,inPeriod,PRAZO_MOTIVOS,showJustModal,justJobId,justMotivo,justObs,openJustModal,saveJustificativa,removeJustificativa,cancelJust,getXpClass,setXpClassManual,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
+      scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
   }
 }).mount('#app');
