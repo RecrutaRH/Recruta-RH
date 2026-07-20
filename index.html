@@ -3479,7 +3479,6 @@ function supabaseCall(action, table, id, data) {
   }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
 }
 
-
 // ── JSONBin.io API functions ──────────────────────────────────────────────────
 function jsonBinCreate(masterKey) { return Promise.resolve("supabase"); }
 function jsonBinPush(masterKey, binId, data) {
@@ -3999,8 +3998,8 @@ createApp({
     var transcripts=ref(lsGet('recruitarh_transcripts',{}));
     var summaries=ref(lsGet('recruitarh_summaries',{}));
     var intDates=ref(lsGet('recruitarh_intdates',{}));
-    var apiKey=ref(DEFAULT_API_KEY||lsGet('recruitarh_apikey',''));
-    var showApiModal=ref(!apiKey.value),newApiKey=ref('');
+    var apiKey=ref('server-managed');
+    var showApiModal=ref(false),newApiKey=ref('');
     var showJobModal=ref(false),editingJob=ref(null);
     var jf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:today()});
     var ejf=ref({title:'',dept:'',desc:'',leaderEmail:'',openDate:'',closedDate:''});
@@ -4015,19 +4014,6 @@ createApp({
     var jbKey=ref('supabase');
     var jbBin=ref('supabase');
     var jbStatus=ref('');
-    var candStatusFilter=ref('active');
-    var candSort=ref('date_desc');
-    var showDeclinouModal=ref(false);
-    var declinouCandId=ref(null);
-    var declinouMotivo=ref('');
-    var declinouObs=ref('');
-    var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
-    var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
-    var showJustModal=ref(false);
-    var justJobId=ref(null);
-    var justMotivo=ref('');
-    var justObs=ref('');
-    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
     var jbCreating=ref(false);
@@ -4211,11 +4197,7 @@ createApp({
         if(d){applyData(d);jbStatus.value='Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
       });
     }
-    function saveSyncConfig(){
-      showSyncModal.value=false;
-      pullSync();
-      flash('Sincronizando com banco de dados...');
-    }
+    function saveSyncConfig(){showSyncModal.value=false;pullSync();flash('Sincronizando...');}
     function deactivateSync(){jbKey.value='';jbBin.value='';jbStatus.value='';flash('Compartilhamento desativado');}
 
     onMounted(function(){
@@ -4322,7 +4304,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey.value,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4510,18 +4492,31 @@ createApp({
     }
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
-    // Declinou
+    // ── Filter refs ─────────────────────────────────────────────────────────
+    var candStatusFilter=ref('active');
+    var candSort=ref('date_desc');
+
+    // ── Declinou ─────────────────────────────────────────────────────────────
+    var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
+    var showDeclinouModal=ref(false);
+    var declinouCandId=ref(null);
+    var declinouMotivo=ref('');
+    var declinouObs=ref('');
     function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
     function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;}
     function confirmDeclinou(){
       if(!declinouMotivo.value)return;
       var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});
-      if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});}
+      if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});
       showDeclinouModal.value=false;declinouCandId.value=null;pushSync();
     }
-    // SLA Justificativa
-    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
+
+    // ── Prazo justificativa ──────────────────────────────────────────────────
     var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
+    var showJustModal=ref(false);
+    var justJobId=ref(null);
+    var justMotivo=ref('');
+    var justObs=ref('');
     function openJustModal(job){justJobId.value=job.id;justMotivo.value='';justObs.value='';showJustModal.value=true;}
     function cancelJust(){showJustModal.value=false;justJobId.value=null;}
     function saveJustificativa(){
@@ -4535,10 +4530,13 @@ createApp({
       if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});
       pushSync();
     }
-    // Pretensao + Disponibilidade
+
+    // ── Pretensao + Disponibilidade ──────────────────────────────────────────
+    var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
     function setCandSalario(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{salario:val});pushSync();}}
     function setCandDisp(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{disponibilidade:val});pushSync();}}
-    function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?c[field]||'':('')}
+    function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?(c[field]||''):'';}
+
 
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
@@ -4553,7 +4551,12 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,    };
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
+      candStatusFilter,candSort,
+      showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,
+      showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,
+      DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,
+    };
   }
 }).mount('#app');
 
