@@ -4268,7 +4268,7 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4304,7 +4304,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4378,8 +4378,18 @@ createApp({
       return Math.max(0,count);
     }
     var filtCands=computed(function(){
+      var ACTIVE_S=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
+      var f=candStatusFilter.value;
+      if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
+      else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
+      else if(f==='banco')list=list.filter(function(c){return c.status==='banco';});
+      else if(f==='declinou')list=list.filter(function(c){return c.status==='declinou';});
+      var s=candSort.value;
+      if(s==='date_asc')list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
+      else if(s==='score_desc')list=list.slice().sort(function(a,b){var sa=(b.analysis&&b.analysis.score?b.analysis.score.total:0);var sb=(a.analysis&&a.analysis.score?a.analysis.score.total:0);return sa-sb;});
+      else list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
       return list;
     });
     var vcTrans=computed(function(){return viewCand.value?(TRANSITIONS[viewCand.value.status]||[]):[];});
