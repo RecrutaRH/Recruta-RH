@@ -492,7 +492,11 @@ return function render(_ctx, _cache) {
                   onClick: $event => (editingJob=null),
                   style: {"flex":"1","border":"1px solid #E5E7EB","background":"none","border-radius":"8px","padding":"10px","font-size":"13px","cursor":"pointer"}
                 }, "Cancelar", 8 /* PROPS */, ["onClick"])
-              ])
+              ]),
+              _createElementVNode("button", {
+                onClick: $event => (deleteJob(editingJob.id)),
+                style: {"width":"100%","margin-top":"10px","border":"1px solid #FCA5A5","color":"#DC2626","background":"none","border-radius":"8px","padding":"9px","font-size":"12.5px","font-weight":"600","cursor":"pointer"}
+              }, "Excluir vaga", 8 /* PROPS */, ["onClick"])
             ])
           ]))
         : _createCommentVNode("v-if", true),
@@ -3624,23 +3628,25 @@ function buildInterviewPrompt(candidate,transcript){
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
   if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência na elaboração de pareceres executivos para gestores.\n'
-    +'Analise a transcrição da entrevista e elabore um Parecer Executivo completo e integrado.\n\n'
+  return 'Você é um Recrutador Sênior experiente. Sua função aqui é fazer a TRIAGEM da entrevista para decidir, com critério, se faz sentido encaminhar o candidato para ser entrevistado pelo líder da área ou não.\n'
+    +'Elabore um Parecer Executivo direto ao ponto, no estilo que um recrutador experiente entrega para um gestor ocupado — sem enrolação e sem repetir a mesma ideia com palavras diferentes.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
-    +'- Escreva como recrutador sênior elaborando um parecer para o gestor da área — linguagem consultiva, objetiva e profissional\n'
-    +'- A JUSTIFICATIVA deve ser o elemento central: sintetize motivadores, interesse na vaga, expectativas de carreira, pontos fortes e pontos de atenção em um parecer executivo coerente que fundamente a recomendação final\n'
+    +'- Escreva como recrutador sênior falando direto com o gestor — frases curtas, objetivas, sem jargão corporativo genérico ("alinhado com a cultura", "postura profissional" e afins só entram se houver evidência concreta na entrevista que sustente isso)\n'
+    +'- PROIBIDO REDUNDÂNCIA: cada frase precisa trazer uma informação NOVA. Nunca reafirme a mesma ideia com sinônimos só para preencher espaço. Se não há mais nada relevante a dizer sobre um ponto, encerre em uma frase\n'
+    +'- Cada campo tem no máximo 2-3 frases curtas. Prefira uma frase objetiva e certeira a um parágrafo genérico\n'
+    +'- A JUSTIFICATIVA deve ser o elemento central: sintetize motivadores, interesse na vaga, expectativas de carreira, pontos fortes e pontos de atenção — mas de forma enxuta, como uma recomendação final, não um resumo de tudo que já foi dito nos outros campos\n'
     +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados\n'
     +'- NUNCA escreva "não mencionado", "não informado" ou frases similares — se ausente, retorne string vazia\n'
     +'- DISPONIBILIDADE: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc. Nada além disso\n'
     +'- EXPECTATIVA SALARIAL: apenas o valor ou faixa. Se não citada, retorne string vazia\n'
-    +'- MOTIVADORES PARA MUDANÇA: por que o candidato quer sair do emprego atual? O que o motiva?\n'
-    +'- INTERESSE NA VAGA: como o candidato demonstrou interesse? Pesquisou a empresa? Há alinhamento claro?\n'
-    +'- EXPECTATIVAS DE CARREIRA: onde quer estar em 3-5 anos? A vaga faz sentido para esse trajeto?\n'
-    +'- IMPRESSÃO GERAL: avalie postura, comunicação, autoconhecimento e fit cultural percebido na entrevista\n'
-    +'- JUSTIFICATIVA: parágrafo executivo completo que integre todos os elementos acima e fundamente a recomendação\n\n'
+    +'- MOTIVADORES PARA MUDANÇA: por que o candidato quer sair do emprego atual? Vá direto ao motivo real, sem rodeios\n'
+    +'- INTERESSE NA VAGA: o candidato demonstrou interesse concreto (pesquisou a empresa, fez perguntas específicas)? Responda objetivamente\n'
+    +'- EXPECTATIVAS DE CARREIRA: onde quer estar em 3-5 anos, e isso faz sentido para a vaga? Uma frase basta\n'
+    +'- IMPRESSÃO GERAL: o que um recrutador experiente notaria de fato na entrevista — só cite traço de comportamento se tiver evidência clara na transcrição\n'
+    +'- JUSTIFICATIVA: parágrafo executivo enxuto que fundamente a recomendação de avançar ou não para o líder — pense "o que o gestor precisa saber para decidir", não "resumo de tudo"\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
     +'{"motivacoes":"","momentoAtual":"","motivadoresMudanca":"","interesseVaga":"","expectativasCarreira":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","impressaoGeral":"","recomendacao":"Avançar para entrevista com o líder","justificativa":""}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
@@ -4261,6 +4267,18 @@ createApp({
       }
       editingJob.value=null;flash('Vaga atualizada');pushSync();
     }
+    function deleteJob(id){
+      var n=candidates.value.filter(function(c){return c.jobId===id;}).length;
+      var msg=n>0
+        ?'Esta vaga tem '+n+' candidato(s) vinculado(s). Excluir a vaga também removerá esses candidatos. Deseja continuar?'
+        :'Excluir esta vaga? A ação não pode ser desfeita.';
+      if(!confirm(msg))return;
+      jobs.value=jobs.value.filter(function(j){return j.id!==id;});
+      candidates.value=candidates.value.filter(function(c){return c.jobId!==id;});
+      editingJob.value=null;
+      pushSync();
+      flash('Vaga excluída.');
+    }
 
     // ── Analyze ───────────────────────────────────────────────────────────
     function handleFile(file){
@@ -4569,7 +4587,7 @@ createApp({
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
       jbKey,jbBin,jbStatus,showSyncModal,jbKeyInput,jbCreating,
       editingField,editFieldVal,
-      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,handleFile,onFileDrop,analyze,
+      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,deleteJob,handleFile,onFileDrop,analyze,
       advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
