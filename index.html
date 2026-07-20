@@ -4162,6 +4162,7 @@ createApp({
       };
     });
     var filteredCands=computed(function(){
+      var ACTIVE_S=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
@@ -4170,6 +4171,15 @@ createApp({
         var s=candSearch.value.trim().toLowerCase();
         list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
       }
+      var f=candStatusFilter.value;
+      if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
+      else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
+      else if(f==='banco')list=list.filter(function(c){return c.status==='banco';});
+      else if(f==='declinou')list=list.filter(function(c){return c.status==='declinou';});
+      var srt=candSort.value;
+      if(srt==='date_asc')list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
+      else if(srt==='score_desc')list=list.slice().sort(function(a,b){var sa=(b.analysis&&b.analysis.score?b.analysis.score.total:0);var sb=(a.analysis&&a.analysis.score?a.analysis.score.total:0);return sa-sb;});
+      else list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
       return list;
     });
 
@@ -4273,7 +4283,7 @@ createApp({
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus=parsed.recommendation==='Avan\u00e7ar para entrevista'?'aguardando_lider':parsed.recommendation==='Manter em banco de talentos'?'banco':'reprovado';
+          var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
