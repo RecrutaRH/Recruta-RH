@@ -4311,7 +4311,8 @@ createApp({
       editingJob.value=null;flash('Vaga atualizada');pushSync();
     }
     function deleteJob(id){
-      var n=candidates.value.filter(function(c){return c.jobId===id;}).length;
+      var toRemove=candidates.value.filter(function(c){return c.jobId===id;});
+      var n=toRemove.length;
       var msg=n>0
         ?'Esta vaga tem '+n+' candidato(s) vinculado(s). Excluir a vaga também removerá esses candidatos. Deseja continuar?'
         :'Excluir esta vaga? A ação não pode ser desfeita.';
@@ -4319,6 +4320,9 @@ createApp({
       jobs.value=jobs.value.filter(function(j){return j.id!==id;});
       candidates.value=candidates.value.filter(function(c){return c.jobId!==id;});
       editingJob.value=null;
+      Promise.all(
+        [supabaseCall('delete','jobs',id)].concat(toRemove.map(function(c){return supabaseCall('delete','candidates',c.id);}))
+      ).catch(function(e){console.error('Erro ao excluir no banco:',e);});
       pushSync();
       flash('Vaga excluída.');
     }
@@ -4531,6 +4535,7 @@ createApp({
       if(!confirm('Excluir este candidato? A ação não pode ser desfeita.'))return;
       candidates.value=candidates.value.filter(function(c){return c.id!==id;});
       viewCand.value=null;
+      supabaseCall('delete','candidates',id).catch(function(e){console.error('Erro ao excluir no banco:',e);});
       pushSync();
       flash('Candidato excluído.');
     }
