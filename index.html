@@ -2474,10 +2474,26 @@ return function render(_ctx, _cache) {
                                           ], 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
                                           (getSummary(viewCand.id))
                                             ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
-                                                _createElementVNode("div", { style: {"background":"#F0FDF4","border":"1px solid #86EFAC","border-radius":"9px","padding":"12px 14px","margin-bottom":"10px"} }, [
-                                                  _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#16A34A","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"4px"} }, "Recomendacao"),
-                                                  _createElementVNode("div", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(getSummary(viewCand.id).recomendacao), 1 /* TEXT */)
-                                                ]),
+                                                _createElementVNode("div", {
+                                                  style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#86EFAC':'#FCA5A5'),borderRadius:'9px',padding:'12px 14px',marginBottom:'10px'})
+                                                }, [
+                                                  _createElementVNode("div", {
+                                                    style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'4px'})
+                                                  }, "Recomendação do RH"),
+                                                  _createElementVNode("div", {
+                                                    style: _normalizeStyle({fontSize:'13px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',marginBottom:'8px'})
+                                                  }, _toDisplayString(getSummary(viewCand.id).recomendacao), 5 /* TEXT, STYLE */),
+                                                  _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
+                                                    _createElementVNode("button", {
+                                                      onClick: $event => (setRecomendacao(viewCand.id,'Avançar para entrevista com o líder')),
+                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:'pointer',border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#fff',color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#fff':'#64748B'})
+                                                    }, "Avançar", 12 /* STYLE, PROPS */, ["onClick"]),
+                                                    _createElementVNode("button", {
+                                                      onClick: $event => (setRecomendacao(viewCand.id,'Não avançar no processo')),
+                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:'pointer',border:'1px solid '+(getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#fff',color:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#fff':'#64748B'})
+                                                    }, "Não avançar", 12 /* STYLE, PROPS */, ["onClick"])
+                                                  ])
+                                                ], 4 /* STYLE */),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
                                                     key: row.label,
@@ -3823,21 +3839,36 @@ function generateParecer(candidate, summary, interviewDate) {
   var salario   = summary.expectativaSalarial || candidate.salario || '';
   var disponib  = summary.disponibilidade || candidate.disponibilidade || '';
 
+  // ── Modo compacto: quanto mais texto, mais denso o layout, para caber em 1 página ──
+  var totalChars = [summary.justificativa,summary.motivadoresMudanca,summary.interesseVaga,summary.expectativasCarreira,
+    summary.motivacoes,summary.momentoAtual,summary.impressaoGeral]
+    .concat(summary.pontosPositivos||[]).concat(summary.pontosAtencao||[])
+    .reduce(function(sum,t){return sum+(t?String(t).length:0);},0);
+  var dense  = totalChars > 2600;
+  var xdense = totalChars > 3400;
+  var fBody  = xdense?'9.5px':dense?'10.5px':'11px';
+  var fLine  = xdense?1.42:dense?1.48:1.6;
+  var fLbl   = xdense?'7.3px':'8px';
+  var padBlk = xdense?'6px 9px':dense?'7px 10px':'8px 12px';
+  var mrgBlk = xdense?'6px':dense?'7px':'8px';
+  var gpBlk  = xdense?'5px':dense?'6px':'7px';
+  var pagePad= xdense?'10px 16px':dense?'12px 17px':'14px 18px';
+
   function lbl(text, color) {
-    return '<p style="font-size:8px;font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
+    return '<p style="font-size:'+fLbl+';font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
   }
   function block(label, value, color, bg) {
     if(!value) return '';
-    return '<div style="margin-bottom:8px;page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:8px 10px">'
+    return '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:'+padBlk+'">'
       + lbl(label, color)
-      + '<p style="font-size:11px;color:#1e293b;line-height:1.55;margin:0">'+value+'</p>'
+      + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin:0">'+value+'</p>'
       + '</div>';
   }
   function pill(arr, col) {
     return (arr || []).map(function(p) {
       return '<div style="display:flex;gap:6px;margin-bottom:3px;page-break-inside:avoid;break-inside:avoid">'
-        + '<span style="color:'+col+';font-weight:700;font-size:11px;line-height:1.5;flex-shrink:0">&#8226;</span>'
-        + '<span style="font-size:11px;color:#334155;line-height:1.5">'+p+'</span></div>';
+        + '<span style="color:'+col+';font-weight:700;font-size:'+fBody+';line-height:'+fLine+';flex-shrink:0">&#8226;</span>'
+        + '<span style="font-size:'+fBody+';color:#334155;line-height:'+fLine+'">'+p+'</span></div>';
     }).join('');
   }
 
@@ -3846,19 +3877,19 @@ function generateParecer(candidate, summary, interviewDate) {
     + '<style>'
     + '@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
     + '*{box-sizing:border-box;margin:0;padding:0}'
-    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
-    + '.page{max-width:780px;margin:0 auto;padding:14px 18px}'
+    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:'+fBody+';-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+    + '.page{max-width:780px;margin:0 auto;padding:'+pagePad+'}'
     + '.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
     + '.btn-print{background:#6366f1;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
     + '.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
-    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:8mm 10mm;size:A4}}'
+    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:'+(xdense?'6mm 8mm':dense?'7mm 9mm':'8mm 10mm')+';size:A4}}'
     + '</style></head><body>'
     + '<div class="no-print"><button class="btn-close" onclick="window.close()">Fechar</button>'
     + '<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
     + '<div class="page">'
 
     // ── HEADER ──
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid #e2e8f0;margin-bottom:10px">'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:'+gpBlk+';border-bottom:2px solid #e2e8f0;margin-bottom:'+mrgBlk+'">'
     + '<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
     + '<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
     + '<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
@@ -3866,27 +3897,27 @@ function generateParecer(candidate, summary, interviewDate) {
     + '</div>'
 
     // ── CANDIDATO INFO ──
-    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
+    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
     + '<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'+(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
     + '<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+candidate.jobTitle+'</p></div>'
     + '<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
     + '</div>'
 
     // ── RECOMENDAÇÃO ──
-    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
-    + '<div style="width:26px;height:26px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:14px;font-weight:700">'+recIcon+'</span></div>'
+    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:flex;align-items:center;gap:10px">'
+    + '<div style="width:22px;height:22px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:12px;font-weight:700">'+recIcon+'</span></div>'
     + '<div>'+lbl('Recomenda\u00e7\u00e3o do RH',recCol)+'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
     + '</div>'
 
     // ── PARECER EXECUTIVO (Justificativa integrada) ──
-    + (summary.justificativa?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid">'
+    + (summary.justificativa?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
     + lbl('Parecer Executivo','#1e1b4b')
-    + '<p style="font-size:11px;color:#1e293b;line-height:1.6;margin-top:2px">'+summary.justificativa+'</p>'
+    + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin-top:2px">'+summary.justificativa+'</p>'
     + '</div>':'')
 
     // ── 3 NOVOS CAMPOS: Motivadores / Interesse / Expectativas ──
     + ((summary.motivadoresMudanca||summary.interesseVaga||summary.expectativasCarreira)?
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px">'
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
     + block('Motivadores para mudança', summary.motivadoresMudanca, '#7e22ce', '#fdf4ff')
     + block('Interesse na vaga', summary.interesseVaga, '#c2410c', '#fff7ed')
     + block('Expectativas de carreira', summary.expectativasCarreira, '#166534', '#f0fdf4')
@@ -3894,18 +3925,18 @@ function generateParecer(candidate, summary, interviewDate) {
 
     // ── PERFIL: Motivações + Momento atual ──
     + ((summary.motivacoes||summary.momentoAtual)?
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
     + block('Motivações e objetivos', summary.motivacoes, '#6366f1', '#f0f9ff')
     + block('Momento atual', summary.momentoAtual, '#0369a1', '#f0f9ff')
     + '</div>':'')
 
     // ── PONTOS: 2 colunas ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
     + (summary.pontosPositivos&&summary.pontosPositivos.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
     + lbl('Pontos positivos','#166534')+'<div style="margin-top:4px">'+pill(summary.pontosPositivos,'#166534')+'</div></div>':'')
     + (summary.pontosAtencao&&summary.pontosAtencao.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
     + lbl('Pontos de aten\u00e7\u00e3o','#b45309')+'<div style="margin-top:4px">'+pill(summary.pontosAtencao,'#b45309')+'</div></div>':'')
     + '</div>'
 
@@ -3914,7 +3945,7 @@ function generateParecer(candidate, summary, interviewDate) {
 
     // ── DADOS PRÁTICOS ──
     + ((salario||disponib)?
-    '<div style="display:flex;gap:20px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px">'
+    '<div style="display:flex;gap:20px;padding:'+padBlk+';background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:'+mrgBlk+'">'
     + (salario?'<div>'+lbl('Pretens\u00e3o salarial','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
     + (disponib?'<div>'+lbl('Disponibilidade','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
     + '</div>':'')
@@ -4250,6 +4281,16 @@ createApp({
     }
     function cancelEdit(){editingField.value=null;editFieldVal.value='';}
     function isEditing(cid,field){return editingField.value&&editingField.value.cid===cid&&editingField.value.field===field;}
+    function setRecomendacao(cid,val){
+      var s=Object.assign({},summaries.value);
+      if(!s[cid])return;
+      s[cid]=Object.assign({},s[cid]);
+      s[cid].recomendacao=val;
+      summaries.value=s;
+      if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
+      flash('Recomendação atualizada');
+      pushSync();
+    }
 
     // ── Jobs ──────────────────────────────────────────────────────────────
     function addJob(){
@@ -4593,7 +4634,7 @@ createApp({
       advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
-      startEdit,saveEdit,cancelEdit,isEditing,
+      startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
       candStatusFilter,candSort,
