@@ -3607,6 +3607,10 @@ function buildMailto(job,candidates){
   return 'mailto:'+(job.leaderEmail||'')+'?subject='+subject+'&body='+encodeURIComponent(body);
 }
 function buildPrompt(job){
+  var hasCustomClass = /perfil\s*a\b/i.test(job.desc||'') && /perfil\s*b\b/i.test(job.desc||'');
+  var classificationRule = hasCustomClass
+    ? '- classification: a descrição da vaga acima já define seu próprio sistema de classificação (ex: "Perfil A", "Perfil B", "Perfil C", "Perfil D"). Use EXATAMENTE a nomenclatura e os critérios definidos na descrição da vaga para decidir qual classificação atribuir — não use a escala "Forte/Moderada/Baixa aderência" nem misture as duas nomenclaturas\n'
+    : '- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n';
   return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência em avaliação de perfis executivos.\n'
     +'Analise o currículo do candidato com profundidade consultiva e retorne APENAS JSON válido, sem markdown.\n\n'
     +'VAGA: '+job.title+' | '+(job.dept||'')+'\n'+job.desc+'\n\n'
@@ -3631,7 +3635,7 @@ function buildPrompt(job){
     +'- score.softSkills: 0-15 (peso 15% — analise evidências comportamentais)\n'
     +'- score.culturalFit: 0-10 (peso 10% — alinhamento com a cultura descrita na vaga)\n'
     +'- score.total = soma dos quatro\n'
-    +'- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n'
+    +classificationRule
     +'- recommendation: "Avançar para entrevista", "Manter em banco de talentos", "Reprovar"\n'
     +'- executiveSummary.strengths: 3-5 frases consultivas sobre o perfil geral — NÃO liste tópicos\n'
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
@@ -4349,7 +4353,17 @@ createApp({
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed;
           try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-          catch(pe){throw new Error('A resposta da análise veio incompleta ou em formato inesperado. Tente analisar este currículo novamente.');}
+          catch(pe){
+            var m=raw.match(/\{[\s\S]*\}/);
+            if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
+            if(!parsed){
+              console.error('Falha ao interpretar resposta da análise. stop_reason:',data.stop_reason,'raw:',raw);
+              var msg=data.stop_reason==='max_tokens'
+                ?'A análise deste currículo ficou mais longa do que o esperado e foi cortada. Tente novamente — se persistir, o currículo pode ser incomum em tamanho/complexidade.'
+                :'A resposta da análise veio em formato inesperado. Tente analisar este currículo novamente.';
+              throw new Error(msg);
+            }
+          }
           var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
@@ -4387,7 +4401,17 @@ createApp({
         var raw=data.content.map(function(i){return i.text||'';}).join('');
         var parsed;
         try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-        catch(pe){throw new Error('O resumo da entrevista veio incompleto ou em formato inesperado. Tente gerar novamente.');}
+        catch(pe){
+          var m=raw.match(/\{[\s\S]*\}/);
+          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
+          if(!parsed){
+            console.error('Falha ao interpretar resumo da entrevista. stop_reason:',data.stop_reason,'raw:',raw);
+            var msg=data.stop_reason==='max_tokens'
+              ?'O resumo desta entrevista ficou mais longo do que o esperado e foi cortado. Tente novamente — se persistir, a transcrição pode ser incomum em tamanho.'
+              :'O resumo da entrevista veio em formato inesperado. Tente gerar novamente.';
+            throw new Error(msg);
+          }
+        }
         var s=Object.assign({},summaries.value);s[candidate.id]=parsed;summaries.value=s;
         if(viewCand.value&&viewCand.value.id===candidate.id)viewCand.value=Object.assign({},viewCand.value);
         flash('Resumo gerado');isGenSum.value=false;genSumStep.value='';pushSync();
