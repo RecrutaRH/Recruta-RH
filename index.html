@@ -3648,26 +3648,26 @@ function buildInterviewPrompt(candidate,transcript){
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
   if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  var estiloRef = 'Exemplo do padrão de escrita esperado (apenas para referência de TOM — não copie fatos, use fatos da entrevista atual):\n'
-    +'"Candidato com aderência técnica consistente ao escopo da vaga: domina [ferramentas/sistemas citados] e atua há [tempo] em [função]. Motivador central para a mudança é [motivo específico]. Ponto de atenção: [ponto específico], reconhecido pelo próprio candidato. Recomenda-se avançar."\n\n'
-    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao (frase única, sem explicação adicional): "Experiência de quatro anos no mercado financeiro." — NÃO: "O candidato demonstrou ao longo da entrevista uma sólida experiência de quatro anos no mercado financeiro, o que indica maturidade profissional."\n\n';
+  var estiloRef = 'Exemplo de Parecer Executivo correto (curto, cita evidência, foca só na decisão — não conta a biografia do candidato, isso é papel de outro campo):\n'
+    +'"Candidato com forte aderência técnica: domina [ferramentas citadas] e atua há [tempo] em função equivalente. Principal risco é [ponto específico], mitigável no onboarding. Recomenda-se avançar para entrevista com o líder."\n\n'
+    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao (frase única, sem explicação adicional): "Experiência de quatro anos no mercado financeiro." — NÃO: "O candidato demonstrou ao longo da entrevista uma sólida experiência de quatro anos no mercado financeiro, o que indica maturidade profissional."\n\n';
   return 'Você é um Recrutador Sênior experiente. Sua função aqui é fazer a TRIAGEM da entrevista para decidir, com critério, se faz sentido encaminhar o candidato para ser entrevistado pelo líder da área ou não.\n'
-    +'Pense como um gestor que recebe 10 a 20 desses pareceres por semana e precisa decidir em cerca de 2 minutos de leitura. Antes de escrever qualquer frase, pergunte-se: "isso ajuda o gestor a decidir, ou só registra o que aconteceu na entrevista?" Se for só registro, corte.\n'
-    +'O parecer NÃO é uma transcrição estruturada da entrevista. É um instrumento executivo de apoio à decisão — objetividade importa mais que completude.\n\n'
+    +'O leitor deste parecer não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações. Ele quer só saber, rápido, se deve contratar. Pense como um gestor que recebe 10 a 20 desses pareceres por semana e tem 2 minutos pra decidir. Antes de escrever qualquer frase, pergunte-se: "isso ajuda o gestor a decidir, ou só registra o que aconteceu na entrevista?" Se for só registro, corte.\n\n'
     +estiloRef
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
     +'- REGRA MAIS IMPORTANTE: toda frase precisa carregar um FATO CONCRETO extraído da transcrição (empresa, ferramenta, iniciativa, resultado, prazo). Frases com adjetivo genérico sem fato por trás só entram se logo em seguida vier a evidência\n'
-    +'- PROIBIDO REDUNDÂNCIA ENTRE CAMPOS: cada campo do JSON responde a uma pergunta diferente do gestor. Nunca repita no campo X uma informação já dita no campo Y\n'
-    +'- Escreva pensando no gestor que vai decidir, não como um registro para o RH. Corte qualquer frase que não mude a decisão\n'
+    +'- CADA CAMPO TEM UM PAPEL EXCLUSIVO — zero sobreposição: parecerExecutivo = só a decisão (aderência + risco + recomendação, SEM contar trajetória de carreira). contextoProfissional = só a narrativa (onde está hoje, por que quer sair, interesse na vaga — SEM repetir aderência ou risco, isso não é papel dele)\n'
+    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao — nunca deixe um selo vermelho/amarelo sem explicação em algum lugar do parecer\n'
     +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
     +'CAMPO A CAMPO:\n'
-    +'- parecerExecutivo: 5 a 8 linhas no total. Resumo do perfil, aderência à vaga, principal risco, e fecha com a justificativa da recomendação. É o campo mais importante — sozinho já precisa bastar pra decidir\n'
-    +'- fitExperiencia, fitTecnico, fitComunicacao, fitComportamental, fitModeloTrabalho, fitSalarial, fitAderenciaGeral: cada um EXATAMENTE uma destas 4 palavras: "Excelente", "Adequado", "Parcial" ou "Atenção" — nunca uma frase\n'
-    +'- perfilEMotivacao: NO MÁXIMO 2-3 frases curtas, juntando onde o candidato está hoje na carreira, por que quer sair, e o nível de interesse real na vaga (pesquisou a empresa? fez pergunta relevante?) — tudo isso é uma questão só: "esse candidato busca essa vaga por um motivo consistente?". Não é pra separar em partes\n'
-    +'- pontosPositivos e pontosAtencao: cada item é UMA FRASE ÚNICA E CURTA (até ~12 palavras), só a constatação, sem explicação nem contexto adicional — olhe o exemplo de bullet acima. 3 a 4 itens cada, SEM repetir nada já dito no parecerExecutivo\n'
+    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 4 palavras: "Excelente", "Adequado", "Parcial" ou "Atenção" — nunca uma frase. fitComportamental já inclui comunicação — não trate como coisas separadas\n'
+    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) com os elementos que MAIS pesaram na decisão — é o resumo mais rápido possível do parecer, pra quem só vai ler isso e pular o resto\n'
+    +'- parecerExecutivo: 4 a 6 linhas. Cite pelo menos 1-2 evidências concretas que embasam a recomendação. Foco 100% em decisão — aderência à vaga, principal risco, e por que avançar ou não. Não é biografia\n'
+    +'- contextoProfissional: SEMPRE presente, mas com profundidade proporcional à relevância — se não há nada que mereça atenção do gestor (motivo de saída normal, expectativa alinhada), 1-2 frases bastam; se há algo que sinaliza risco ou vale nota (inquietação, expectativa desalinhada, motivo atípico), pode chegar a 3-4 frases. Cobre: onde o candidato está hoje na carreira, por que quer sair, nível de interesse real na vaga\n'
+    +'- pontosPositivos e pontosAtencao: cada item é UMA FRASE ÚNICA E CURTA (até ~12 palavras), só a constatação, sem explicação nem contexto adicional. 3 a 4 itens cada, SEM repetir nada já dito no parecerExecutivo ou em fatoresRecomendacao\n'
     +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
     +'- disponibilidade: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc.\n'
     +'- cidadeAtual: cidade onde mora hoje, se mencionada. Senão, string vazia\n'
@@ -3675,7 +3675,7 @@ function buildInterviewPrompt(candidate,transcript){
     +'- necessitaMudanca: "Sim", "Não" ou string vazia se não abordado\n'
     +'- disponibilidadeViagens: "Sim", "Não", "Parcial" ou string vazia se não abordado\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"parecerExecutivo":"","fitExperiencia":"","fitTecnico":"","fitComunicacao":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fitAderenciaGeral":"","perfilEMotivacao":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
+    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
@@ -3849,7 +3849,7 @@ function generateParecer(candidate, summary, interviewDate) {
   var disponib  = summary.disponibilidade || candidate.disponibilidade || '';
 
   // ── Modo compacto: quanto mais texto, mais denso o layout, para caber em 1 página ──
-  var totalChars = [summary.parecerExecutivo,summary.perfilEMotivacao]
+  var totalChars = [summary.parecerExecutivo,summary.contextoProfissional]
     .concat(summary.pontosPositivos||[]).concat(summary.pontosAtencao||[])
     .reduce(function(sum,t){return sum+(t?String(t).length:0);},0);
   var dense  = totalChars > 2600;
@@ -3931,30 +3931,32 @@ function generateParecer(candidate, summary, interviewDate) {
     + '<div>'+lbl('Recomenda\u00e7\u00e3o do RH',recCol)+'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
     + '</div>'
 
-    // ── 1. PARECER EXECUTIVO ──
-    + (summary.parecerExecutivo?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Parecer Executivo','#1e1b4b')
-    + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin-top:2px">'+summary.parecerExecutivo+'</p>'
-    + '</div>':'')
-
-    // ── 2. FIT DA VAGA (quadro resumido) ──
+    // ── 1. FIT DA VAGA (quadro resumido, 5 dimensões, sem Aderência Geral) ──
     + '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
     + lbl('Fit da Vaga','#1e1b4b')
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px">'
     + fitBadge('Experiência',summary.fitExperiencia)
     + fitBadge('Conhecimento Técnico',summary.fitTecnico)
-    + fitBadge('Comunicação',summary.fitComunicacao)
-    + fitBadge('Perfil Comportamental',summary.fitComportamental)
+    + fitBadge('Comportamental',summary.fitComportamental)
     + fitBadge('Modelo de Trabalho',summary.fitModeloTrabalho)
     + fitBadge('Expectativa Salarial',summary.fitSalarial)
-    + fitBadge('Aderência Geral',summary.fitAderenciaGeral)
     + '</div></div>'
 
-    // ── 3. PERFIL E MOTIVAÇÃO (bloco único) ──
-    + (summary.perfilEMotivacao?
-    '<div style="margin-bottom:'+mrgBlk+'">'
-    + block('Perfil e motiva\u00e7\u00e3o', summary.perfilEMotivacao, '#6366f1', '#f0f9ff')
+    // ── 2. PRINCIPAIS FATORES DA RECOMENDAÇÃO ──
+    + (summary.fatoresRecomendacao&&summary.fatoresRecomendacao.length?
+    '<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Principais fatores da recomenda\u00e7\u00e3o',recCol)+'<div style="margin-top:4px">'+pill(summary.fatoresRecomendacao,recCol)+'</div></div>':'')
+
+    // ── 3. PARECER EXECUTIVO ──
+    + (summary.parecerExecutivo?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Parecer Executivo','#1e1b4b')
+    + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin-top:2px">'+summary.parecerExecutivo+'</p>'
     + '</div>':'')
+
+    // ── 4. CONTEXTO PROFISSIONAL (sempre presente) ──
+    + '<div style="margin-bottom:'+mrgBlk+'">'
+    + block('Contexto profissional', summary.contextoProfissional, '#6366f1', '#f0f9ff')
+    + '</div>'
 
     // ── 5-6. PONTOS: 2 colunas ──
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
@@ -4458,7 +4460,8 @@ createApp({
       var neg=(s.pontosAtencao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
       var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nPRETENSÃO SALARIAL: '+s.expectativaSalarial:'';
       var disp=s.disponibilidade&&s.disponibilidade.trim()?'\nDISPONIBILIDADE: '+s.disponibilidade:'';
-      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nPERFIL E MOTIVA\u00c7\u00c3O:\n'+s.perfilEMotivacao+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+      var fat=(s.fatoresRecomendacao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
+      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\nPRINCIPAIS FATORES DA RECOMENDA\u00c7\u00c3O:\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
       var subject=encodeURIComponent('[R&S RH] Parecer \u2014 '+candidate.name+' | '+candidate.jobTitle);
       window.location.href='mailto:'+(job&&job.leaderEmail?job.leaderEmail:'')+'?subject='+subject+'&body='+encodeURIComponent(body);
     }
@@ -4527,7 +4530,7 @@ createApp({
       var s=viewCand.value?getSummary(viewCand.value.id):null;if(!s)return[];
       var rows=[
         {label:'Parecer executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f8fafc',col:'#1e1b4b'},
-        {label:'Perfil e motivação',field:'perfilEMotivacao',value:s.perfilEMotivacao,bg:'#f0f9ff',col:'#6366f1'},
+        {label:'Contexto profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f0f9ff',col:'#6366f1'},
       ];
       return rows.filter(function(r){return r.value;});
     });
