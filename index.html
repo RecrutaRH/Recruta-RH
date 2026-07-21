@@ -2486,13 +2486,21 @@ return function render(_ctx, _cache) {
                                                   _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
                                                     _createElementVNode("button", {
                                                       onClick: $event => (setRecomendacao(viewCand.id,'Avançar para entrevista com o líder')),
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:'pointer',border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#fff',color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Avançar", 12 /* STYLE, PROPS */, ["onClick"]),
+                                                      disabled: reconcilingCid===viewCand.id,
+                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#fff',color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#fff':'#64748B'})
+                                                    }, "Avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
                                                     _createElementVNode("button", {
                                                       onClick: $event => (setRecomendacao(viewCand.id,'Não avançar no processo')),
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:'pointer',border:'1px solid '+(getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#fff',color:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Não avançar", 12 /* STYLE, PROPS */, ["onClick"])
-                                                  ])
+                                                      disabled: reconcilingCid===viewCand.id,
+                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#fff',color:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#fff':'#64748B'})
+                                                    }, "Não avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"])
+                                                  ]),
+                                                  (reconcilingCid===viewCand.id)
+                                                    ? (_openBlock(), _createElementBlock("div", {
+                                                        key: 0,
+                                                        style: {"fontSize":"10px","color":"#94A3B8","marginTop":"6px"}
+                                                      }, "Ajustando o parecer para refletir a decisão..."))
+                                                    : _createCommentVNode("v-if", true)
                                                 ], 4 /* STYLE */),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
@@ -3679,6 +3687,20 @@ function buildInterviewPrompt(candidate,transcript){
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
+function buildReconciliationPrompt(candidate,transcript,targetRec){
+  return 'A decisão final deste processo seletivo já foi tomada pelo RH: "'+targetRec+'".\n'
+    +'Essa decisão considera fatores além da entrevista — aderência ao perfil da vaga, benchmarking com outros candidatos, critérios eliminatórios do processo, percepção técnica do recrutador — que não estão necessariamente refletidos na transcrição.\n'
+    +'Sua tarefa NÃO é decidir de novo, nem emitir uma segunda recomendação independente. É reescrever o parecer para ser consistente com essa decisão final, usando apenas evidências REAIS da transcrição abaixo. NUNCA invente fatos, problemas ou comportamentos que não aconteceram na entrevista.\n'
+    +'Se a entrevista em si foi positiva mas a decisão final é "Não avançar", seja honesto: reconheça o que foi positivo, mas deixe claro que a decisão considerou critérios adicionais do processo seletivo que vão além do que a entrevista isoladamente demonstra. Em nenhum campo escreva algo que soe como uma recomendação diferente da decisão final.\n\n'
+    +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
+    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
+    +'Retorne APENAS este JSON, reescrevendo os três campos para sustentar a decisão final "'+targetRec+'", sem redundância entre eles:\n'
+    +'{"parecerExecutivo":"","fatoresRecomendacao":["","",""],"pontosAtencao":["",""]}\n'
+    +'- parecerExecutivo: 4 a 6 linhas, cita pelo menos 1 evidência concreta da entrevista, fecha reforçando a decisão final\n'
+    +'- fatoresRecomendacao: 3 a 5 bullets curtos (frase única, ~12 palavras) com os elementos que sustentam essa decisão\n'
+    +'- pontosAtencao: 3 a 4 bullets curtos e reais — baseados na transcrição, ou reconhecendo objetivamente que a decisão considerou critérios do processo além da entrevista';
+}
+
 
 function generateAnalysisPDF(candidate) {
   if(!candidate||!candidate.analysis){return;}
@@ -4077,6 +4099,7 @@ createApp({
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
     var isGenSum=ref(false),genSumStep=ref('');
+    var reconcilingCid=ref(null);
     var alertTab=ref('cand');
     var detTab=ref('ai');
     var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
@@ -4313,14 +4336,48 @@ createApp({
     function cancelEdit(){editingField.value=null;editFieldVal.value='';}
     function isEditing(cid,field){return editingField.value&&editingField.value.cid===cid&&editingField.value.field===field;}
     function setRecomendacao(cid,val){
+      var cur=summaries.value[cid];
+      if(!cur)return;
+      var already=cur.recomendacao===val;
       var s=Object.assign({},summaries.value);
-      if(!s[cid])return;
       s[cid]=Object.assign({},s[cid]);
       s[cid].recomendacao=val;
       summaries.value=s;
       if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
-      flash('Recomendação atualizada');
       pushSync();
+      if(already){flash('Recomendação atualizada');return;}
+      var transcript=getTranscript(cid);
+      var cand=candidates.value.find(function(c){return c.id===cid;});
+      if(!transcript.trim()||!cand){flash('Recomendação atualizada');return;}
+      if(!apiKey.value){showApiModal.value=true;return;}
+      reconcilingCid.value=cid;
+      flash('Recomendação atualizada — ajustando o parecer para refletir a decisão...');
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,messages:[{role:'user',content:buildReconciliationPrompt(cand,transcript,val)}]})})
+      .then(function(r){return r.json();}).then(function(data){
+        if(data.error)throw new Error(data.error.message);
+        var raw=data.content.map(function(i){return i.text||'';}).join('');
+        var parsed;
+        try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch(pe){
+          var m=raw.match(/\{[\s\S]*\}/);
+          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
+        }
+        if(!parsed){console.error('Falha ao reconciliar parecer. raw:',raw);flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');reconcilingCid.value=null;return;}
+        var s2=Object.assign({},summaries.value);
+        s2[cid]=Object.assign({},s2[cid]);
+        if(parsed.parecerExecutivo)s2[cid].parecerExecutivo=parsed.parecerExecutivo;
+        if(parsed.fatoresRecomendacao)s2[cid].fatoresRecomendacao=parsed.fatoresRecomendacao;
+        if(parsed.pontosAtencao)s2[cid].pontosAtencao=parsed.pontosAtencao;
+        summaries.value=s2;
+        if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
+        reconcilingCid.value=null;
+        flash('Parecer ajustado para refletir a decisão final');
+        pushSync();
+      }).catch(function(e){
+        console.error('Erro ao reconciliar parecer:',e);
+        flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');
+        reconcilingCid.value=null;
+      });
     }
 
     // ── Jobs ──────────────────────────────────────────────────────────────
@@ -4685,7 +4742,7 @@ createApp({
       advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
-      startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,
+      startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,reconcilingCid,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
       candStatusFilter,candSort,
