@@ -2502,6 +2502,58 @@ return function render(_ctx, _cache) {
                                                       }, "Ajustando o parecer para refletir a decisão..."))
                                                     : _createCommentVNode("v-if", true)
                                                 ], 4 /* STYLE */),
+                                                (getSummary(viewCand.id)&&getSummary(viewCand.id).fatoresRecomendacao&&getSummary(viewCand.id).fatoresRecomendacao.length)
+                                                  ? (_openBlock(), _createElementBlock("div", {
+                                                      key: 'fatores',
+                                                      style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',borderRadius:'7px',padding:'10px 12px',marginBottom:'7px'})
+                                                    }, [
+                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
+                                                        _createElementVNode("p", {
+                                                          style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',margin:0})
+                                                        }, _toDisplayString(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'Principais fatores para avançar':'Principais fatores para não avançar'), 5 /* TEXT, STYLE */),
+                                                        (!isEditing(viewCand.id,'fatoresRecomendacao'))
+                                                          ? (_openBlock(), _createElementBlock("button", {
+                                                              key: 0,
+                                                              onClick: $event => (startEdit(viewCand.id,'fatoresRecomendacao',getSummary(viewCand.id).fatoresRecomendacao)),
+                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
+                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
+                                                          : (_openBlock(), _createElementBlock("div", {
+                                                              key: 1,
+                                                              style: {"display":"flex","gap":"5px"}
+                                                            }, [
+                                                              _createElementVNode("button", {
+                                                                onClick: $event => (saveEdit(viewCand.id,'fatoresRecomendacao')),
+                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
+                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
+                                                              _createElementVNode("button", {
+                                                                onClick: $event => (cancelEdit()),
+                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
+                                                              }, "X", 8 /* PROPS */, ["onClick"])
+                                                            ]))
+                                                      ]),
+                                                      (isEditing(viewCand.id,'fatoresRecomendacao'))
+                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
+                                                            key: 0,
+                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
+                                                            rows: "4",
+                                                            placeholder: "Um fator por linha",
+                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
+                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
+                                                            [_vModelText, editFieldVal]
+                                                          ])
+                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).fatoresRecomendacao, (p, i) => {
+                                                            return (_openBlock(), _createElementBlock("div", {
+                                                              key: i,
+                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
+                                                            }, [
+                                                              _createElementVNode("span", {
+                                                                style: _normalizeStyle({color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626'})
+                                                              }, "•", 4 /* STYLE */),
+                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
+                                                            ]))
+                                                          }), 128 /* KEYED_FRAGMENT */))
+                                                    ], 4 /* STYLE */))
+                                                  : _createCommentVNode("v-if", true),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
                                                     key: row.label,
@@ -3967,7 +4019,7 @@ function generateParecer(candidate, summary, interviewDate) {
     // ── 2. PRINCIPAIS FATORES DA RECOMENDAÇÃO ──
     + (summary.fatoresRecomendacao&&summary.fatoresRecomendacao.length?
     '<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Principais fatores da recomenda\u00e7\u00e3o',recCol)+'<div style="margin-top:4px">'+pill(summary.fatoresRecomendacao,recCol)+'</div></div>':'')
+    + lbl(isPos?'Principais fatores para avan\u00e7ar':'Principais fatores para n\u00e3o avan\u00e7ar',recCol)+'<div style="margin-top:4px">'+pill(summary.fatoresRecomendacao,recCol)+'</div></div>':'')
 
     // ── 3. PARECER EXECUTIVO ──
     + (summary.parecerExecutivo?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
@@ -4321,7 +4373,7 @@ createApp({
     function saveEdit(cid,field){
       var s=Object.assign({},summaries.value);
       s[cid]=Object.assign({},s[cid]);
-      var arr=['pontosPositivos','pontosAtencao'];
+      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao'];
       if(arr.indexOf(field)>=0){
         s[cid][field]=editFieldVal.value.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       } else {
@@ -4518,7 +4570,7 @@ createApp({
       var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nPRETENSÃO SALARIAL: '+s.expectativaSalarial:'';
       var disp=s.disponibilidade&&s.disponibilidade.trim()?'\nDISPONIBILIDADE: '+s.disponibilidade:'';
       var fat=(s.fatoresRecomendacao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\nPRINCIPAIS FATORES DA RECOMENDA\u00c7\u00c3O:\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\n'+(isPos?'PRINCIPAIS FATORES PARA AVAN\u00c7AR':'PRINCIPAIS FATORES PARA N\u00c3O AVAN\u00c7AR')+':\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
       var subject=encodeURIComponent('[R&S RH] Parecer \u2014 '+candidate.name+' | '+candidate.jobTitle);
       window.location.href='mailto:'+(job&&job.leaderEmail?job.leaderEmail:'')+'?subject='+subject+'&body='+encodeURIComponent(body);
     }
