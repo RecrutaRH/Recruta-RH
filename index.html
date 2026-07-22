@@ -3781,16 +3781,18 @@ function buildInterviewPrompt(candidate,transcript,job){
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
     +'- REGRA MAIS IMPORTANTE: toda frase precisa ter por trás um FATO CONCRETO da transcrição ou do currículo (empresa, ferramenta, iniciativa, resultado, prazo) — mas o que você ESCREVE é a interpretação desse fato (Camada 1b), nunca o fato cru sozinho\n'
-    +'- CADA CAMPO TEM UM PAPEL EXCLUSIVO — zero sobreposição: parecerExecutivo = só a decisão (aderência aos requisitos que mais pesaram + risco + recomendação, SEM contar trajetória de carreira). contextoProfissional = só a narrativa (onde está hoje, por que quer sair, interesse na vaga — SEM repetir aderência ou risco)\n'
-    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao — nunca deixe um selo vermelho/amarelo sem explicação em algum lugar do parecer\n'
+    +'- ZERO REDUNDÂNCIA ENTRE TODOS OS CAMPOS DE TEXTO (parecerExecutivo, contextoProfissional, fatoresRecomendacao, pontosPositivos, pontosAtencao, paraExplorar): cada campo responde uma pergunta diferente do gestor. Antes de escrever uma frase em qualquer um desses campos, verifique se essa mesma ideia já foi dita em outro — se sim, ou corta, ou reformula pra acrescentar algo novo. parecerExecutivo = síntese da decisão. contextoProfissional = só a narrativa de carreira (onde está, por que quer sair, interesse na vaga). fatoresRecomendacao = os 3-5 elementos mais decisivos, em bullet. pontosPositivos/pontosAtencao = observações específicas que não estão nem no parecer nem nos fatores. paraExplorar = só o que ainda falta descobrir\n'
+    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao. Se vier "Dado insuficiente" E o critério for importante pra vaga (não secundário), isso TEM que aparecer em paraExplorar — um selo cinza importante não pode ficar sem explicação em lugar nenhum do parecer\n'
     +'- Quando não houver evidência suficiente pra avaliar uma dimensão do fit, retorne "Dado insuficiente" — NUNCA force "Adequado" ou "Parcial" só pra preencher. Se o critério nem se aplica a esta etapa, retorne "Não se aplica"\n'
+    +'- DISTINÇÃO FATO x INTERPRETAÇÃO: quando a frase é um fato relatado diretamente (o candidato disse/fez algo específico), afirme direto. Quando a frase é uma leitura sua sobre o que aquele fato implica (Camada 1b), sinalize com linguagem de inferência natural — "o que sugere", "isso indica", "tende a" — nunca apresente uma interpretação como se fosse fato relatado\n'
+    +'- PROIBIDO HEDGING: nunca use "pode ser considerado", "possivelmente", "de certa forma", "até certo ponto" ou equivalentes. Se você tem evidência suficiente pra uma leitura, afirme com segurança. Se não tem, isso é "Dado insuficiente" ou vazio — não meio-termo linguístico\n'
     +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados genericamente. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
     +'CAMPO A CAMPO:\n'
     +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação\n'
     +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com as conclusões que sobreviveram ao FILTRO\n'
     +'- parecerExecutivo: 120 a 180 palavras (ver CAMADA 3 acima)\n'
     +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista\n'
-    +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente — NUNCA repita o que já está em fatoresRecomendacao\n'
+    +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente\n'
     +'- pontosAtencao: MÁXIMO 3 itens, frase única cada, mas a frase inclui o motivo de importar (não é julgamento, é explicação objetiva). Ausência de informação NÃO é automaticamente um problema — só entra aqui se a ausência for sobre algo que pesa pra decisão\n'
     +'- paraExplorar: MÁXIMO 3 bullets — perguntas ou pontos de investigação concretos pro PRÓXIMO entrevistador (o líder). Um item só entra se (1) é requisito importante da vaga E (2) ainda não há evidência suficiente. Nunca repita algo já respondido na entrevista atual. Formule como ação concreta (ex: "Pedir exemplo real de negociação com cliente"), nunca pergunta burocrática de baixo valor\n'
     +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
@@ -3978,10 +3980,22 @@ function generateAnalysisPDF(candidate) {
 }
 
 
+function computeConfianca(summary){
+  if(!summary)return null;
+  var dims=[summary.fitExperiencia,summary.fitTecnico,summary.fitComportamental,summary.fitModeloTrabalho,summary.fitSalarial];
+  var aplicaveis=dims.filter(function(v){return v&&v!=='Não se aplica';});
+  if(!aplicaveis.length)return null;
+  var insuf=aplicaveis.filter(function(v){return v==='Dado insuficiente';}).length;
+  if(insuf===0)return{label:'Alta',bg:'#dcfce7',col:'#166534'};
+  if(insuf===1)return{label:'Média',bg:'#fef3c7',col:'#b45309'};
+  return{label:'Baixa',bg:'#fee2e2',col:'#991b1b'};
+}
+
 function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
   var date = interviewDate ? new Date(interviewDate + 'T12:00:00').toLocaleDateString('pt-BR') : now;
   var isPos = summary.recomendacao === 'Avan\u00e7ar para entrevista com o l\u00edder';
+  var conf = computeConfianca(summary);
   var recCol    = isPos ? '#166534' : '#991b1b';
   var recBg     = isPos ? '#f0fdf4' : '#fef2f2';
   var recBorder = isPos ? '#86efac' : '#fca5a5';
@@ -4075,7 +4089,10 @@ function generateParecer(candidate, summary, interviewDate) {
 
     // ── 1. FIT DA VAGA (quadro resumido, 5 dimensões, sem Aderência Geral) ──
     + '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center">'
     + lbl('Fit da Vaga','#1e1b4b')
+    + (conf?'<span style="font-size:'+fLbl+';font-weight:700;color:'+conf.col+';background:'+conf.bg+';padding:2px 7px;border-radius:10px">Confian\u00e7a da avalia\u00e7\u00e3o: '+conf.label+'</span>':'')
+    + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px">'
     + fitBadge('Experiência',summary.fitExperiencia)
     + fitBadge('Conhecimento Técnico',summary.fitTecnico)
