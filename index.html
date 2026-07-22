@@ -2696,6 +2696,56 @@ return function render(_ctx, _cache) {
                                                       : _createCommentVNode("v-if", true)
                                                   ])
                                                 ]),
+                                                (getSummary(viewCand.id).paraExplorar&&getSummary(viewCand.id).paraExplorar.length)
+                                                  ? (_openBlock(), _createElementBlock("div", {
+                                                      key: 'explorar',
+                                                      style: {"background":"#F5F3FF","border":"1px solid #DDD6FE","borderRadius":"7px","padding":"10px 12px","marginBottom":"10px"}
+                                                    }, [
+                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
+                                                        _createElementVNode("p", {
+                                                          style: {"font-size":"9.5px","font-weight":"700","color":"#6D28D9","text-transform":"uppercase","letter-spacing":".06em","margin":"0"}
+                                                        }, "Para explorar com o candidato"),
+                                                        (!isEditing(viewCand.id,'paraExplorar'))
+                                                          ? (_openBlock(), _createElementBlock("button", {
+                                                              key: 0,
+                                                              onClick: $event => (startEdit(viewCand.id,'paraExplorar',getSummary(viewCand.id).paraExplorar)),
+                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
+                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
+                                                          : (_openBlock(), _createElementBlock("div", {
+                                                              key: 1,
+                                                              style: {"display":"flex","gap":"5px"}
+                                                            }, [
+                                                              _createElementVNode("button", {
+                                                                onClick: $event => (saveEdit(viewCand.id,'paraExplorar')),
+                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
+                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
+                                                              _createElementVNode("button", {
+                                                                onClick: $event => (cancelEdit()),
+                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
+                                                              }, "X", 8 /* PROPS */, ["onClick"])
+                                                            ]))
+                                                      ]),
+                                                      (isEditing(viewCand.id,'paraExplorar'))
+                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
+                                                            key: 0,
+                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
+                                                            rows: "3",
+                                                            placeholder: "Um ponto por linha",
+                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
+                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
+                                                            [_vModelText, editFieldVal]
+                                                          ])
+                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).paraExplorar, (p, i) => {
+                                                            return (_openBlock(), _createElementBlock("div", {
+                                                              key: i,
+                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
+                                                            }, [
+                                                              _createElementVNode("span", { style: {"color":"#6D28D9"} }, "•"),
+                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
+                                                            ]))
+                                                          }), 128 /* KEYED_FRAGMENT */))
+                                                    ]))
+                                                  : _createCommentVNode("v-if", true),
                                                 _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
                                                   _createElementVNode("button", {
                                                     onClick: $event => (dlParecer(viewCand)),
@@ -3704,30 +3754,38 @@ function buildPrompt(job){
     +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
-function buildInterviewPrompt(candidate,transcript){
+function buildInterviewPrompt(candidate,transcript,job){
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
   if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
   var estiloRef = 'Exemplo de Parecer Executivo correto (curto, cita evidência, foca só na decisão — não conta a biografia do candidato, isso é papel de outro campo):\n'
     +'"Candidato com forte aderência técnica: domina [ferramentas citadas] e atua há [tempo] em função equivalente. Principal risco é [ponto específico], mitigável no onboarding. Recomenda-se avançar para entrevista com o líder."\n\n'
-    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao (frase única, sem explicação adicional): "Experiência de quatro anos no mercado financeiro." — NÃO: "O candidato demonstrou ao longo da entrevista uma sólida experiência de quatro anos no mercado financeiro, o que indica maturidade profissional."\n\n';
+    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao/paraExplorar (frase única, sem explicação adicional): "Experiência de quatro anos no mercado financeiro." — NÃO: "O candidato demonstrou ao longo da entrevista uma sólida experiência de quatro anos no mercado financeiro, o que indica maturidade profissional."\n\n';
   return 'Você é um Recrutador Sênior experiente. Sua função aqui é fazer a TRIAGEM da entrevista para decidir, com critério, se faz sentido encaminhar o candidato para ser entrevistado pelo líder da área ou não.\n'
-    +'O leitor deste parecer não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações. Ele quer só saber, rápido, se deve contratar. Pense como um gestor que recebe 10 a 20 desses pareceres por semana e tem 2 minutos pra decidir. Antes de escrever qualquer frase, pergunte-se: "isso ajuda o gestor a decidir, ou só registra o que aconteceu na entrevista?" Se for só registro, corte.\n\n'
+    +'O leitor deste parecer não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações. Ele quer só saber, rápido, se deve contratar. Pense como um gestor que recebe 10 a 20 desses pareceres por semana e tem 2 minutos pra decidir.\n\n'
+    +'SEU PROCESSO DE RACIOCÍNIO TEM 2 CAMADAS + 1 FILTRO — nessa ordem, antes de escrever qualquer campo do JSON final:\n\n'
+    +'CAMADA 1 — ANÁLISE (interna, nunca aparece no resultado): cruze a descrição da vaga (os requisitos e critérios definidos abaixo) com o currículo/dados do candidato e a transcrição da entrevista. Para cada requisito relevante da vaga, classifique mentalmente como: CONFIRMA (há evidência concreta a favor), CONTRADIZ (há evidência contra), ou SEM EVIDÊNCIA (não foi possível confirmar nem negar). A vaga é a referência — você não avalia o candidato "em geral", avalia contra os critérios específicos desta posição.\n\n'
+    +'CAMADA 2 — PRIORIZAÇÃO (interna, nunca aparece no resultado): nem todo requisito tem o mesmo peso. Pergunte-se: "quais desses achados realmente influenciam a decisão de avançar ou não?" Um requisito secundário sem evidência (ex: universidade da graduação, quando isso não é decisivo pra vaga) pode ficar de fora do parecer. Um requisito crítico sem evidência (ex: experiência comercial numa vaga comercial) É o tipo de coisa que precisa aparecer, porque muda a decisão.\n\n'
+    +'REGRA DE OURO: a recomendação final NÃO deve ser determinada pela quantidade de requisitos atendidos, mas pelo peso dos requisitos para a vaga e pela qualidade das evidências disponíveis. Um candidato que atende 9 de 10 requisitos mas falha no requisito crítico deve pesar MENOS que um candidato que atende só 6 de 10 mas acerta em cheio os 3 requisitos mais críticos. Pense como um recrutador experiente, não como um sistema de pontuação.\n\n'
+    +'FILTRO — antes de escrever, descarte da CAMADA 1 tudo que a CAMADA 2 classificou como baixa relevância. O parecer final NÃO é um checklist de requisitos — é a síntese só do que pesa na decisão.\n\n'
     +estiloRef
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
+    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA (referência obrigatória da análise):\n'+job.desc+'\n\n':'')
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
-    +'- REGRA MAIS IMPORTANTE: toda frase precisa carregar um FATO CONCRETO extraído da transcrição (empresa, ferramenta, iniciativa, resultado, prazo). Frases com adjetivo genérico sem fato por trás só entram se logo em seguida vier a evidência\n'
-    +'- CADA CAMPO TEM UM PAPEL EXCLUSIVO — zero sobreposição: parecerExecutivo = só a decisão (aderência + risco + recomendação, SEM contar trajetória de carreira). contextoProfissional = só a narrativa (onde está hoje, por que quer sair, interesse na vaga — SEM repetir aderência ou risco, isso não é papel dele)\n'
+    +'- REGRA MAIS IMPORTANTE: toda frase precisa carregar um FATO CONCRETO extraído da transcrição ou do currículo (empresa, ferramenta, iniciativa, resultado, prazo). Frases com adjetivo genérico sem fato por trás só entram se logo em seguida vier a evidência\n'
+    +'- CADA CAMPO TEM UM PAPEL EXCLUSIVO — zero sobreposição: parecerExecutivo = só a decisão (aderência aos requisitos que mais pesaram + risco + recomendação, SEM contar trajetória de carreira). contextoProfissional = só a narrativa (onde está hoje, por que quer sair, interesse na vaga — SEM repetir aderência ou risco, isso não é papel dele)\n'
     +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao — nunca deixe um selo vermelho/amarelo sem explicação em algum lugar do parecer\n'
-    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
+    +'- Quando não houver evidência suficiente pra avaliar uma dimensão do fit (a entrevista simplesmente não abordou aquilo), retorne "Dado insuficiente" nessa dimensão — NUNCA force "Adequado" ou "Parcial" só pra preencher. Se o critério nem se aplica a esta etapa do processo, retorne "Não se aplica"\n'
+    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados genericamente. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
     +'CAMPO A CAMPO:\n'
-    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 4 palavras: "Excelente", "Adequado", "Parcial" ou "Atenção" — nunca uma frase. fitComportamental já inclui comunicação — não trate como coisas separadas\n'
-    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) com os elementos que MAIS pesaram na decisão — é o resumo mais rápido possível do parecer, pra quem só vai ler isso e pular o resto\n'
-    +'- parecerExecutivo: 4 a 6 linhas. Cite pelo menos 1-2 evidências concretas que embasam a recomendação. Foco 100% em decisão — aderência à vaga, principal risco, e por que avançar ou não. Não é biografia\n'
-    +'- contextoProfissional: SEMPRE presente, mas com profundidade proporcional à relevância — se não há nada que mereça atenção do gestor (motivo de saída normal, expectativa alinhada), 1-2 frases bastam; se há algo que sinaliza risco ou vale nota (inquietação, expectativa desalinhada, motivo atípico), pode chegar a 3-4 frases. Cobre: onde o candidato está hoje na carreira, por que quer sair, nível de interesse real na vaga\n'
-    +'- pontosPositivos e pontosAtencao: cada item é UMA FRASE ÚNICA E CURTA (até ~12 palavras), só a constatação, sem explicação nem contexto adicional. 3 a 4 itens cada, SEM repetir nada já dito no parecerExecutivo ou em fatoresRecomendacao\n'
+    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação — não trate como coisas separadas\n'
+    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com os elementos que sobreviveram ao FILTRO — os que realmente pesaram na decisão\n'
+    +'- parecerExecutivo: 4 a 6 linhas. Cite pelo menos 1-2 evidências concretas que embasam a recomendação, amarradas aos requisitos que mais pesaram. Foco 100% em decisão. Não é biografia\n'
+    +'- contextoProfissional: SEMPRE presente, mas com profundidade proporcional à relevância — se não há nada que mereça atenção do gestor, 1-2 frases bastam; se há algo que sinaliza risco ou vale nota, pode chegar a 3-4 frases. Cobre: onde o candidato está hoje na carreira, por que quer sair, nível de interesse real na vaga\n'
+    +'- pontosPositivos e pontosAtencao: cada item é UMA FRASE ÚNICA E CURTA (até ~12 palavras), só a constatação, sem explicação nem contexto adicional. 3 a 4 itens cada, filtrados pela CAMADA 2 — SEM repetir nada já dito no parecerExecutivo ou em fatoresRecomendacao\n'
+    +'- paraExplorar: array de 2 a 4 bullets curtos com perguntas ou pontos que o PRÓXIMO entrevistador (o líder) deveria aprofundar. Um item só entra aqui se passar nos DOIS critérios ao mesmo tempo: (1) é um requisito importante para a vaga, E (2) ainda não há evidência suficiente sobre ele na entrevista atual. Formule como pergunta ou ponto de investigação concreto (ex: "Pedir exemplo concreto de prospecção ou negociação com cliente"), nunca como pergunta burocrática de baixo valor (ex: não pergunte sobre universidade da graduação se isso não for decisivo pra vaga)\n'
     +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
     +'- disponibilidade: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc.\n'
     +'- cidadeAtual: cidade onde mora hoje, se mencionada. Senão, string vazia\n'
@@ -3735,16 +3793,18 @@ function buildInterviewPrompt(candidate,transcript){
     +'- necessitaMudanca: "Sim", "Não" ou string vazia se não abordado\n'
     +'- disponibilidadeViagens: "Sim", "Não", "Parcial" ou string vazia se não abordado\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
+    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"paraExplorar":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
-function buildReconciliationPrompt(candidate,transcript,targetRec){
+function buildReconciliationPrompt(candidate,transcript,targetRec,job){
   return 'A decisão final deste processo seletivo já foi tomada pelo RH: "'+targetRec+'".\n'
     +'Essa decisão considera fatores além da entrevista — aderência ao perfil da vaga, benchmarking com outros candidatos, critérios eliminatórios do processo, percepção técnica do recrutador — que não estão necessariamente refletidos na transcrição.\n'
     +'Sua tarefa NÃO é decidir de novo, nem emitir uma segunda recomendação independente. É reescrever o parecer para ser consistente com essa decisão final, usando apenas evidências REAIS da transcrição abaixo. NUNCA invente fatos, problemas ou comportamentos que não aconteceram na entrevista.\n'
+    +'Lembre-se da regra de peso: a recomendação não é sobre quantos requisitos foram atendidos, é sobre o peso dos requisitos mais críticos da vaga. Ancore a justificativa nos requisitos que mais pesam, não em uma lista completa.\n'
     +'Se a entrevista em si foi positiva mas a decisão final é "Não avançar", seja honesto: reconheça o que foi positivo, mas deixe claro que a decisão considerou critérios adicionais do processo seletivo que vão além do que a entrevista isoladamente demonstra. Em nenhum campo escreva algo que soe como uma recomendação diferente da decisão final.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
+    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA:\n'+job.desc+'\n\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'Retorne APENAS este JSON, reescrevendo os três campos para sustentar a decisão final "'+targetRec+'", sem redundância entre eles:\n'
     +'{"parecerExecutivo":"","fatoresRecomendacao":["","",""],"pontosAtencao":["",""]}\n'
@@ -3925,6 +3985,7 @@ function generateParecer(candidate, summary, interviewDate) {
   // ── Modo compacto: quanto mais texto, mais denso o layout, para caber em 1 página ──
   var totalChars = [summary.parecerExecutivo,summary.contextoProfissional]
     .concat(summary.pontosPositivos||[]).concat(summary.pontosAtencao||[])
+    .concat(summary.fatoresRecomendacao||[]).concat(summary.paraExplorar||[])
     .reduce(function(sum,t){return sum+(t?String(t).length:0);},0);
   var dense  = totalChars > 2600;
   var xdense = totalChars > 3400;
@@ -4041,6 +4102,11 @@ function generateParecer(candidate, summary, interviewDate) {
     '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
     + lbl('Pontos de aten\u00e7\u00e3o','#b45309')+'<div style="margin-top:4px">'+pill(summary.pontosAtencao,'#b45309')+'</div></div>':'')
     + '</div>'
+
+    // ── PARA EXPLORAR COM O CANDIDATO (roteiro pro próximo entrevistador) ──
+    + (summary.paraExplorar&&summary.paraExplorar.length?
+    '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Para explorar com o candidato','#6d28d9')+'<div style="margin-top:4px">'+pill(summary.paraExplorar,'#6d28d9')+'</div></div>':'')
 
     // ── 7. INFORMAÇÕES OBJETIVAS ──
     + ((salario||disponib||summary.cidadeAtual||summary.modeloTrabalhoAtual||summary.necessitaMudanca||summary.disponibilidadeViagens)?
@@ -4373,7 +4439,7 @@ createApp({
     function saveEdit(cid,field){
       var s=Object.assign({},summaries.value);
       s[cid]=Object.assign({},s[cid]);
-      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao'];
+      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao','paraExplorar'];
       if(arr.indexOf(field)>=0){
         s[cid][field]=editFieldVal.value.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       } else {
@@ -4403,8 +4469,9 @@ createApp({
       if(!transcript.trim()||!cand){flash('Recomendação atualizada');return;}
       if(!apiKey.value){showApiModal.value=true;return;}
       reconcilingCid.value=cid;
+      var jb=jobs.value.find(function(j){return j.id===cand.jobId;});
       flash('Recomendação atualizada — ajustando o parecer para refletir a decisão...');
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,messages:[{role:'user',content:buildReconciliationPrompt(cand,transcript,val)}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,messages:[{role:'user',content:buildReconciliationPrompt(cand,transcript,val,jb)}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4530,8 +4597,9 @@ createApp({
     function generateInterviewSummary(candidate){
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
+      var job=jobs.value.find(function(j){return j.id===candidate.jobId;});
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id),job)}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4570,7 +4638,8 @@ createApp({
       var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nPRETENSÃO SALARIAL: '+s.expectativaSalarial:'';
       var disp=s.disponibilidade&&s.disponibilidade.trim()?'\nDISPONIBILIDADE: '+s.disponibilidade:'';
       var fat=(s.fatoresRecomendacao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\n'+(isPos?'PRINCIPAIS FATORES PARA AVAN\u00c7AR':'PRINCIPAIS FATORES PARA N\u00c3O AVAN\u00c7AR')+':\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+      var explorar=(s.paraExplorar||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
+      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\n'+(isPos?'PRINCIPAIS FATORES PARA AVAN\u00c7AR':'PRINCIPAIS FATORES PARA N\u00c3O AVAN\u00c7AR')+':\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(explorar?'\n\nPARA EXPLORAR COM O CANDIDATO:\n'+explorar:'')+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
       var subject=encodeURIComponent('[R&S RH] Parecer \u2014 '+candidate.name+' | '+candidate.jobTitle);
       window.location.href='mailto:'+(job&&job.leaderEmail?job.leaderEmail:'')+'?subject='+subject+'&body='+encodeURIComponent(body);
     }
