@@ -3842,10 +3842,11 @@ function generateAnalysisPDF(candidate) {
   var matched = (a.comparison&&a.comparison.matched)||[];
   var missing  = (a.comparison&&a.comparison.missing)||[];
 
-  function truncate(text, maxLen) {
-    if(!text)return '';
-    return text.length>maxLen?text.substring(0,maxLen)+'...':text;
-  }
+  var densTxt = ((es.strengths||'').length + (es.reasoning||'').length);
+  var fSum = densTxt>750?'9.5px':'10.5px';
+  var fReason = densTxt>750?'9px':'10px';
+  var lnSum = densTxt>750?1.45:1.55;
+  var lnReason = densTxt>750?1.4:1.5;
   function sbar(label, val, max) {
     var pct = max>0?Math.round(val/max*100):0;
     var col = pct>=80?'#16A34A':pct>=60?'#EA580C':'#DC2626';
@@ -3923,7 +3924,7 @@ function generateAnalysisPDF(candidate) {
     // EXEC SUMMARY
     +(es.strengths?'<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#1D4ED8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Resumo Executivo</p>'
-    +'<p style="font-size:10.5px;color:#1e293b;line-height:1.55">'+truncate(es.strengths, 420)+'</p>'
+    +'<p style="font-size:'+fSum+';color:#1e293b;line-height:'+lnSum+'">'+es.strengths+'</p>'
     +'</div>':'')
 
     // COMPETÊNCIAS + PERFIL COMPORTAMENTAL
@@ -3962,7 +3963,7 @@ function generateAnalysisPDF(candidate) {
     // REASONING
     +(es.reasoning?'<div style="background:#F8FAFC;border:1px solid #e2e8f0;border-radius:7px;padding:7px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Justificativa</p>'
-    +'<p style="font-size:10px;color:#334155;line-height:1.5">'+truncate(es.reasoning, 380)+'</p>'
+    +'<p style="font-size:'+fReason+';color:#334155;line-height:'+lnReason+'">'+es.reasoning+'</p>'
     +'</div>':'')
 
     // FOOTER
@@ -3995,7 +3996,6 @@ function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
   var date = interviewDate ? new Date(interviewDate + 'T12:00:00').toLocaleDateString('pt-BR') : now;
   var isPos = summary.recomendacao === 'Avan\u00e7ar para entrevista com o l\u00edder';
-  var conf = computeConfianca(summary);
   var recCol    = isPos ? '#166534' : '#991b1b';
   var recBg     = isPos ? '#f0fdf4' : '#fef2f2';
   var recBorder = isPos ? '#86efac' : '#fca5a5';
@@ -4089,10 +4089,7 @@ function generateParecer(candidate, summary, interviewDate) {
 
     // ── 1. FIT DA VAGA (quadro resumido, 5 dimensões, sem Aderência Geral) ──
     + '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + '<div style="display:flex;justify-content:space-between;align-items:center">'
     + lbl('Fit da Vaga','#1e1b4b')
-    + (conf?'<span style="font-size:'+fLbl+';font-weight:700;color:'+conf.col+';background:'+conf.bg+';padding:2px 7px;border-radius:10px">Confian\u00e7a da avalia\u00e7\u00e3o: '+conf.label+'</span>':'')
-    + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px">'
     + fitBadge('Experiência',summary.fitExperiencia)
     + fitBadge('Conhecimento Técnico',summary.fitTecnico)
