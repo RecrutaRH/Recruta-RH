@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F8FAFC;color:#0F172A}
@@ -2430,11 +2431,25 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
+                                          _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
+                                            _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
+                                            _createElementVNode("label", {
+                                              style: _normalizeStyle({fontSize:'11px',fontWeight:600,color:isUploadingTranscript?'#94A3B8':'#0369A1',cursor:isUploadingTranscript?'wait':'pointer',display:'flex',alignItems:'center',gap:'4px'})
+                                            }, [
+                                              _createTextVNode(_toDisplayString(isUploadingTranscript?'Lendo arquivo...':'⇧ Enviar .docx')+" ", 1 /* TEXT */),
+                                              _createElementVNode("input", {
+                                                type: "file",
+                                                accept: ".docx",
+                                                disabled: isUploadingTranscript,
+                                                onChange: $event => (handleTranscriptFile(viewCand.id,$event.target.files[0]),$event.target.value=''),
+                                                style: {"display":"none"}
+                                              }, null, 40 /* PROPS, NEED_HYDRATION */, ["disabled", "onChange"])
+                                            ], 4 /* STYLE */)
+                                          ]),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
-                                            placeholder: "Cole aqui a transcricao exportada do Teams...",
+                                            placeholder: "Cole aqui a transcricao exportada do Teams, ou envie o arquivo .docx acima...",
                                             rows: "6",
                                             style: {"margin-bottom":"10px","font-size":"12px"}
                                           }, null, 40 /* PROPS, NEED_HYDRATION */, ["value", "onInput"]),
@@ -4629,6 +4644,27 @@ createApp({
     function getNote(cid){return notes.value[cid]||'';}
     function getTranscript(cid){return transcripts.value[cid]||'';}
     function setTranscript(cid,txt){var t=Object.assign({},transcripts.value);t[cid]=txt;transcripts.value=t;}
+    var isUploadingTranscript=ref(false);
+    function handleTranscriptFile(cid,file){
+      if(!file)return;
+      var name=(file.name||'').toLowerCase();
+      if(!name.endsWith('.docx')){flash('Envie um arquivo .docx (Word)');return;}
+      isUploadingTranscript.value=true;
+      var reader=new FileReader();
+      reader.onload=function(e){
+        mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(result){
+          setTranscript(cid,result.value||'');
+          isUploadingTranscript.value=false;
+          flash('Transcrição importada do Word');
+        }).catch(function(err){
+          console.error('Erro ao ler .docx:',err);
+          isUploadingTranscript.value=false;
+          flash('Não consegui ler esse arquivo. Tente colar o texto manualmente.');
+        });
+      };
+      reader.onerror=function(){isUploadingTranscript.value=false;flash('Falha ao abrir o arquivo.');};
+      reader.readAsArrayBuffer(file);
+    }
     function getSummary(cid){return summaries.value[cid]||null;}
     function getIntDate(cid){return intDates.value[cid]||'';}
     function setIntDate(cid,d){var v=Object.assign({},intDates.value);v[cid]=d;intDates.value=v;}
@@ -4899,7 +4935,7 @@ createApp({
       jbKey,jbBin,jbStatus,showSyncModal,jbKeyInput,jbCreating,
       editingField,editFieldVal,
       flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,deleteJob,handleFile,onFileDrop,analyze,
-      advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
+      advanceStatus,saveNote,getNote,getTranscript,setTranscript,handleTranscriptFile,isUploadingTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,reconcilingCid,
