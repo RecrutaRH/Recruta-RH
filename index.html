@@ -4433,7 +4433,7 @@ createApp({
       return list;
     });
 
-    function isVagaCrit(job){ return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
+    function isVagaCrit(job){ return job.status==='aberta'&&!job.prazoEstendido&&bizDaysSince(job.openDate)>10; }
 
     function applyData(d){
       if(!d)return;
@@ -4865,7 +4865,7 @@ createApp({
     }
 
     // ── Prazo justificativa ──────────────────────────────────────────────────
-    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
+    var PRAZO_MOTIVOS=['Vaga continua (processo de expansao, sem prazo fixo)','Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
     var showJustModal=ref(false);
     var justJobId=ref(null);
     var justMotivo=ref('');
