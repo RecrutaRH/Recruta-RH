@@ -3754,6 +3754,22 @@ function buildPrompt(job){
     +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
+function buildCvContext(candidate){
+  var a = candidate.analysis;
+  if(!a) return '';
+  var es = a.executiveSummary||{};
+  var ca = a.candidateAnalysis||{};
+  var comp = a.comparison||{};
+  var out = '';
+  if(a.classification||a.score) out += 'Classificação: '+(a.classification||'')+(a.score&&a.score.total?' (score '+a.score.total+'/100)':'')+'\n';
+  if(es.strengths) out += 'Resumo do currículo: '+es.strengths+'\n';
+  if(es.reasoning) out += 'Justificativa da análise de currículo: '+es.reasoning+'\n';
+  if((comp.matched||[]).length) out += 'Requisitos já confirmados pelo currículo: '+comp.matched.join('; ')+'\n';
+  if((comp.missing||[]).length) out += 'Requisitos não evidenciados pelo currículo: '+comp.missing.join('; ')+'\n';
+  if((ca.relevantExperiences||[]).length) out += 'Experiências relevantes identificadas: '+ca.relevantExperiences.join('; ')+'\n';
+  return out;
+}
+
 function buildInterviewPrompt(candidate,transcript,job){
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
@@ -3765,7 +3781,7 @@ function buildInterviewPrompt(candidate,transcript,job){
     +'O leitor não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações, com pouco tempo, que precisa entender rápido quem é o candidato, por que o RH recomenda (ou não) avançar, e o que falta validar.\n\n'
     +'SEU PROCESSO DE RACIOCÍNIO TEM 2 CAMADAS + 1 FILTRO — sempre nessa ordem, internamente, ANTES de escrever qualquer campo do JSON final. Isso nunca aparece no resultado, só o produto final dele:\n\n'
     +'CAMADA 1 — ANÁLISE (interna). Tem dois passos, não um só:\n'
-    +'  1a) EXTRAÇÃO: cruze a descrição da vaga (os requisitos e critérios abaixo) com o currículo/dados do candidato e a transcrição. Para cada requisito relevante, classifique: CONFIRMADA (evidência concreta a favor), CONTRADITA (evidência contra), PARCIAL (indício fraco ou indireto, sem exemplo concreto) ou AUSENTE (não abordado). Uma afirmação genérica do candidato sem exemplo concreto quando perguntado é PARCIAL, não CONFIRMADA — a lacuna entre o que ele diz e o que ele demonstra é, em si, um sinal a levar pra frente.\n'
+    +'  1a) EXTRAÇÃO: cruze a descrição da vaga (os requisitos e critérios abaixo), a ANÁLISE DE PERFIL já feita a partir do currículo (contexto obrigatório — nunca trate este candidato como se estivesse sendo avaliado pela primeira vez) e a transcrição da entrevista. Para cada requisito relevante, classifique: CONFIRMADA (evidência concreta a favor), CONTRADITA (evidência contra), PARCIAL (indício fraco ou indireto, sem exemplo concreto) ou AUSENTE (não abordado). Uma afirmação genérica do candidato sem exemplo concreto quando perguntado é PARCIAL, não CONFIRMADA — a lacuna entre o que ele diz e o que ele demonstra é, em si, um sinal a levar pra frente. Além disso, pra cada achado da entrevista, verifique a relação dele com o que a análise de currículo já tinha identificado: a entrevista CONFIRMA (reforça o que já era conhecido), COMPLEMENTA (traz informação nova e coerente), CONTRADIZ (conflita com o currículo — isso é um sinal importante) ou DEIXA SEM VALIDAÇÃO (currículo levantou a questão, entrevista não tocou nela)?\n'
     +'  1b) INTERPRETAÇÃO: aqui é onde você para de ser um resumidor e vira recrutador. Para cada evidência CONFIRMADA ou CONTRADITA que sobreviver, não registre só o fato — responda "o que isso significa pra capacidade dessa pessoa performar NESTA vaga específica?" Transforme fato em conclusão profissional. Fato: "geriu o próprio negócio por 3 anos." Conclusão fraca (não escreva assim): "isso mostra experiência." Conclusão de recrutador sênior (escreva assim): "já naturalizou responsabilidade por resultado, o que reduz o risco de adaptação ao modelo de remuneração variável da vaga." É essa transformação — fato vira implicação pra decisão — que precisa acontecer pra CADA evidência que for usada no parecer final.\n\n'
     +'CAMADA 2 — PRIORIZAÇÃO (interna). Nem toda conclusão da Camada 1b pesa igual. Pergunte-se: "essa conclusão específica muda a decisão de avançar ou não?" Uma conclusão sobre requisito secundário PARCIAL/AUSENTE pode ficar de fora. Uma conclusão sobre requisito crítico PARCIAL/AUSENTE precisa aparecer, porque muda a decisão — normalmente vira item de paraExplorar, não motivo pra reprovar de cara.\n\n'
     +'REGRA DE OURO: a recomendação final NÃO é sobre quantidade de requisitos atendidos — é sobre o peso dos requisitos mais críticos e a força da evidência disponível. Um candidato com 9 de 10 requisitos mas falho no crítico pesa MENOS que um com 6 de 10 que acerta em cheio os 3 mais críticos. Julgue como recrutador experiente, não como sistema de pontuação.\n\n'
@@ -3777,6 +3793,7 @@ function buildInterviewPrompt(candidate,transcript,job){
     +estiloRef
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
     +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA (referência obrigatória da análise):\n'+job.desc+'\n\n':'')
+    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto obrigatório, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
@@ -3791,7 +3808,7 @@ function buildInterviewPrompt(candidate,transcript,job){
     +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação\n'
     +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com as conclusões que sobreviveram ao FILTRO\n'
     +'- parecerExecutivo: 120 a 180 palavras (ver CAMADA 3 acima)\n'
-    +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista\n'
+    +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Integra o que a análise de currículo já mostrou com o que a entrevista confirmou, complementou ou contradisse — não é só sobre a entrevista isolada. Quando currículo e entrevista forem coerentes entre si, destaque isso explicitamente (é um sinal positivo de consistência). Quando surgir informação nova relevante na entrevista, integre ao invés de listar separado. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista, e sem repetir o currículo palavra por palavra\n'
     +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente\n'
     +'- pontosAtencao: MÁXIMO 3 itens, frase única cada, mas a frase inclui o motivo de importar (não é julgamento, é explicação objetiva). Ausência de informação NÃO é automaticamente um problema — só entra aqui se a ausência for sobre algo que pesa pra decisão\n'
     +'- paraExplorar: MÁXIMO 3 bullets — perguntas ou pontos de investigação concretos pro PRÓXIMO entrevistador (o líder). Um item só entra se (1) é requisito importante da vaga E (2) ainda não há evidência suficiente. Nunca repita algo já respondido na entrevista atual. Formule como ação concreta (ex: "Pedir exemplo real de negociação com cliente"), nunca pergunta burocrática de baixo valor\n'
@@ -3814,6 +3831,7 @@ function buildReconciliationPrompt(candidate,transcript,targetRec,job){
     +'Se a entrevista em si foi positiva mas a decisão final é "Não avançar", seja honesto: reconheça o que foi positivo, mas deixe claro que a decisão considerou critérios adicionais do processo seletivo que vão além do que a entrevista isoladamente demonstra. Em nenhum campo escreva algo que soe como uma recomendação diferente da decisão final.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
     +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA:\n'+job.desc+'\n\n':'')
+    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'Retorne APENAS este JSON, reescrevendo os três campos para sustentar a decisão final "'+targetRec+'", sem redundância entre eles:\n'
     +'{"parecerExecutivo":"","fatoresRecomendacao":["","",""],"pontosAtencao":["",""]}\n'
