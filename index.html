@@ -11,7 +11,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F8FAFC;color:#0F172A}
@@ -493,11 +492,7 @@ return function render(_ctx, _cache) {
                   onClick: $event => (editingJob=null),
                   style: {"flex":"1","border":"1px solid #E5E7EB","background":"none","border-radius":"8px","padding":"10px","font-size":"13px","cursor":"pointer"}
                 }, "Cancelar", 8 /* PROPS */, ["onClick"])
-              ]),
-              _createElementVNode("button", {
-                onClick: $event => (deleteJob(editingJob.id)),
-                style: {"width":"100%","margin-top":"10px","border":"1px solid #FCA5A5","color":"#DC2626","background":"none","border-radius":"8px","padding":"9px","font-size":"12.5px","font-weight":"600","cursor":"pointer"}
-              }, "Excluir vaga", 8 /* PROPS */, ["onClick"])
+              ])
             ])
           ]))
         : _createCommentVNode("v-if", true),
@@ -2431,25 +2426,11 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                            _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
-                                            _createElementVNode("label", {
-                                              style: _normalizeStyle({fontSize:'11px',fontWeight:600,color:isUploadingTranscript?'#94A3B8':'#0369A1',cursor:isUploadingTranscript?'wait':'pointer',display:'flex',alignItems:'center',gap:'4px'})
-                                            }, [
-                                              _createTextVNode(_toDisplayString(isUploadingTranscript?'Lendo arquivo...':'⇧ Enviar .docx')+" ", 1 /* TEXT */),
-                                              _createElementVNode("input", {
-                                                type: "file",
-                                                accept: ".docx",
-                                                disabled: isUploadingTranscript,
-                                                onChange: $event => (handleTranscriptFile(viewCand.id,$event.target.files[0]),$event.target.value=''),
-                                                style: {"display":"none"}
-                                              }, null, 40 /* PROPS, NEED_HYDRATION */, ["disabled", "onChange"])
-                                            ], 4 /* STYLE */)
-                                          ]),
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
-                                            placeholder: "Cole aqui a transcricao exportada do Teams, ou envie o arquivo .docx acima...",
+                                            placeholder: "Cole aqui a transcricao exportada do Teams...",
                                             rows: "6",
                                             style: {"margin-bottom":"10px","font-size":"12px"}
                                           }, null, 40 /* PROPS, NEED_HYDRATION */, ["value", "onInput"]),
@@ -2489,86 +2470,10 @@ return function render(_ctx, _cache) {
                                           ], 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
                                           (getSummary(viewCand.id))
                                             ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
-                                                _createElementVNode("div", {
-                                                  style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#86EFAC':'#FCA5A5'),borderRadius:'9px',padding:'12px 14px',marginBottom:'10px'})
-                                                }, [
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'4px'})
-                                                  }, "Recomendação do RH"),
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({fontSize:'13px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',marginBottom:'8px'})
-                                                  }, _toDisplayString(getSummary(viewCand.id).recomendacao), 5 /* TEXT, STYLE */),
-                                                  _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
-                                                    _createElementVNode("button", {
-                                                      onClick: $event => (setRecomendacao(viewCand.id,'Avançar para entrevista com o líder')),
-                                                      disabled: reconcilingCid===viewCand.id,
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#fff',color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
-                                                    _createElementVNode("button", {
-                                                      onClick: $event => (setRecomendacao(viewCand.id,'Não avançar no processo')),
-                                                      disabled: reconcilingCid===viewCand.id,
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#fff',color:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Não avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"])
-                                                  ]),
-                                                  (reconcilingCid===viewCand.id)
-                                                    ? (_openBlock(), _createElementBlock("div", {
-                                                        key: 0,
-                                                        style: {"fontSize":"10px","color":"#94A3B8","marginTop":"6px"}
-                                                      }, "Ajustando o parecer para refletir a decisão..."))
-                                                    : _createCommentVNode("v-if", true)
-                                                ], 4 /* STYLE */),
-                                                (getSummary(viewCand.id)&&getSummary(viewCand.id).fatoresRecomendacao&&getSummary(viewCand.id).fatoresRecomendacao.length)
-                                                  ? (_openBlock(), _createElementBlock("div", {
-                                                      key: 'fatores',
-                                                      style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',borderRadius:'7px',padding:'10px 12px',marginBottom:'7px'})
-                                                    }, [
-                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                                        _createElementVNode("p", {
-                                                          style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',margin:0})
-                                                        }, _toDisplayString(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'Principais fatores para avançar':'Principais fatores para não avançar'), 5 /* TEXT, STYLE */),
-                                                        (!isEditing(viewCand.id,'fatoresRecomendacao'))
-                                                          ? (_openBlock(), _createElementBlock("button", {
-                                                              key: 0,
-                                                              onClick: $event => (startEdit(viewCand.id,'fatoresRecomendacao',getSummary(viewCand.id).fatoresRecomendacao)),
-                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
-                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
-                                                          : (_openBlock(), _createElementBlock("div", {
-                                                              key: 1,
-                                                              style: {"display":"flex","gap":"5px"}
-                                                            }, [
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (saveEdit(viewCand.id,'fatoresRecomendacao')),
-                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (cancelEdit()),
-                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
-                                                              }, "X", 8 /* PROPS */, ["onClick"])
-                                                            ]))
-                                                      ]),
-                                                      (isEditing(viewCand.id,'fatoresRecomendacao'))
-                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
-                                                            key: 0,
-                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
-                                                            rows: "4",
-                                                            placeholder: "Um fator por linha",
-                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
-                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
-                                                            [_vModelText, editFieldVal]
-                                                          ])
-                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).fatoresRecomendacao, (p, i) => {
-                                                            return (_openBlock(), _createElementBlock("div", {
-                                                              key: i,
-                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
-                                                            }, [
-                                                              _createElementVNode("span", {
-                                                                style: _normalizeStyle({color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626'})
-                                                              }, "•", 4 /* STYLE */),
-                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                            ]))
-                                                          }), 128 /* KEYED_FRAGMENT */))
-                                                    ], 4 /* STYLE */))
-                                                  : _createCommentVNode("v-if", true),
+                                                _createElementVNode("div", { style: {"background":"#F0FDF4","border":"1px solid #86EFAC","border-radius":"9px","padding":"12px 14px","margin-bottom":"10px"} }, [
+                                                  _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#16A34A","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"4px"} }, "Recomendacao"),
+                                                  _createElementVNode("div", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(getSummary(viewCand.id).recomendacao), 1 /* TEXT */)
+                                                ]),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
                                                     key: row.label,
@@ -2711,56 +2616,6 @@ return function render(_ctx, _cache) {
                                                       : _createCommentVNode("v-if", true)
                                                   ])
                                                 ]),
-                                                (getSummary(viewCand.id).paraExplorar&&getSummary(viewCand.id).paraExplorar.length)
-                                                  ? (_openBlock(), _createElementBlock("div", {
-                                                      key: 'explorar',
-                                                      style: {"background":"#F5F3FF","border":"1px solid #DDD6FE","borderRadius":"7px","padding":"10px 12px","marginBottom":"10px"}
-                                                    }, [
-                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                                        _createElementVNode("p", {
-                                                          style: {"font-size":"9.5px","font-weight":"700","color":"#6D28D9","text-transform":"uppercase","letter-spacing":".06em","margin":"0"}
-                                                        }, "Para explorar com o candidato"),
-                                                        (!isEditing(viewCand.id,'paraExplorar'))
-                                                          ? (_openBlock(), _createElementBlock("button", {
-                                                              key: 0,
-                                                              onClick: $event => (startEdit(viewCand.id,'paraExplorar',getSummary(viewCand.id).paraExplorar)),
-                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
-                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
-                                                          : (_openBlock(), _createElementBlock("div", {
-                                                              key: 1,
-                                                              style: {"display":"flex","gap":"5px"}
-                                                            }, [
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (saveEdit(viewCand.id,'paraExplorar')),
-                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (cancelEdit()),
-                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
-                                                              }, "X", 8 /* PROPS */, ["onClick"])
-                                                            ]))
-                                                      ]),
-                                                      (isEditing(viewCand.id,'paraExplorar'))
-                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
-                                                            key: 0,
-                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
-                                                            rows: "3",
-                                                            placeholder: "Um ponto por linha",
-                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
-                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
-                                                            [_vModelText, editFieldVal]
-                                                          ])
-                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).paraExplorar, (p, i) => {
-                                                            return (_openBlock(), _createElementBlock("div", {
-                                                              key: i,
-                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
-                                                            }, [
-                                                              _createElementVNode("span", { style: {"color":"#6D28D9"} }, "•"),
-                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                            ]))
-                                                          }), 128 /* KEYED_FRAGMENT */))
-                                                    ]))
-                                                  : _createCommentVNode("v-if", true),
                                                 _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
                                                   _createElementVNode("button", {
                                                     onClick: $event => (dlParecer(viewCand)),
@@ -3732,10 +3587,6 @@ function buildMailto(job,candidates){
   return 'mailto:'+(job.leaderEmail||'')+'?subject='+subject+'&body='+encodeURIComponent(body);
 }
 function buildPrompt(job){
-  var hasCustomClass = /perfil\s*a\b/i.test(job.desc||'') && /perfil\s*b\b/i.test(job.desc||'');
-  var classificationRule = hasCustomClass
-    ? '- classification: a descrição da vaga acima já define seu próprio sistema de classificação (ex: "Perfil A", "Perfil B", "Perfil C", "Perfil D"). Use EXATAMENTE a nomenclatura e os critérios definidos na descrição da vaga para decidir qual classificação atribuir — não use a escala "Forte/Moderada/Baixa aderência" nem misture as duas nomenclaturas\n'
-    : '- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n';
   return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência em avaliação de perfis executivos.\n'
     +'Analise o currículo do candidato com profundidade consultiva e retorne APENAS JSON válido, sem markdown.\n\n'
     +'VAGA: '+job.title+' | '+(job.dept||'')+'\n'+job.desc+'\n\n'
@@ -3760,7 +3611,7 @@ function buildPrompt(job){
     +'- score.softSkills: 0-15 (peso 15% — analise evidências comportamentais)\n'
     +'- score.culturalFit: 0-10 (peso 10% — alinhamento com a cultura descrita na vaga)\n'
     +'- score.total = soma dos quatro\n'
-    +classificationRule
+    +'- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n'
     +'- recommendation: "Avançar para entrevista", "Manter em banco de talentos", "Reprovar"\n'
     +'- executiveSummary.strengths: 3-5 frases consultivas sobre o perfil geral — NÃO liste tópicos\n'
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
@@ -3769,90 +3620,30 @@ function buildPrompt(job){
     +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
-function buildCvContext(candidate){
-  var a = candidate.analysis;
-  if(!a) return '';
-  var es = a.executiveSummary||{};
-  var ca = a.candidateAnalysis||{};
-  var comp = a.comparison||{};
-  var out = '';
-  if(a.classification||a.score) out += 'Classificação: '+(a.classification||'')+(a.score&&a.score.total?' (score '+a.score.total+'/100)':'')+'\n';
-  if(es.strengths) out += 'Resumo do currículo: '+es.strengths+'\n';
-  if(es.reasoning) out += 'Justificativa da análise de currículo: '+es.reasoning+'\n';
-  if((comp.matched||[]).length) out += 'Requisitos já confirmados pelo currículo: '+comp.matched.join('; ')+'\n';
-  if((comp.missing||[]).length) out += 'Requisitos não evidenciados pelo currículo: '+comp.missing.join('; ')+'\n';
-  if((ca.relevantExperiences||[]).length) out += 'Experiências relevantes identificadas: '+ca.relevantExperiences.join('; ')+'\n';
-  return out;
-}
-
-function buildInterviewPrompt(candidate,transcript,job){
+function buildInterviewPrompt(candidate,transcript){
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
   if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  var estiloRef = 'Exemplo de Parecer Executivo correto (conecta ideias, interpreta em vez de listar, evita jargão de IA):\n'
-    +'"Ana chega ao processo em transição consciente de carreira, com o MBA do Insper já funcionando como ponte real para o mercado financeiro — ela cita, sem hesitar, os pontos do curso que mais se aproximam da rotina de um assessor. Essa clareza de motivo pesa a favor, mas a entrevista não chegou a testar a frente comercial: não houve espaço para ela relatar uma situação concreta de negociação ou captação, que é o critério mais pesado da vaga. Recomenda-se avançar, com a ressalva de que a próxima etapa precisa fechar essa lacuna antes da decisão final."\n\n'
-    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao/paraExplorar (frase única, direta, sem "Demonstrou/Apresentou/Informou/Mencionou/Possui" e sem explicação em excesso — mas carregando o fato E, quando for ponto de atenção, o motivo de importar): "Geriu o próprio negócio por três anos, com autonomia total sobre decisão comercial." — NÃO: "O candidato demonstrou ao longo da entrevista que geriu seu próprio negócio, o que indica maturidade e autonomia."\n\n';
-  return 'Você é um Recrutador Sênior com mais de 15 anos de experiência em seleção de profissionais. Sua responsabilidade NÃO é resumir a entrevista — é elaborar um parecer executivo que ajude o gestor a decidir e a conduzir melhor a próxima etapa. O texto precisa parecer escrito por uma pessoa que já fez centenas dessas triagens, nunca por uma IA.\n'
-    +'O leitor não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações, com pouco tempo, que precisa entender rápido quem é o candidato, por que o RH recomenda (ou não) avançar, e o que falta validar.\n\n'
-    +'SEU PROCESSO DE RACIOCÍNIO TEM 2 CAMADAS + 1 FILTRO — sempre nessa ordem, internamente, ANTES de escrever qualquer campo do JSON final. Isso nunca aparece no resultado, só o produto final dele:\n\n'
-    +'CAMADA 1 — ANÁLISE (interna). Tem dois passos, não um só:\n'
-    +'  1a) EXTRAÇÃO: cruze a descrição da vaga (os requisitos e critérios abaixo), a ANÁLISE DE PERFIL já feita a partir do currículo (contexto obrigatório — nunca trate este candidato como se estivesse sendo avaliado pela primeira vez) e a transcrição da entrevista. Para cada requisito relevante, classifique: CONFIRMADA (evidência concreta a favor), CONTRADITA (evidência contra), PARCIAL (indício fraco ou indireto, sem exemplo concreto) ou AUSENTE (não abordado). Uma afirmação genérica do candidato sem exemplo concreto quando perguntado é PARCIAL, não CONFIRMADA — a lacuna entre o que ele diz e o que ele demonstra é, em si, um sinal a levar pra frente. Além disso, pra cada achado da entrevista, verifique a relação dele com o que a análise de currículo já tinha identificado: a entrevista CONFIRMA (reforça o que já era conhecido), COMPLEMENTA (traz informação nova e coerente), CONTRADIZ (conflita com o currículo — isso é um sinal importante) ou DEIXA SEM VALIDAÇÃO (currículo levantou a questão, entrevista não tocou nela)?\n'
-    +'  1b) INTERPRETAÇÃO: aqui é onde você para de ser um resumidor e vira recrutador. Para cada evidência CONFIRMADA ou CONTRADITA que sobreviver, não registre só o fato — responda "o que isso significa pra capacidade dessa pessoa performar NESTA vaga específica?" Transforme fato em conclusão profissional. Fato: "geriu o próprio negócio por 3 anos." Conclusão fraca (não escreva assim): "isso mostra experiência." Conclusão de recrutador sênior (escreva assim): "já naturalizou responsabilidade por resultado, o que reduz o risco de adaptação ao modelo de remuneração variável da vaga." É essa transformação — fato vira implicação pra decisão — que precisa acontecer pra CADA evidência que for usada no parecer final.\n\n'
-    +'CAMADA 2 — PRIORIZAÇÃO (interna). Nem toda conclusão da Camada 1b pesa igual. Pergunte-se: "essa conclusão específica muda a decisão de avançar ou não?" Uma conclusão sobre requisito secundário PARCIAL/AUSENTE pode ficar de fora. Uma conclusão sobre requisito crítico PARCIAL/AUSENTE precisa aparecer, porque muda a decisão — normalmente vira item de paraExplorar, não motivo pra reprovar de cara.\n\n'
-    +'REGRA DE OURO: a recomendação final NÃO é sobre quantidade de requisitos atendidos — é sobre o peso dos requisitos mais críticos e a força da evidência disponível. Um candidato com 9 de 10 requisitos mas falho no crítico pesa MENOS que um com 6 de 10 que acerta em cheio os 3 mais críticos. Julgue como recrutador experiente, não como sistema de pontuação.\n\n'
-    +'FILTRO — descarte da Camada 1 tudo que a Camada 2 marcou como baixa relevância. O parecer final não é um checklist de requisitos nem uma lista de fatos — é a síntese interpretada só do que pesa na decisão.\n\n'
-    +'CAMADA 3 — ESCRITA. Só agora você escreve, usando as CONCLUSÕES da 1b que sobreviveram ao filtro — nunca os fatos crus. Regras de voz, só pros campos em prosa (parecerExecutivo e contextoProfissional — os bullets seguem sendo curtos por design, isso não muda):\n'
-    +'  - Nunca use "Demonstrou", "Apresentou", "Informou", "Mencionou", "Possui" em sequência ou como muleta — varie a construção, conecte ideias com conectivos naturais, escreva como quem está contando a leitura que fez de uma pessoa, não descrevendo uma gravação\n'
-    +'  - Evite frase telegráfica nesses dois campos — são parágrafos corridos que contam uma leitura profissional, não uma lista disfarçada de prosa\n'
-    +'  - parecerExecutivo: 120 a 180 palavras. Responde, sem citar as perguntas literalmente: quem é o candidato, por que o RH recomenda isso, quais evidências sustentam, o que falta validar. Não é resumo cronológico da entrevista, não repete pergunta e resposta — sintetiza e conecta\n\n'
-    +estiloRef
+  return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência na elaboração de pareceres executivos para gestores.\n'
+    +'Analise a transcrição da entrevista e elabore um Parecer Executivo completo e integrado.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
-    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA (referência obrigatória da análise):\n'+job.desc+'\n\n':'')
-    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto obrigatório, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
     +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
     +'INSTRUÇÕES OBRIGATÓRIAS:\n'
-    +'- REGRA MAIS IMPORTANTE: toda frase precisa ter por trás um FATO CONCRETO da transcrição ou do currículo (empresa, ferramenta, iniciativa, resultado, prazo) — mas o que você ESCREVE é a interpretação desse fato (Camada 1b), nunca o fato cru sozinho\n'
-    +'- ZERO REDUNDÂNCIA ENTRE TODOS OS CAMPOS DE TEXTO (parecerExecutivo, contextoProfissional, fatoresRecomendacao, pontosPositivos, pontosAtencao, paraExplorar): cada campo responde uma pergunta diferente do gestor. Antes de escrever uma frase em qualquer um desses campos, verifique se essa mesma ideia já foi dita em outro — se sim, ou corta, ou reformula pra acrescentar algo novo. parecerExecutivo = síntese da decisão. contextoProfissional = só a narrativa de carreira (onde está, por que quer sair, interesse na vaga). fatoresRecomendacao = os 3-5 elementos mais decisivos, em bullet. pontosPositivos/pontosAtencao = observações específicas que não estão nem no parecer nem nos fatores. paraExplorar = só o que ainda falta descobrir\n'
-    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao. Se vier "Dado insuficiente" E o critério for importante pra vaga (não secundário), isso TEM que aparecer em paraExplorar — um selo cinza importante não pode ficar sem explicação em lugar nenhum do parecer\n'
-    +'- Quando não houver evidência suficiente pra avaliar uma dimensão do fit, retorne "Dado insuficiente" — NUNCA force "Adequado" ou "Parcial" só pra preencher. Se o critério nem se aplica a esta etapa, retorne "Não se aplica"\n'
-    +'- DISTINÇÃO FATO x INTERPRETAÇÃO: quando a frase é um fato relatado diretamente (o candidato disse/fez algo específico), afirme direto. Quando a frase é uma leitura sua sobre o que aquele fato implica (Camada 1b), sinalize com linguagem de inferência natural — "o que sugere", "isso indica", "tende a" — nunca apresente uma interpretação como se fosse fato relatado\n'
-    +'- PROIBIDO HEDGING: nunca use "pode ser considerado", "possivelmente", "de certa forma", "até certo ponto" ou equivalentes. Se você tem evidência suficiente pra uma leitura, afirme com segurança. Se não tem, isso é "Dado insuficiente" ou vazio — não meio-termo linguístico\n'
-    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados genericamente. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
-    +'CAMPO A CAMPO:\n'
-    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação\n'
-    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com as conclusões que sobreviveram ao FILTRO\n'
-    +'- parecerExecutivo: 120 a 180 palavras (ver CAMADA 3 acima)\n'
-    +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Integra o que a análise de currículo já mostrou com o que a entrevista confirmou, complementou ou contradisse — não é só sobre a entrevista isolada. Quando currículo e entrevista forem coerentes entre si, destaque isso explicitamente (é um sinal positivo de consistência). Quando surgir informação nova relevante na entrevista, integre ao invés de listar separado. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista, e sem repetir o currículo palavra por palavra\n'
-    +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente\n'
-    +'- pontosAtencao: MÁXIMO 3 itens, frase única cada, mas a frase inclui o motivo de importar (não é julgamento, é explicação objetiva). Ausência de informação NÃO é automaticamente um problema — só entra aqui se a ausência for sobre algo que pesa pra decisão\n'
-    +'- paraExplorar: MÁXIMO 3 bullets — perguntas ou pontos de investigação concretos pro PRÓXIMO entrevistador (o líder). Um item só entra se (1) é requisito importante da vaga E (2) ainda não há evidência suficiente. Nunca repita algo já respondido na entrevista atual. Formule como ação concreta (ex: "Pedir exemplo real de negociação com cliente"), nunca pergunta burocrática de baixo valor\n'
-    +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
-    +'- disponibilidade: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc.\n'
-    +'- cidadeAtual: cidade onde mora hoje, se mencionada. Senão, string vazia\n'
-    +'- modeloTrabalhoAtual: presencial/híbrido/remoto no emprego atual, se mencionado. Senão, string vazia\n'
-    +'- necessitaMudanca: "Sim", "Não" ou string vazia se não abordado\n'
-    +'- disponibilidadeViagens: "Sim", "Não", "Parcial" ou string vazia se não abordado\n\n'
+    +'- Escreva como recrutador sênior elaborando um parecer para o gestor da área — linguagem consultiva, objetiva e profissional\n'
+    +'- A JUSTIFICATIVA deve ser o elemento central: sintetize motivadores, interesse na vaga, expectativas de carreira, pontos fortes e pontos de atenção em um parecer executivo coerente que fundamente a recomendação final\n'
+    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados\n'
+    +'- NUNCA escreva "não mencionado", "não informado" ou frases similares — se ausente, retorne string vazia\n'
+    +'- DISPONIBILIDADE: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc. Nada além disso\n'
+    +'- EXPECTATIVA SALARIAL: apenas o valor ou faixa. Se não citada, retorne string vazia\n'
+    +'- MOTIVADORES PARA MUDANÇA: por que o candidato quer sair do emprego atual? O que o motiva?\n'
+    +'- INTERESSE NA VAGA: como o candidato demonstrou interesse? Pesquisou a empresa? Há alinhamento claro?\n'
+    +'- EXPECTATIVAS DE CARREIRA: onde quer estar em 3-5 anos? A vaga faz sentido para esse trajeto?\n'
+    +'- IMPRESSÃO GERAL: avalie postura, comunicação, autoconhecimento e fit cultural percebido na entrevista\n'
+    +'- JUSTIFICATIVA: parágrafo executivo completo que integre todos os elementos acima e fundamente a recomendação\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"paraExplorar":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
+    +'{"motivacoes":"","momentoAtual":"","motivadoresMudanca":"","interesseVaga":"","expectativasCarreira":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","impressaoGeral":"","recomendacao":"Avançar para entrevista com o líder","justificativa":""}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
-}
-
-function buildReconciliationPrompt(candidate,transcript,targetRec,job){
-  return 'A decisão final deste processo seletivo já foi tomada pelo RH: "'+targetRec+'".\n'
-    +'Essa decisão considera fatores além da entrevista — aderência ao perfil da vaga, benchmarking com outros candidatos, critérios eliminatórios do processo, percepção técnica do recrutador — que não estão necessariamente refletidos na transcrição.\n'
-    +'Sua tarefa NÃO é decidir de novo, nem emitir uma segunda recomendação independente. É reescrever o parecer para ser consistente com essa decisão final, usando apenas evidências REAIS da transcrição abaixo. NUNCA invente fatos, problemas ou comportamentos que não aconteceram na entrevista.\n'
-    +'Lembre-se da regra de peso: a recomendação não é sobre quantos requisitos foram atendidos, é sobre o peso dos requisitos mais críticos da vaga. Ancore a justificativa nos requisitos que mais pesam, não em uma lista completa.\n'
-    +'Se a entrevista em si foi positiva mas a decisão final é "Não avançar", seja honesto: reconheça o que foi positivo, mas deixe claro que a decisão considerou critérios adicionais do processo seletivo que vão além do que a entrevista isoladamente demonstra. Em nenhum campo escreva algo que soe como uma recomendação diferente da decisão final.\n\n'
-    +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
-    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA:\n'+job.desc+'\n\n':'')
-    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
-    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
-    +'Retorne APENAS este JSON, reescrevendo os três campos para sustentar a decisão final "'+targetRec+'", sem redundância entre eles:\n'
-    +'{"parecerExecutivo":"","fatoresRecomendacao":["","",""],"pontosAtencao":["",""]}\n'
-    +'- parecerExecutivo: 4 a 6 linhas, cita pelo menos 1 evidência concreta da entrevista, fecha reforçando a decisão final\n'
-    +'- fatoresRecomendacao: 3 a 5 bullets curtos (frase única, ~12 palavras) com os elementos que sustentam essa decisão\n'
-    +'- pontosAtencao: 3 a 4 bullets curtos e reais — baseados na transcrição, ou reconhecendo objetivamente que a decisão considerou critérios do processo além da entrevista';
 }
 
 
@@ -3875,11 +3666,10 @@ function generateAnalysisPDF(candidate) {
   var matched = (a.comparison&&a.comparison.matched)||[];
   var missing  = (a.comparison&&a.comparison.missing)||[];
 
-  var densTxt = ((es.strengths||'').length + (es.reasoning||'').length);
-  var fSum = densTxt>750?'9.5px':'10.5px';
-  var fReason = densTxt>750?'9px':'10px';
-  var lnSum = densTxt>750?1.45:1.55;
-  var lnReason = densTxt>750?1.4:1.5;
+  function truncate(text, maxLen) {
+    if(!text)return '';
+    return text.length>maxLen?text.substring(0,maxLen)+'...':text;
+  }
   function sbar(label, val, max) {
     var pct = max>0?Math.round(val/max*100):0;
     var col = pct>=80?'#16A34A':pct>=60?'#EA580C':'#DC2626';
@@ -3957,7 +3747,7 @@ function generateAnalysisPDF(candidate) {
     // EXEC SUMMARY
     +(es.strengths?'<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#1D4ED8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Resumo Executivo</p>'
-    +'<p style="font-size:'+fSum+';color:#1e293b;line-height:'+lnSum+'">'+es.strengths+'</p>'
+    +'<p style="font-size:10.5px;color:#1e293b;line-height:1.55">'+truncate(es.strengths, 420)+'</p>'
     +'</div>':'')
 
     // COMPETÊNCIAS + PERFIL COMPORTAMENTAL
@@ -3996,7 +3786,7 @@ function generateAnalysisPDF(candidate) {
     // REASONING
     +(es.reasoning?'<div style="background:#F8FAFC;border:1px solid #e2e8f0;border-radius:7px;padding:7px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Justificativa</p>'
-    +'<p style="font-size:'+fReason+';color:#334155;line-height:'+lnReason+'">'+es.reasoning+'</p>'
+    +'<p style="font-size:10px;color:#334155;line-height:1.5">'+truncate(es.reasoning, 380)+'</p>'
     +'</div>':'')
 
     // FOOTER
@@ -4014,17 +3804,6 @@ function generateAnalysisPDF(candidate) {
 }
 
 
-function computeConfianca(summary){
-  if(!summary)return null;
-  var dims=[summary.fitExperiencia,summary.fitTecnico,summary.fitComportamental,summary.fitModeloTrabalho,summary.fitSalarial];
-  var aplicaveis=dims.filter(function(v){return v&&v!=='Não se aplica';});
-  if(!aplicaveis.length)return null;
-  var insuf=aplicaveis.filter(function(v){return v==='Dado insuficiente';}).length;
-  if(insuf===0)return{label:'Alta',bg:'#dcfce7',col:'#166534'};
-  if(insuf===1)return{label:'Média',bg:'#fef3c7',col:'#b45309'};
-  return{label:'Baixa',bg:'#fee2e2',col:'#991b1b'};
-}
-
 function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
   var date = interviewDate ? new Date(interviewDate + 'T12:00:00').toLocaleDateString('pt-BR') : now;
@@ -4036,51 +3815,22 @@ function generateParecer(candidate, summary, interviewDate) {
   var salario   = summary.expectativaSalarial || candidate.salario || '';
   var disponib  = summary.disponibilidade || candidate.disponibilidade || '';
 
-  // ── Modo compacto: quanto mais texto, mais denso o layout, para caber em 1 página ──
-  var totalChars = [summary.parecerExecutivo,summary.contextoProfissional]
-    .concat(summary.pontosPositivos||[]).concat(summary.pontosAtencao||[])
-    .concat(summary.fatoresRecomendacao||[]).concat(summary.paraExplorar||[])
-    .reduce(function(sum,t){return sum+(t?String(t).length:0);},0);
-  var dense  = totalChars > 2600;
-  var xdense = totalChars > 3400;
-  var fBody  = xdense?'9.5px':dense?'10.5px':'11px';
-  var fLine  = xdense?1.42:dense?1.48:1.6;
-  var fLbl   = xdense?'7.3px':'8px';
-  var padBlk = xdense?'6px 9px':dense?'7px 10px':'8px 12px';
-  var mrgBlk = xdense?'6px':dense?'7px':'8px';
-  var gpBlk  = xdense?'5px':dense?'6px':'7px';
-  var pagePad= xdense?'10px 16px':dense?'12px 17px':'14px 18px';
-
   function lbl(text, color) {
-    return '<p style="font-size:'+fLbl+';font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
+    return '<p style="font-size:8px;font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
   }
   function block(label, value, color, bg) {
     if(!value) return '';
-    return '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:'+padBlk+'">'
+    return '<div style="margin-bottom:8px;page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:8px 10px">'
       + lbl(label, color)
-      + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin:0">'+value+'</p>'
+      + '<p style="font-size:11px;color:#1e293b;line-height:1.55;margin:0">'+value+'</p>'
       + '</div>';
   }
   function pill(arr, col) {
     return (arr || []).map(function(p) {
       return '<div style="display:flex;gap:6px;margin-bottom:3px;page-break-inside:avoid;break-inside:avoid">'
-        + '<span style="color:'+col+';font-weight:700;font-size:'+fBody+';line-height:'+fLine+';flex-shrink:0">&#8226;</span>'
-        + '<span style="font-size:'+fBody+';color:#334155;line-height:'+fLine+'">'+p+'</span></div>';
+        + '<span style="color:'+col+';font-weight:700;font-size:11px;line-height:1.5;flex-shrink:0">&#8226;</span>'
+        + '<span style="font-size:11px;color:#334155;line-height:1.5">'+p+'</span></div>';
     }).join('');
-  }
-  function fitColors(v){
-    if(v==='Excelente')return{bg:'#dcfce7',col:'#166534'};
-    if(v==='Adequado')return{bg:'#dbeafe',col:'#1d4ed8'};
-    if(v==='Parcial')return{bg:'#fef3c7',col:'#b45309'};
-    if(v==='Atenção'||v==='Atencao')return{bg:'#fee2e2',col:'#991b1b'};
-    return{bg:'#f1f5f9',col:'#94a3b8'};
-  }
-  function fitBadge(label,v){
-    if(!v)return'';
-    var c=fitColors(v);
-    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 9px;background:'+c.bg+';border-radius:6px;margin-bottom:4px;page-break-inside:avoid;break-inside:avoid">'
-      +'<span style="font-size:'+fBody+';color:#334155;font-weight:500">'+label+'</span>'
-      +'<span style="font-size:'+fBody+';color:'+c.col+';font-weight:700">'+v+'</span></div>';
   }
 
   var htm = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>'
@@ -4088,19 +3838,19 @@ function generateParecer(candidate, summary, interviewDate) {
     + '<style>'
     + '@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
     + '*{box-sizing:border-box;margin:0;padding:0}'
-    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:'+fBody+';-webkit-print-color-adjust:exact;print-color-adjust:exact}'
-    + '.page{max-width:780px;margin:0 auto;padding:'+pagePad+'}'
+    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+    + '.page{max-width:780px;margin:0 auto;padding:14px 18px}'
     + '.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
     + '.btn-print{background:#6366f1;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
     + '.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
-    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:'+(xdense?'6mm 8mm':dense?'7mm 9mm':'8mm 10mm')+';size:A4}}'
+    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:8mm 10mm;size:A4}}'
     + '</style></head><body>'
     + '<div class="no-print"><button class="btn-close" onclick="window.close()">Fechar</button>'
     + '<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
     + '<div class="page">'
 
     // ── HEADER ──
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:'+gpBlk+';border-bottom:2px solid #e2e8f0;margin-bottom:'+mrgBlk+'">'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid #e2e8f0;margin-bottom:10px">'
     + '<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
     + '<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
     + '<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
@@ -4108,72 +3858,58 @@ function generateParecer(candidate, summary, interviewDate) {
     + '</div>'
 
     // ── CANDIDATO INFO ──
-    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
+    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
     + '<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'+(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
     + '<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+candidate.jobTitle+'</p></div>'
     + '<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
     + '</div>'
 
     // ── RECOMENDAÇÃO ──
-    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:flex;align-items:center;gap:10px">'
-    + '<div style="width:22px;height:22px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:12px;font-weight:700">'+recIcon+'</span></div>'
+    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
+    + '<div style="width:26px;height:26px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:14px;font-weight:700">'+recIcon+'</span></div>'
     + '<div>'+lbl('Recomenda\u00e7\u00e3o do RH',recCol)+'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
     + '</div>'
 
-    // ── 1. FIT DA VAGA (quadro resumido, 5 dimensões, sem Aderência Geral) ──
-    + '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Fit da Vaga','#1e1b4b')
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px">'
-    + fitBadge('Experiência',summary.fitExperiencia)
-    + fitBadge('Conhecimento Técnico',summary.fitTecnico)
-    + fitBadge('Comportamental',summary.fitComportamental)
-    + fitBadge('Modelo de Trabalho',summary.fitModeloTrabalho)
-    + fitBadge('Expectativa Salarial',summary.fitSalarial)
-    + '</div></div>'
-
-    // ── 2. PRINCIPAIS FATORES DA RECOMENDAÇÃO ──
-    + (summary.fatoresRecomendacao&&summary.fatoresRecomendacao.length?
-    '<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + lbl(isPos?'Principais fatores para avan\u00e7ar':'Principais fatores para n\u00e3o avan\u00e7ar',recCol)+'<div style="margin-top:4px">'+pill(summary.fatoresRecomendacao,recCol)+'</div></div>':'')
-
-    // ── 3. PARECER EXECUTIVO ──
-    + (summary.parecerExecutivo?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    // ── PARECER EXECUTIVO (Justificativa integrada) ──
+    + (summary.justificativa?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid">'
     + lbl('Parecer Executivo','#1e1b4b')
-    + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin-top:2px">'+summary.parecerExecutivo+'</p>'
+    + '<p style="font-size:11px;color:#1e293b;line-height:1.6;margin-top:2px">'+summary.justificativa+'</p>'
     + '</div>':'')
 
-    // ── 4. CONTEXTO PROFISSIONAL (sempre presente) ──
-    + '<div style="margin-bottom:'+mrgBlk+'">'
-    + block('Contexto profissional', summary.contextoProfissional, '#6366f1', '#f0f9ff')
-    + '</div>'
+    // ── 3 NOVOS CAMPOS: Motivadores / Interesse / Expectativas ──
+    + ((summary.motivadoresMudanca||summary.interesseVaga||summary.expectativasCarreira)?
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px">'
+    + block('Motivadores para mudança', summary.motivadoresMudanca, '#7e22ce', '#fdf4ff')
+    + block('Interesse na vaga', summary.interesseVaga, '#c2410c', '#fff7ed')
+    + block('Expectativas de carreira', summary.expectativasCarreira, '#166534', '#f0fdf4')
+    + '</div>':'')
 
-    // ── 5-6. PONTOS: 2 colunas ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
+    // ── PERFIL: Motivações + Momento atual ──
+    + ((summary.motivacoes||summary.momentoAtual)?
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
+    + block('Motivações e objetivos', summary.motivacoes, '#6366f1', '#f0f9ff')
+    + block('Momento atual', summary.momentoAtual, '#0369a1', '#f0f9ff')
+    + '</div>':'')
+
+    // ── PONTOS: 2 colunas ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
     + (summary.pontosPositivos&&summary.pontosPositivos.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
     + lbl('Pontos positivos','#166534')+'<div style="margin-top:4px">'+pill(summary.pontosPositivos,'#166534')+'</div></div>':'')
     + (summary.pontosAtencao&&summary.pontosAtencao.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
     + lbl('Pontos de aten\u00e7\u00e3o','#b45309')+'<div style="margin-top:4px">'+pill(summary.pontosAtencao,'#b45309')+'</div></div>':'')
     + '</div>'
 
-    // ── PARA EXPLORAR COM O CANDIDATO (roteiro pro próximo entrevistador) ──
-    + (summary.paraExplorar&&summary.paraExplorar.length?
-    '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Para explorar com o candidato','#6d28d9')+'<div style="margin-top:4px">'+pill(summary.paraExplorar,'#6d28d9')+'</div></div>':'')
+    // ── IMPRESSÃO GERAL ──
+    + block('Impress\u00e3o geral do RH', summary.impressaoGeral, '#475569', '#f8fafc')
 
-    // ── 7. INFORMAÇÕES OBJETIVAS ──
-    + ((salario||disponib||summary.cidadeAtual||summary.modeloTrabalhoAtual||summary.necessitaMudanca||summary.disponibilidadeViagens)?
-    '<div style="padding:'+padBlk+';background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:'+mrgBlk+'">'
-    + lbl('Informa\u00e7\u00f5es objetivas','#64748b')
-    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px">'
-    + (salario?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Pretens\u00e3o salarial</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
-    + (disponib?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Disponibilidade</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
-    + (summary.cidadeAtual?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Cidade atual</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.cidadeAtual+'</p></div>':'')
-    + (summary.modeloTrabalhoAtual?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Modelo de trabalho atual</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.modeloTrabalhoAtual+'</p></div>':'')
-    + (summary.necessitaMudanca?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Necessita mudan\u00e7a?</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.necessitaMudanca+'</p></div>':'')
-    + (summary.disponibilidadeViagens?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Disponibilidade para viagens</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.disponibilidadeViagens+'</p></div>':'')
-    + '</div></div>':'')
+    // ── DADOS PRÁTICOS ──
+    + ((salario||disponib)?
+    '<div style="display:flex;gap:20px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px">'
+    + (salario?'<div>'+lbl('Pretens\u00e3o salarial','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
+    + (disponib?'<div>'+lbl('Disponibilidade','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
+    + '</div>':'')
 
     // ── FOOTER ──
     + '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #e2e8f0">'
@@ -4271,7 +4007,6 @@ createApp({
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
     var isGenSum=ref(false),genSumStep=ref('');
-    var reconcilingCid=ref(null);
     var alertTab=ref('cand');
     var detTab=ref('ai');
     var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
@@ -4448,7 +4183,7 @@ createApp({
       return list;
     });
 
-    function isVagaCrit(job){ return job.status==='aberta'&&!job.prazoEstendido&&bizDaysSince(job.openDate)>10; }
+    function isVagaCrit(job){ return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
 
     function applyData(d){
       if(!d)return;
@@ -4493,7 +4228,7 @@ createApp({
     function saveEdit(cid,field){
       var s=Object.assign({},summaries.value);
       s[cid]=Object.assign({},s[cid]);
-      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao','paraExplorar'];
+      var arr=['pontosPositivos','pontosAtencao'];
       if(arr.indexOf(field)>=0){
         s[cid][field]=editFieldVal.value.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       } else {
@@ -4507,51 +4242,6 @@ createApp({
     }
     function cancelEdit(){editingField.value=null;editFieldVal.value='';}
     function isEditing(cid,field){return editingField.value&&editingField.value.cid===cid&&editingField.value.field===field;}
-    function setRecomendacao(cid,val){
-      var cur=summaries.value[cid];
-      if(!cur)return;
-      var already=cur.recomendacao===val;
-      var s=Object.assign({},summaries.value);
-      s[cid]=Object.assign({},s[cid]);
-      s[cid].recomendacao=val;
-      summaries.value=s;
-      if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
-      pushSync();
-      if(already){flash('Recomendação atualizada');return;}
-      var transcript=getTranscript(cid);
-      var cand=candidates.value.find(function(c){return c.id===cid;});
-      if(!transcript.trim()||!cand){flash('Recomendação atualizada');return;}
-      if(!apiKey.value){showApiModal.value=true;return;}
-      reconcilingCid.value=cid;
-      var jb=jobs.value.find(function(j){return j.id===cand.jobId;});
-      flash('Recomendação atualizada — ajustando o parecer para refletir a decisão...');
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,messages:[{role:'user',content:buildReconciliationPrompt(cand,transcript,val,jb)}]})})
-      .then(function(r){return r.json();}).then(function(data){
-        if(data.error)throw new Error(data.error.message);
-        var raw=data.content.map(function(i){return i.text||'';}).join('');
-        var parsed;
-        try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-        catch(pe){
-          var m=raw.match(/\{[\s\S]*\}/);
-          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-        }
-        if(!parsed){console.error('Falha ao reconciliar parecer. raw:',raw);flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');reconcilingCid.value=null;return;}
-        var s2=Object.assign({},summaries.value);
-        s2[cid]=Object.assign({},s2[cid]);
-        if(parsed.parecerExecutivo)s2[cid].parecerExecutivo=parsed.parecerExecutivo;
-        if(parsed.fatoresRecomendacao)s2[cid].fatoresRecomendacao=parsed.fatoresRecomendacao;
-        if(parsed.pontosAtencao)s2[cid].pontosAtencao=parsed.pontosAtencao;
-        summaries.value=s2;
-        if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
-        reconcilingCid.value=null;
-        flash('Parecer ajustado para refletir a decisão final');
-        pushSync();
-      }).catch(function(e){
-        console.error('Erro ao reconciliar parecer:',e);
-        flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');
-        reconcilingCid.value=null;
-      });
-    }
 
     // ── Jobs ──────────────────────────────────────────────────────────────
     function addJob(){
@@ -4571,22 +4261,6 @@ createApp({
       }
       editingJob.value=null;flash('Vaga atualizada');pushSync();
     }
-    function deleteJob(id){
-      var toRemove=candidates.value.filter(function(c){return c.jobId===id;});
-      var n=toRemove.length;
-      var msg=n>0
-        ?'Esta vaga tem '+n+' candidato(s) vinculado(s). Excluir a vaga também removerá esses candidatos. Deseja continuar?'
-        :'Excluir esta vaga? A ação não pode ser desfeita.';
-      if(!confirm(msg))return;
-      jobs.value=jobs.value.filter(function(j){return j.id!==id;});
-      candidates.value=candidates.value.filter(function(c){return c.jobId!==id;});
-      editingJob.value=null;
-      Promise.all(
-        [supabaseCall('delete','jobs',id)].concat(toRemove.map(function(c){return supabaseCall('delete','candidates',c.id);}))
-      ).catch(function(e){console.error('Erro ao excluir no banco:',e);});
-      pushSync();
-      flash('Vaga excluída.');
-    }
 
     // ── Analyze ───────────────────────────────────────────────────────────
     function handleFile(file){
@@ -4604,23 +4278,11 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var parsed;
-          try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-          catch(pe){
-            var m=raw.match(/\{[\s\S]*\}/);
-            if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-            if(!parsed){
-              console.error('Falha ao interpretar resposta da análise. stop_reason:',data.stop_reason,'raw:',raw);
-              var msg=data.stop_reason==='max_tokens'
-                ?'A análise deste currículo ficou mais longa do que o esperado e foi cortada. Tente novamente — se persistir, o currículo pode ser incomum em tamanho/complexidade.'
-                :'A resposta da análise veio em formato inesperado. Tente analisar este currículo novamente.';
-              throw new Error(msg);
-            }
-          }
+          var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
           var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
@@ -4644,27 +4306,6 @@ createApp({
     function getNote(cid){return notes.value[cid]||'';}
     function getTranscript(cid){return transcripts.value[cid]||'';}
     function setTranscript(cid,txt){var t=Object.assign({},transcripts.value);t[cid]=txt;transcripts.value=t;}
-    var isUploadingTranscript=ref(false);
-    function handleTranscriptFile(cid,file){
-      if(!file)return;
-      var name=(file.name||'').toLowerCase();
-      if(!name.endsWith('.docx')){flash('Envie um arquivo .docx (Word)');return;}
-      isUploadingTranscript.value=true;
-      var reader=new FileReader();
-      reader.onload=function(e){
-        mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(result){
-          setTranscript(cid,result.value||'');
-          isUploadingTranscript.value=false;
-          flash('Transcrição importada do Word');
-        }).catch(function(err){
-          console.error('Erro ao ler .docx:',err);
-          isUploadingTranscript.value=false;
-          flash('Não consegui ler esse arquivo. Tente colar o texto manualmente.');
-        });
-      };
-      reader.onerror=function(){isUploadingTranscript.value=false;flash('Falha ao abrir o arquivo.');};
-      reader.readAsArrayBuffer(file);
-    }
     function getSummary(cid){return summaries.value[cid]||null;}
     function getIntDate(cid){return intDates.value[cid]||'';}
     function setIntDate(cid,d){var v=Object.assign({},intDates.value);v[cid]=d;intDates.value=v;}
@@ -4672,25 +4313,12 @@ createApp({
     function generateInterviewSummary(candidate){
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
-      var job=jobs.value.find(function(j){return j.id===candidate.jobId;});
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id),job)}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
-        var parsed;
-        try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-        catch(pe){
-          var m=raw.match(/\{[\s\S]*\}/);
-          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-          if(!parsed){
-            console.error('Falha ao interpretar resumo da entrevista. stop_reason:',data.stop_reason,'raw:',raw);
-            var msg=data.stop_reason==='max_tokens'
-              ?'O resumo desta entrevista ficou mais longo do que o esperado e foi cortado. Tente novamente — se persistir, a transcrição pode ser incomum em tamanho.'
-              :'O resumo da entrevista veio em formato inesperado. Tente gerar novamente.';
-            throw new Error(msg);
-          }
-        }
+        var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
         var s=Object.assign({},summaries.value);s[candidate.id]=parsed;summaries.value=s;
         if(viewCand.value&&viewCand.value.id===candidate.id)viewCand.value=Object.assign({},viewCand.value);
         flash('Resumo gerado');isGenSum.value=false;genSumStep.value='';pushSync();
@@ -4710,11 +4338,9 @@ createApp({
       var isPos=s.recomendacao==='Avan\u00e7ar para entrevista com o l\u00edder';
       var pos=(s.pontosPositivos||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
       var neg=(s.pontosAtencao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nPRETENSÃO SALARIAL: '+s.expectativaSalarial:'';
+      var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nEXPECTATIVA SALARIAL: '+s.expectativaSalarial:'';
       var disp=s.disponibilidade&&s.disponibilidade.trim()?'\nDISPONIBILIDADE: '+s.disponibilidade:'';
-      var fat=(s.fatoresRecomendacao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var explorar=(s.paraExplorar||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\n'+(isPos?'PRINCIPAIS FATORES PARA AVAN\u00c7AR':'PRINCIPAIS FATORES PARA N\u00c3O AVAN\u00c7AR')+':\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(explorar?'\n\nPARA EXPLORAR COM O CANDIDATO:\n'+explorar:'')+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\nMOTIVA\u00c7\u00d5ES:\n'+s.motivacoes+'\n\nMOMENTO ATUAL:\n'+s.momentoAtual+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES COMPLEMENTARES:'+sal+disp):'')+'\n\nIMPRESS\u00c3O GERAL DO RH:\n'+s.impressaoGeral+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+s.justificativa+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
       var subject=encodeURIComponent('[R&S RH] Parecer \u2014 '+candidate.name+' | '+candidate.jobTitle);
       window.location.href='mailto:'+(job&&job.leaderEmail?job.leaderEmail:'')+'?subject='+subject+'&body='+encodeURIComponent(body);
     }
@@ -4755,9 +4381,14 @@ createApp({
     function daysSince(d){return Math.max(0,Math.floor((Date.now()-new Date(d))/86400000));}
     function bizDaysSince(d){
       if(!d)return 0;
-      var start=new Date(d);start.setHours(0,0,0,0);
+      // Parse sem timezone: evita o bug de UTC que recua 1 dia no Brasil
+      var p=d.split('-');
+      var start=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+      start.setHours(0,0,0,0);
       var end=new Date();end.setHours(0,0,0,0);
-      var count=0,cur=new Date(start);
+      var count=0;
+      // Começa do DIA SEGUINTE à abertura (dia 0 = próprio dia de abertura)
+      var cur=new Date(start);cur.setDate(cur.getDate()+1);
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
@@ -4781,9 +4412,15 @@ createApp({
     var execBlocks=computed(function(){if(!viewCand.value||!viewCand.value.analysis)return[];var e=viewCand.value.analysis.executiveSummary||{};return [{l:'Pontos fortes',t:e.strengths,bg:'#dcfce7',c:'#166534'},{l:'Pontos de aten\u00e7\u00e3o',t:e.attentionPoints,bg:'#fef3c7',c:'#b45309'},{l:'Motivo da recomenda\u00e7\u00e3o',t:e.reasoning,bg:'#dbeafe',c:'#1d4ed8'}];});
     var summaryRows=computed(function(){
       var s=viewCand.value?getSummary(viewCand.value.id):null;if(!s)return[];
+      var isPos=s.recomendacao==='Avançar para entrevista com o líder';
       var rows=[
-        {label:'Parecer executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f8fafc',col:'#1e1b4b'},
-        {label:'Contexto profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f0f9ff',col:'#6366f1'},
+        {label:'Motivações',field:'motivacoes',value:s.motivacoes,bg:'#f0f9ff',col:'#0369a1'},
+        {label:'Motivadores para mudança',field:'motivadoresMudanca',value:s.motivadoresMudanca,bg:'#fdf4ff',col:'#7e22ce'},
+        {label:'Interesse na vaga',field:'interesseVaga',value:s.interesseVaga,bg:'#fff7ed',col:'#c2410c'},
+        {label:'Expectativas de carreira',field:'expectativasCarreira',value:s.expectativasCarreira,bg:'#f0fdf4',col:'#166534'},
+        {label:'Momento atual',field:'momentoAtual',value:s.momentoAtual,bg:'#f8fafc',col:'#475569'},
+        {label:'Impressão geral',field:'impressaoGeral',value:s.impressaoGeral,bg:'#f8fafc',col:'#475569'},
+        {label:'Justificativa da recomendação',field:'justificativa',value:s.justificativa,bg:isPos?'#dcfce7':'#fee2e2',col:isPos?'#166534':'#991b1b'},
       ];
       return rows.filter(function(r){return r.value;});
     });
@@ -4834,7 +4471,6 @@ createApp({
       if(!confirm('Excluir este candidato? A ação não pode ser desfeita.'))return;
       candidates.value=candidates.value.filter(function(c){return c.id!==id;});
       viewCand.value=null;
-      supabaseCall('delete','candidates',id).catch(function(e){console.error('Erro ao excluir no banco:',e);});
       pushSync();
       flash('Candidato excluído.');
     }
@@ -4901,7 +4537,7 @@ createApp({
     }
 
     // ── Prazo justificativa ──────────────────────────────────────────────────
-    var PRAZO_MOTIVOS=['Vaga continua (processo de expansao, sem prazo fixo)','Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
+    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
     var showJustModal=ref(false);
     var justJobId=ref(null);
     var justMotivo=ref('');
@@ -4934,11 +4570,11 @@ createApp({
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
       jbKey,jbBin,jbStatus,showSyncModal,jbKeyInput,jbCreating,
       editingField,editFieldVal,
-      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,deleteJob,handleFile,onFileDrop,analyze,
-      advanceStatus,saveNote,getNote,getTranscript,setTranscript,handleTranscriptFile,isUploadingTranscript,getSummary,getIntDate,setIntDate,
+      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,handleFile,onFileDrop,analyze,
+      advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
-      startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,reconcilingCid,
+      startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
       candStatusFilter,candSort,
