@@ -286,8 +286,6 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 </script>
 <script>
 
-
-
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -1458,18 +1456,9 @@ return function render(_ctx, _cache) {
                           style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"11px","overflow":"hidden"}
                         }, [
                           _createElementVNode("div", { style: {"display":"flex","gap":"6px","margin-bottom":"14px","flex-wrap":"wrap"} }, [
-                              _createElementVNode("button", {
-                                onClick: $event => setJobFilter('abertas'),
-                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
-                              }, "Abertas"),
-                              _createElementVNode("button", {
-                                onClick: $event => setJobFilter('encerradas'),
-                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
-                              }, "Encerradas"),
-                              _createElementVNode("button", {
-                                onClick: $event => setJobFilter('todas'),
-                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
-                              }, "Todas")
+                              _createElementVNode("button", { onClick: $event => setJobFilter('abertas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Abertas"),
+                              _createElementVNode("button", { onClick: $event => setJobFilter('encerradas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Encerradas"),
+                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas")
                             ]),
                             _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
@@ -2787,7 +2776,7 @@ return function render(_ctx, _cache) {
                                 type: "file",
                                 accept: "application/pdf",
                                 style: {"display":"none"},
-                                onChange: e=>handleFile(e.target.files[0])
+                                onChange: e=>handleFile(e.target.files[0]),multiple:true
                               }, null, 40 /* PROPS, NEED_HYDRATION */, ["onChange"]),
                               _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"8px"} }, "Curriculo em PDF *"),
                               pdfFile
@@ -2928,62 +2917,9 @@ return function render(_ctx, _cache) {
                                   : _createCommentVNode("v-if", true),
                                 _createElementVNode("span", {
                                   class: _normalizeClass(isAnalyzing?'pulse':'')
-                                }, _toDisplayString(isAnalyzing?analyzeStep:'Analisar'), 3 /* TEXT, CLASS */)
+                                }, _toDisplayString(isAnalyzing?analyzeStep:(batchQueue&&batchQueue.length>1?'Analisar em lote ('+batchQueue.length+')':'Analisar Perfil')), 3 /* TEXT, CLASS */)
                               ], 12 /* STYLE, PROPS */, ["onClick", "disabled"])
                             ])),
-                  batchMode
-                    ? (_openBlock(), _createElementBlock("div", { key: 99, style: {"margin-top":"4px"} }, [
-                        _createElementVNode("div", {
-                          onDragover: $event => { $event.preventDefault(); },
-                          onDrop: onBatchDrop,
-                          style: {"border":"2px dashed #CBD5E1","border-radius":"10px","padding":"20px","text-align":"center","margin-bottom":"12px","background":"#F8FAFC","cursor":"pointer"},
-                          onClick: $event => { document.getElementById('batchInput').click(); }
-                        }, [
-                          _createElementVNode("input", {
-                            id: "batchInput",
-                            type: "file",
-                            accept: "application/pdf",
-                            multiple: true,
-                            style: {"display":"none"},
-                            onChange: $event => handleBatchFiles($event.target.files)
-                          }, null, 40, ["onChange"]),
-                          _createElementVNode("p", { style: {"font-size":"13px","font-weight":600,"color":"#0F172A","margin":"0 0 4px"} },
-                            batchFiles.length ? batchFiles.length + " PDF(s) selecionado(s)" : "Arraste os PDFs ou clique para selecionar"),
-                          _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin":"0"} },
-                            batchFiles.length ? "Clique para alterar a selecao" : "Multiplos arquivos aceitos")
-                        ], 40, ["onDragover","onDrop","onClick"]),
-                        batchFiles.length
-                          ? (_openBlock(), _createElementBlock("div", { key: 1 }, [
-                              _createElementVNode("div", { style: {"max-height":"120px","overflow-y":"auto","margin-bottom":"10px","border":"1px solid #E5E7EB","border-radius":"8px","padding":"6px 10px"} },
-                                batchFiles.map(function(f,i){ return _createElementVNode("div",{key:i,style:{"display":"flex","align-items":"center","gap":"6px","padding":"3px 0","font-size":"12px","color":batchDone.includes(f.name)?"#16A34A":batchErrors.includes(f.name)?"#DC2626":"#475569","border-bottom":"1px solid #F1F5F9"}},[
-                                  _createElementVNode("span",{style:{"flex-shrink":0}}, batchDone.includes(f.name)?"✓":batchErrors.includes(f.name)?"✗":"•"),
-                                  _createElementVNode("span",{style:{"flex":1,"overflow":"hidden","text-overflow":"ellipsis","white-space":"nowrap"}},f.name)
-                                ]); })
-                              ),
-                              batchRunning.value
-                                ? _createElementVNode("div", { style: {"text-align":"center","padding":"8px 0"} }, [
-                                    _createElementVNode("p", { style: {"font-size":"13px","color":"#2563EB","font-weight":600,"margin":"0"} },
-                                      "Analisando " + batchCurrent + " de " + batchTotal + "..."),
-                                    _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin":"4px 0 0"} }, "Aguarde, processando em sequencia")
-                                  ])
-                                : _createElementVNode("div", { style: {"display":"flex","gap":"8px"} }, [
-                                    _createElementVNode("button", {
-                                      onClick: runBatch,
-                                      style: {"flex":"1","background":"#2563EB","color":"#fff","border":"none","border-radius":"8px","padding":"11px","font-size":"14px","font-weight":700,"cursor":"pointer","font-family":"Inter,sans-serif"}
-                                    }, "Analisar todos (" + batchFiles.length + ")"),
-                                    _createElementVNode("button", {
-                                      onClick: clearBatch,
-                                      style: {"background":"#F1F5F9","color":"#64748B","border":"none","border-radius":"8px","padding":"11px 14px","font-size":"13px","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                    }, "Limpar")
-                                  ])
-                            ]))
-                          : _createCommentVNode("v-if", true),
-                        batchDone.length && !batchRunning.value
-                          ? _createElementVNode("div", { style: {"margin-top":"10px","padding":"10px 12px","background":"#F0FDF4","border":"1px solid #BBF7D0","border-radius":"8px","font-size":"12px","color":"#166534","font-weight":600} },
-                              batchDone.length + " curriculo(s) analisado(s) com sucesso!")
-                          : _createCommentVNode("v-if", true)
-                      ]))
-                    : _createCommentVNode("v-if", true),
                         latestResult
                           ? (_openBlock(), _createElementBlock("div", {
                               key: 2,
@@ -3540,49 +3476,19 @@ return function render(_ctx, _cache) {
 try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
 
-
-
 </script>
 <script>
-function supabaseCall(action, table, id, data) {
-  return fetch('/api/db', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action, table, id, data})
-  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
-}
+function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
+
 
 // ── JSONBin.io API functions ──────────────────────────────────────────────────
-function jsonBinCreate(masterKey) { return Promise.resolve("supabase"); }
-function jsonBinPush(masterKey, binId, data) {
-  if(!data) return Promise.resolve(null);
-  return Promise.all([
-    supabaseCall('saveMany','jobs',null,data.jobs||[]),
-    supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
-    supabaseCall('setState','app_state','notes',data.notes||{}),
-    supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
-    supabaseCall('setState','app_state','summaries',data.summaries||{}),
-    supabaseCall('setState','app_state','intDates',data.intDates||{}),
-  ]).then(function(){ return {ok:true}; }).catch(function(){ return null; });
+function jsonBinCreate(masterKey){return Promise.resolve("supabase");}
+function jsonBinPush(masterKey,binId,data){
+  if(!data)return Promise.resolve(null);
+  return Promise.all([supabaseCall('saveMany','jobs',null,data.jobs||[]),supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),supabaseCall('setState','app_state','notes',data.notes||{}),supabaseCall('setState','app_state','transcripts',data.transcripts||{}),supabaseCall('setState','app_state','summaries',data.summaries||{}),supabaseCall('setState','app_state','intDates',data.intDates||{})]).then(function(){return{ok:true};}).catch(function(){return null;});
 }
-function jsonBinPull(masterKey, binId) {
-  return Promise.all([
-    supabaseCall('loadAll','jobs'),
-    supabaseCall('loadAll','candidates'),
-    supabaseCall('getState','app_state','notes'),
-    supabaseCall('getState','app_state','transcripts'),
-    supabaseCall('getState','app_state','summaries'),
-    supabaseCall('getState','app_state','intDates'),
-  ]).then(function(results){
-    return {
-      jobs: results[0].data||[],
-      candidates: results[1].data||[],
-      notes: results[2].data||{},
-      transcripts: results[3].data||{},
-      summaries: results[4].data||{},
-      intDates: results[5].data||{}
-    };
-  }).catch(function(){ return null; });
+function jsonBinPull(masterKey,binId){
+  return Promise.all([supabaseCall('loadAll','jobs'),supabaseCall('loadAll','candidates'),supabaseCall('getState','app_state','notes'),supabaseCall('getState','app_state','transcripts'),supabaseCall('getState','app_state','summaries'),supabaseCall('getState','app_state','intDates')]).then(function(r){return{jobs:r[0].data||[],candidates:r[1].data||[],notes:r[2].data||{},transcripts:r[3].data||{},summaries:r[4].data||{},intDates:r[5].data||{}};}).catch(function(){return null;});
 }
 
 
@@ -4040,8 +3946,6 @@ function generateSummaryPDF(job,candidates){
 <script>
 
 
-
-
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4086,8 +3990,8 @@ createApp({
     var detTab=ref('ai');
     var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
     // JSONBin sync
-    var jbKey=ref('supabase');
-    var jbBin=ref('supabase');
+    var jbKey=ref(DEFAULT_JB_KEY||lsGet('recruitarh_jbkey',''));
+    var jbBin=ref(DEFAULT_JB_BIN||lsGet('recruitarh_jbbin',''));
     var jbStatus=ref('');
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
@@ -4242,10 +4146,7 @@ createApp({
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
       if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
-      if(candSearch.value.trim()){
-        var s=candSearch.value.trim().toLowerCase();
-        list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
-      }
+      if(candSearch.value.trim()){var s=candSearch.value.trim().toLowerCase();list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});}
       var f=candStatusFilter.value;
       if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
       else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
@@ -4348,17 +4249,28 @@ createApp({
     function analyze(){
       if(!apiKey.value){showApiModal.value=true;return;}
       if(!selJobId.value){error.value='Selecione uma vaga.';return;}
-      if(!pdfFile.value){error.value='Anexe o curr\u00edculo.';return;}
+      if(!pdfFile.value&&(!batchQueue.value||!batchQueue.value.length)){error.value='Anexe o curriculo.';return;}
+      if(batchQueue.value&&batchQueue.value.length>1){
+        var job=jobs.value.find(function(j){return j.id===selJobId.value;});if(!job)return;
+        isAnalyzing.value=true;error.value='';
+        var files=batchQueue.value.slice();var done=0;
+        function nextFile(i){
+          if(i>=files.length){isAnalyzing.value=false;batchQueue.value=[];pdfFile.value=null;flash('Analise concluida: '+done+' curriculo(s) processado(s)');return;}
+          analyzeStep.value='Analisando '+(i+1)+' de '+files.length+': '+files[i].name+'...';
+          analyzeSingle(files[i],job).then(function(r){if(r.ok)done++;setTimeout(function(){nextFile(i+1);},600);});
+        }
+        nextFile(0);return;
+      }
       var job=jobs.value.find(function(j){return j.id===selJobId.value;});if(!job)return;
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus='aguardando_lider';
+          var initStatus=parsed.recommendation==='Avan\u00e7ar para entrevista'?'aguardando_lider':parsed.recommendation==='Manter em banco de talentos'?'banco':'reprovado';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4389,7 +4301,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4456,30 +4368,15 @@ createApp({
     function daysSince(d){return Math.max(0,Math.floor((Date.now()-new Date(d))/86400000));}
     function bizDaysSince(d){
       if(!d)return 0;
-      // Parse sem timezone: evita o bug de UTC que recua 1 dia no Brasil
-      var p=d.split('-');
-      var start=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
-      start.setHours(0,0,0,0);
+      var p=d.split('-');var start=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));start.setHours(0,0,0,0);
       var end=new Date();end.setHours(0,0,0,0);
-      var count=0;
-      // Começa do DIA SEGUINTE à abertura (dia 0 = próprio dia de abertura)
-      var cur=new Date(start);cur.setDate(cur.getDate()+1);
+      var count=0;var cur=new Date(start);cur.setDate(cur.getDate()+1);
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
     var filtCands=computed(function(){
-      var ACTIVE_S=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
-      var f=candStatusFilter.value;
-      if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
-      else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
-      else if(f==='banco')list=list.filter(function(c){return c.status==='banco';});
-      else if(f==='declinou')list=list.filter(function(c){return c.status==='declinou';});
-      var s=candSort.value;
-      if(s==='date_asc')list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
-      else if(s==='score_desc')list=list.slice().sort(function(a,b){var sa=(b.analysis&&b.analysis.score?b.analysis.score.total:0);var sb=(a.analysis&&a.analysis.score?a.analysis.score.total:0);return sa-sb;});
-      else list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
       return list;
     });
     var vcTrans=computed(function(){return viewCand.value?(TRANSITIONS[viewCand.value.status]||[]):[];});
@@ -4592,67 +4489,47 @@ createApp({
     }
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
-    // ── Filter refs ─────────────────────────────────────────────────────────
-    var candStatusFilter=ref('active');
-    var candSort=ref('date_desc');
-
-    // ── Declinou ─────────────────────────────────────────────────────────────
+    var candStatusFilter=ref('active');var candSort=ref('date_desc');
     var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
-    var showDeclinouModal=ref(false);
-    var declinouCandId=ref(null);
-    var declinouMotivo=ref('');
-    var declinouObs=ref('');
+    var showDeclinouModal=ref(false);var declinouCandId=ref(null);var declinouMotivo=ref('');var declinouObs=ref('');
     function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
     function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;}
-    function confirmDeclinou(){
-      if(!declinouMotivo.value)return;
-      var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});
-      if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});
-      showDeclinouModal.value=false;declinouCandId.value=null;pushSync();
-    }
-
-    // ── Prazo justificativa ──────────────────────────────────────────────────
+    function confirmDeclinou(){if(!declinouMotivo.value)return;var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});showDeclinouModal.value=false;declinouCandId.value=null;pushSync();}
     var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
-    var showJustModal=ref(false);
-    var justJobId=ref(null);
-    var justMotivo=ref('');
-    var justObs=ref('');
+    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
     function openJustModal(job){justJobId.value=job.id;justMotivo.value='';justObs.value='';showJustModal.value=true;}
     function cancelJust(){showJustModal.value=false;justJobId.value=null;}
-    function saveJustificativa(){
-      if(!justMotivo.value)return;
-      var i=jobs.value.findIndex(function(j){return j.id===justJobId.value;});
-      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value});
-      showJustModal.value=false;justJobId.value=null;pushSync();
-    }
-    function removeJustificativa(jid){
-      var i=jobs.value.findIndex(function(j){return j.id===jid;});
-      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});
-      pushSync();
-    }
-
-    // ── Pretensao + Disponibilidade ──────────────────────────────────────────
+    function saveJustificativa(){if(!justMotivo.value)return;var i=jobs.value.findIndex(function(j){return j.id===justJobId.value;});if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value});showJustModal.value=false;justJobId.value=null;pushSync();}
+    function removeJustificativa(jid){var i=jobs.value.findIndex(function(j){return j.id===jid;});if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});pushSync();}
     var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
     function setCandSalario(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{salario:val});pushSync();}}
     function setCandDisp(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{disponibilidade:val});pushSync();}}
     function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?(c[field]||''):'';}
-
-
-    // ── Job filter ────────────────────────────────────────────────────────
     var jobFilter=ref('abertas');
-    var filteredJobs=computed(function(){
-      var list=jobs.value.slice();
-      if(jobFilter.value==='abertas') return list.filter(function(j){return j.status==='aberta';});
-      if(jobFilter.value==='encerradas') return list.filter(function(j){return j.status!=='aberta';});
-      // 'todas' — abertas primeiro, depois encerradas, cada grupo por data desc
-      list.sort(function(a,b){
-        if(a.status==='aberta'&&b.status!=='aberta') return -1;
-        if(a.status!=='aberta'&&b.status==='aberta') return 1;
-        return (b.openDate||'').localeCompare(a.openDate||'');
-      });
-      return list;
-    });
+    var filteredJobs=computed(function(){var list=jobs.value.slice();if(jobFilter.value==='abertas')return list.filter(function(j){return j.status==='aberta';});if(jobFilter.value==='encerradas')return list.filter(function(j){return j.status!=='aberta';});list.sort(function(a,b){if(a.status==='aberta'&&b.status!=='aberta')return -1;if(a.status!=='aberta'&&b.status==='aberta')return 1;return(b.openDate||'').localeCompare(a.openDate||'');});return list;});
     function setJobFilter(v){jobFilter.value=v;}
+    // Batch analysis
+    var batchQueue=ref([]);
+    var batchRunning=ref(false);
+    var batchProgress=ref('');
+    function handleFile(file){if(!file)return;if(file instanceof FileList||Array.isArray(file)){batchQueue.value=Array.from(file||[]);if(batchQueue.value.length===1)pdfFile.value=batchQueue.value[0];else pdfFile.value=null;}else{batchQueue.value=[file];pdfFile.value=file;}}
+    function analyzeSingle(file,job){
+      return readBase64(file).then(function(base64){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          var raw=data.content&&data.content[0]?data.content[0].text||'':'';
+          var clean=raw.replace(/```json|```/g,'').trim();
+          var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
+          if(open>0)clean+=Array(open+1).join('}');
+          var parsed=JSON.parse(clean);
+          var newC={id:'c'+Date.now()+Math.random().toString(36).slice(2),jobId:job.id,jobTitle:job.title,name:parsed.candidateName||file.name.replace('.pdf',''),email:parsed.candidateEmail||'',status:'aguardando_lider',submittedAt:new Date().toISOString(),analysis:parsed,pdfName:file.name,pdfBase64:base64};
+          candidates.value=[newC].concat(candidates.value);
+          pushSync();
+          return{ok:true,name:newC.name};
+        });
+      }).catch(function(e){return{ok:false,name:file.name};});
+    }
 
 
     return {
@@ -4668,16 +4545,9 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,jobFilter,filteredJobs,setJobFilter,
-      candStatusFilter,candSort,
-      showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,
-      showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,
-      DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,
-    };
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,    };
   }
 }).mount('#app');
-
-
 
 
 
