@@ -287,6 +287,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 <script>
 
 
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -2930,6 +2931,59 @@ return function render(_ctx, _cache) {
                                 }, _toDisplayString(isAnalyzing?analyzeStep:'Analisar'), 3 /* TEXT, CLASS */)
                               ], 12 /* STYLE, PROPS */, ["onClick", "disabled"])
                             ])),
+                  batchMode
+                    ? (_openBlock(), _createElementBlock("div", { key: 99, style: {"margin-top":"4px"} }, [
+                        _createElementVNode("div", {
+                          onDragover: $event => { $event.preventDefault(); },
+                          onDrop: onBatchDrop,
+                          style: {"border":"2px dashed #CBD5E1","border-radius":"10px","padding":"20px","text-align":"center","margin-bottom":"12px","background":"#F8FAFC","cursor":"pointer"},
+                          onClick: $event => { document.getElementById('batchInput').click(); }
+                        }, [
+                          _createElementVNode("input", {
+                            id: "batchInput",
+                            type: "file",
+                            accept: "application/pdf",
+                            multiple: true,
+                            style: {"display":"none"},
+                            onChange: $event => handleBatchFiles($event.target.files)
+                          }, null, 40, ["onChange"]),
+                          _createElementVNode("p", { style: {"font-size":"13px","font-weight":600,"color":"#0F172A","margin":"0 0 4px"} },
+                            batchFiles.length ? batchFiles.length + " PDF(s) selecionado(s)" : "Arraste os PDFs ou clique para selecionar"),
+                          _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin":"0"} },
+                            batchFiles.length ? "Clique para alterar a selecao" : "Multiplos arquivos aceitos")
+                        ], 40, ["onDragover","onDrop","onClick"]),
+                        batchFiles.length
+                          ? (_openBlock(), _createElementBlock("div", { key: 1 }, [
+                              _createElementVNode("div", { style: {"max-height":"120px","overflow-y":"auto","margin-bottom":"10px","border":"1px solid #E5E7EB","border-radius":"8px","padding":"6px 10px"} },
+                                batchFiles.map(function(f,i){ return _createElementVNode("div",{key:i,style:{"display":"flex","align-items":"center","gap":"6px","padding":"3px 0","font-size":"12px","color":batchDone.includes(f.name)?"#16A34A":batchErrors.includes(f.name)?"#DC2626":"#475569","border-bottom":"1px solid #F1F5F9"}},[
+                                  _createElementVNode("span",{style:{"flex-shrink":0}}, batchDone.includes(f.name)?"✓":batchErrors.includes(f.name)?"✗":"•"),
+                                  _createElementVNode("span",{style:{"flex":1,"overflow":"hidden","text-overflow":"ellipsis","white-space":"nowrap"}},f.name)
+                                ]); })
+                              ),
+                              batchRunning.value
+                                ? _createElementVNode("div", { style: {"text-align":"center","padding":"8px 0"} }, [
+                                    _createElementVNode("p", { style: {"font-size":"13px","color":"#2563EB","font-weight":600,"margin":"0"} },
+                                      "Analisando " + batchCurrent + " de " + batchTotal + "..."),
+                                    _createElementVNode("p", { style: {"font-size":"11px","color":"#94A3B8","margin":"4px 0 0"} }, "Aguarde, processando em sequencia")
+                                  ])
+                                : _createElementVNode("div", { style: {"display":"flex","gap":"8px"} }, [
+                                    _createElementVNode("button", {
+                                      onClick: runBatch,
+                                      style: {"flex":"1","background":"#2563EB","color":"#fff","border":"none","border-radius":"8px","padding":"11px","font-size":"14px","font-weight":700,"cursor":"pointer","font-family":"Inter,sans-serif"}
+                                    }, "Analisar todos (" + batchFiles.length + ")"),
+                                    _createElementVNode("button", {
+                                      onClick: clearBatch,
+                                      style: {"background":"#F1F5F9","color":"#64748B","border":"none","border-radius":"8px","padding":"11px 14px","font-size":"13px","cursor":"pointer","font-family":"Inter,sans-serif"}
+                                    }, "Limpar")
+                                  ])
+                            ]))
+                          : _createCommentVNode("v-if", true),
+                        batchDone.length && !batchRunning.value
+                          ? _createElementVNode("div", { style: {"margin-top":"10px","padding":"10px 12px","background":"#F0FDF4","border":"1px solid #BBF7D0","border-radius":"8px","font-size":"12px","color":"#166534","font-weight":600} },
+                              batchDone.length + " curriculo(s) analisado(s) com sucesso!")
+                          : _createCommentVNode("v-if", true)
+                      ]))
+                    : _createCommentVNode("v-if", true),
                         latestResult
                           ? (_openBlock(), _createElementBlock("div", {
                               key: 2,
@@ -3487,6 +3541,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
 
 
+
 </script>
 <script>
 function supabaseCall(action, table, id, data) {
@@ -3983,6 +4038,7 @@ function generateSummaryPDF(job,candidates){
 
 </script>
 <script>
+
 
 
 
@@ -4620,6 +4676,7 @@ createApp({
     };
   }
 }).mount('#app');
+
 
 
 
