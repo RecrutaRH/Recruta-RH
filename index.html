@@ -285,6 +285,8 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 </script>
 <script>
+
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -1454,7 +1456,21 @@ return function render(_ctx, _cache) {
                           key: 1,
                           style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"11px","overflow":"hidden"}
                         }, [
-                          _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
+                          _createElementVNode("div", { style: {"display":"flex","gap":"6px","margin-bottom":"14px","flex-wrap":"wrap"} }, [
+                              _createElementVNode("button", {
+                                onClick: $event => setJobFilter('abertas'),
+                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
+                              }, "Abertas"),
+                              _createElementVNode("button", {
+                                onClick: $event => setJobFilter('encerradas'),
+                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
+                              }, "Encerradas"),
+                              _createElementVNode("button", {
+                                onClick: $event => setJobFilter('todas'),
+                                style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'})
+                              }, "Todas")
+                            ]),
+                            _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
                               _createElementVNode("tr", null, [
                                 _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 16px","border-bottom":"1px solid #E5E7EB"} }, "Vaga · Area"),
@@ -1468,7 +1484,7 @@ return function render(_ctx, _cache) {
                               ])
                             ]),
                             _createElementVNode("tbody", null, [
-                              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(jobs, (job) => {
+                              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(filteredJobs, (job) => {
                                 return (_openBlock(), _createElementBlock("tr", {
                                   key: job.id,
                                   style: _normalizeStyle({background:isVagaCrit(job)?'#FFFAFA':''})
@@ -3469,6 +3485,8 @@ return function render(_ctx, _cache) {
 };
 try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
+
+
 </script>
 <script>
 function supabaseCall(action, table, id, data) {
@@ -3965,6 +3983,7 @@ function generateSummaryPDF(job,candidates){
 
 </script>
 <script>
+
 
 
 const {createApp,ref,computed,watch,onMounted}=Vue;
@@ -4563,6 +4582,23 @@ createApp({
     function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?(c[field]||''):'';}
 
 
+    // ── Job filter ────────────────────────────────────────────────────────
+    var jobFilter=ref('abertas');
+    var filteredJobs=computed(function(){
+      var list=jobs.value.slice();
+      if(jobFilter.value==='abertas') return list.filter(function(j){return j.status==='aberta';});
+      if(jobFilter.value==='encerradas') return list.filter(function(j){return j.status!=='aberta';});
+      // 'todas' — abertas primeiro, depois encerradas, cada grupo por data desc
+      list.sort(function(a,b){
+        if(a.status==='aberta'&&b.status!=='aberta') return -1;
+        if(a.status!=='aberta'&&b.status==='aberta') return 1;
+        return (b.openDate||'').localeCompare(a.openDate||'');
+      });
+      return list;
+    });
+    function setJobFilter(v){jobFilter.value=v;}
+
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4576,7 +4612,7 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,jobFilter,filteredJobs,setJobFilter,
       candStatusFilter,candSort,
       showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,
       showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,
@@ -4584,6 +4620,7 @@ createApp({
     };
   }
 }).mount('#app');
+
 
 
 
