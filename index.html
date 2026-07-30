@@ -11,7 +11,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F8FAFC;color:#0F172A}
@@ -286,6 +285,9 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 </script>
 <script>
+
+
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -493,11 +495,7 @@ return function render(_ctx, _cache) {
                   onClick: $event => (editingJob=null),
                   style: {"flex":"1","border":"1px solid #E5E7EB","background":"none","border-radius":"8px","padding":"10px","font-size":"13px","cursor":"pointer"}
                 }, "Cancelar", 8 /* PROPS */, ["onClick"])
-              ]),
-              _createElementVNode("button", {
-                onClick: $event => (deleteJob(editingJob.id)),
-                style: {"width":"100%","margin-top":"10px","border":"1px solid #FCA5A5","color":"#DC2626","background":"none","border-radius":"8px","padding":"9px","font-size":"12.5px","font-weight":"600","cursor":"pointer"}
-              }, "Excluir vaga", 8 /* PROPS */, ["onClick"])
+              ])
             ])
           ]))
         : _createCommentVNode("v-if", true),
@@ -710,6 +708,42 @@ return function render(_ctx, _cache) {
                   : _createCommentVNode("v-if", true)
               ], 12 /* STYLE, PROPS */, ["onClick"]))
             }), 128 /* KEYED_FRAGMENT */))
+          ]),
+          _createElementVNode("div", { style: {"padding":"8px 10px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
+            _createElementVNode("button", {
+              onClick: $event => { showNotifPanel=!showNotifPanel; if(showNotifPanel)notifications.forEach(function(n){if(!n.read)markNotifRead(n.id);}); },
+              style: _normalizeStyle({display:"flex",alignItems:"center",gap:"8px",width:"100%",padding:"7px 9px",borderRadius:"7px",border:"none",cursor:"pointer",fontSize:"13px",fontFamily:"Inter,sans-serif",fontWeight:600,background:showNotifPanel?"rgba(255,255,255,.12)":"transparent",color:"#fff",position:"relative"})
+            }, [
+              _createElementVNode("i", { class: "ti ti-bell", style: {"font-size":"15px","flex-shrink":"0"} }),
+              _createTextVNode(" Notificacoes "),
+              unreadCount>0 ? _createElementVNode("span", { style: {"position":"absolute","right":"9px","min-width":"16px","height":"16px","border-radius":"99px","background":"#EF4444","color":"#fff","font-size":"9px","font-weight":700,"display":"flex","align-items":"center","justify-content":"center","padding":"0 3px"} }, _toDisplayString(unreadCount)) : _createCommentVNode("v-if",true)
+            ], 12, ["onClick"]),
+            showNotifPanel && notifications.length ? _createElementVNode("div", { style: {"margin-top":"6px","max-height":"220px","overflow-y":"auto"} }, [
+              _renderList(notifications.slice(0,10), function(n,ni) {
+                return _createElementVNode("div", { key: ni, style: _normalizeStyle({padding:"8px 10px",borderRadius:"7px",marginBottom:"4px",background:n.read?"rgba(255,255,255,.04)":"rgba(255,255,255,.12)",cursor:"pointer"}) }, [
+                  _createElementVNode("p", { style: {"font-size":"11px","font-weight":600,"color":"#fff","margin":"0 0 2px"} }, (n.type==="aprovado"?"✓ ":"✗ ")+n.candName),
+                  _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.6)","margin":"0"} }, n.type==="aprovado"?"Aprovado pelo gestor":"Reprovado pelo gestor"),
+                  n.justificativa ? _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.5)","margin":"2px 0 0","font-style":"italic"} }, '"'+n.justificativa+'"') : _createCommentVNode("v-if",true)
+                ], 12, ["onClick"]);
+              })
+            ], 4) : _createCommentVNode("v-if",true)
+          ]),
+          _createElementVNode("div", { style: {"padding":"6px 10px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
+            _createElementVNode("button", {
+              onClick: $event => { showNotifPanel=!showNotifPanel; },
+              style: {"display":"flex","alignItems":"center","gap":"8px","width":"100%","padding":"7px 9px","borderRadius":"7px","border":"none","cursor":"pointer","fontSize":"13px","fontFamily":"Inter,sans-serif","fontWeight":600,"background":"transparent","color":"#fff","position":"relative"}
+            }, [
+              _createElementVNode("i", { class: "ti ti-bell", style: {"font-size":"15px"} }),
+              _createTextVNode(" Notificacoes"),
+              unreadCount>0 ? _createElementVNode("span", { style: {"margin-left":"auto","min-width":"18px","height":"18px","border-radius":"99px","background":"#EF4444","color":"#fff","font-size":"10px","font-weight":700,"display":"flex","align-items":"center","justify-content":"center","padding":"0 4px"} }, _toDisplayString(unreadCount)) : _createCommentVNode("v-if",true)
+            ], 8, ["onClick"]),
+            showNotifPanel ? _createElementVNode("div", { style: {"margin":"4px 0 6px","max-height":"200px","overflow-y":"auto"} }, [
+              notifications.length ? _renderList(notifications.slice(0,10), function(n,ni){ return _createElementVNode("div", { key: ni, style: {"padding":"8px 9px","border-radius":"6px","margin-bottom":"3px","background":"rgba(255,255,255,.08)"}, onClick: $event => markNotifRead(n.id) }, [
+                _createElementVNode("p", { style: {"font-size":"11px","font-weight":600,"color":"#fff","margin":"0 0 1px"} }, (n.type==="aprovado"?"✓ ":"✗ ")+_toDisplayString(n.candName)),
+                _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.55)","margin":"0"} }, n.type==="aprovado"?"Aprovado pelo gestor · "+_toDisplayString(n.jobTitle):"Reprovado pelo gestor · "+_toDisplayString(n.jobTitle)),
+                n.justificativa ? _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.4)","margin":"2px 0 0","font-style":"italic"} }, '"'+_toDisplayString(n.justificativa)+'"') : _createCommentVNode("v-if",true)
+              ], 8, ["onClick"]); }) : _createElementVNode("p", { style: {"font-size":"11px","color":"rgba(255,255,255,.4)","padding":"4px 0","margin":"0"} }, "Nenhuma notificacao")
+            ], 4) : _createCommentVNode("v-if",true)
           ]),
           _createElementVNode("div", { style: {"padding":"12px 13px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
             jbStatus
@@ -1459,7 +1493,12 @@ return function render(_ctx, _cache) {
                           key: 1,
                           style: {"background":"#fff","border":"1px solid #E5E7EB","border-radius":"11px","overflow":"hidden"}
                         }, [
-                          _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
+                          _createElementVNode("div", { style: {"display":"flex","gap":"6px","margin-bottom":"14px","flex-wrap":"wrap"} }, [
+                              _createElementVNode("button", { onClick: $event => setJobFilter('abertas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Abertas"),
+                              _createElementVNode("button", { onClick: $event => setJobFilter('encerradas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Encerradas"),
+                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas")
+                            ]),
+                            _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
                               _createElementVNode("tr", null, [
                                 _createElementVNode("th", { style: {"text-align":"left","font-size":"10px","font-weight":"600","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".05em","padding":"12px 16px","border-bottom":"1px solid #E5E7EB"} }, "Vaga · Area"),
@@ -1473,7 +1512,7 @@ return function render(_ctx, _cache) {
                               ])
                             ]),
                             _createElementVNode("tbody", null, [
-                              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(jobs, (job) => {
+                              (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(filteredJobs, (job) => {
                                 return (_openBlock(), _createElementBlock("tr", {
                                   key: job.id,
                                   style: _normalizeStyle({background:isVagaCrit(job)?'#FFFAFA':''})
@@ -1554,7 +1593,8 @@ return function render(_ctx, _cache) {
                                     }, _toDisplayString(job.status), 5 /* TEXT, STYLE */)
                                   ]),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
-                                    _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
+                                    _createElementVNode("div", { style: {"display":"flex","gap":"6px","flex-wrap":"wrap"} }, [
+                                      getGestorCands(job).length ? _createElementVNode("button", { onClick: $event => sendToGestor(job), style: {"font-size":"11px","padding":"4px 10px","border-radius":"6px","background":"#EFF6FF","color":"#1D4ED8","border":"1px solid #BFDBFE","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"white-space":"nowrap"} }, "✉ Gestor ("+getGestorCands(job).length+")") : _createCommentVNode("v-if",true),
                                       _createElementVNode("button", {
                                         onClick: $event => (openEdit(job)),
                                         style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"6px","color":"#64748B","font-size":"11px","cursor":"pointer","padding":"3px 8px","font-family":"Inter,sans-serif"}
@@ -2431,25 +2471,11 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                            _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
-                                            _createElementVNode("label", {
-                                              style: _normalizeStyle({fontSize:'11px',fontWeight:600,color:isUploadingTranscript?'#94A3B8':'#0369A1',cursor:isUploadingTranscript?'wait':'pointer',display:'flex',alignItems:'center',gap:'4px'})
-                                            }, [
-                                              _createTextVNode(_toDisplayString(isUploadingTranscript?'Lendo arquivo...':'⇧ Enviar .docx')+" ", 1 /* TEXT */),
-                                              _createElementVNode("input", {
-                                                type: "file",
-                                                accept: ".docx",
-                                                disabled: isUploadingTranscript,
-                                                onChange: $event => (handleTranscriptFile(viewCand.id,$event.target.files[0]),$event.target.value=''),
-                                                style: {"display":"none"}
-                                              }, null, 40 /* PROPS, NEED_HYDRATION */, ["disabled", "onChange"])
-                                            ], 4 /* STYLE */)
-                                          ]),
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
-                                            placeholder: "Cole aqui a transcricao exportada do Teams, ou envie o arquivo .docx acima...",
+                                            placeholder: "Cole aqui a transcricao exportada do Teams...",
                                             rows: "6",
                                             style: {"margin-bottom":"10px","font-size":"12px"}
                                           }, null, 40 /* PROPS, NEED_HYDRATION */, ["value", "onInput"]),
@@ -2489,86 +2515,10 @@ return function render(_ctx, _cache) {
                                           ], 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
                                           (getSummary(viewCand.id))
                                             ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
-                                                _createElementVNode("div", {
-                                                  style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#86EFAC':'#FCA5A5'),borderRadius:'9px',padding:'12px 14px',marginBottom:'10px'})
-                                                }, [
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'4px'})
-                                                  }, "Recomendação do RH"),
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({fontSize:'13px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',marginBottom:'8px'})
-                                                  }, _toDisplayString(getSummary(viewCand.id).recomendacao), 5 /* TEXT, STYLE */),
-                                                  _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
-                                                    _createElementVNode("button", {
-                                                      onClick: $event => (setRecomendacao(viewCand.id,'Avançar para entrevista com o líder')),
-                                                      disabled: reconcilingCid===viewCand.id,
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#fff',color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"]),
-                                                    _createElementVNode("button", {
-                                                      onClick: $event => (setRecomendacao(viewCand.id,'Não avançar no processo')),
-                                                      disabled: reconcilingCid===viewCand.id,
-                                                      style: _normalizeStyle({flex:1,padding:'6px 8px',borderRadius:'6px',fontSize:'10.5px',fontWeight:600,cursor:reconcilingCid===viewCand.id?'wait':'pointer',opacity:reconcilingCid===viewCand.id?0.6:1,border:'1px solid '+(getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#E2E8F0'),background:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#DC2626':'#fff',color:getSummary(viewCand.id).recomendacao!=='Avançar para entrevista com o líder'?'#fff':'#64748B'})
-                                                    }, "Não avançar", 12 /* STYLE, PROPS */, ["onClick", "disabled"])
-                                                  ]),
-                                                  (reconcilingCid===viewCand.id)
-                                                    ? (_openBlock(), _createElementBlock("div", {
-                                                        key: 0,
-                                                        style: {"fontSize":"10px","color":"#94A3B8","marginTop":"6px"}
-                                                      }, "Ajustando o parecer para refletir a decisão..."))
-                                                    : _createCommentVNode("v-if", true)
-                                                ], 4 /* STYLE */),
-                                                (getSummary(viewCand.id)&&getSummary(viewCand.id).fatoresRecomendacao&&getSummary(viewCand.id).fatoresRecomendacao.length)
-                                                  ? (_openBlock(), _createElementBlock("div", {
-                                                      key: 'fatores',
-                                                      style: _normalizeStyle({background:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#F0FDF4':'#FEF2F2',borderRadius:'7px',padding:'10px 12px',marginBottom:'7px'})
-                                                    }, [
-                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                                        _createElementVNode("p", {
-                                                          style: _normalizeStyle({fontSize:'9.5px',fontWeight:700,color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626',textTransform:'uppercase',letterSpacing:'.06em',margin:0})
-                                                        }, _toDisplayString(getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'Principais fatores para avançar':'Principais fatores para não avançar'), 5 /* TEXT, STYLE */),
-                                                        (!isEditing(viewCand.id,'fatoresRecomendacao'))
-                                                          ? (_openBlock(), _createElementBlock("button", {
-                                                              key: 0,
-                                                              onClick: $event => (startEdit(viewCand.id,'fatoresRecomendacao',getSummary(viewCand.id).fatoresRecomendacao)),
-                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
-                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
-                                                          : (_openBlock(), _createElementBlock("div", {
-                                                              key: 1,
-                                                              style: {"display":"flex","gap":"5px"}
-                                                            }, [
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (saveEdit(viewCand.id,'fatoresRecomendacao')),
-                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (cancelEdit()),
-                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
-                                                              }, "X", 8 /* PROPS */, ["onClick"])
-                                                            ]))
-                                                      ]),
-                                                      (isEditing(viewCand.id,'fatoresRecomendacao'))
-                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
-                                                            key: 0,
-                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
-                                                            rows: "4",
-                                                            placeholder: "Um fator por linha",
-                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
-                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
-                                                            [_vModelText, editFieldVal]
-                                                          ])
-                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).fatoresRecomendacao, (p, i) => {
-                                                            return (_openBlock(), _createElementBlock("div", {
-                                                              key: i,
-                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
-                                                            }, [
-                                                              _createElementVNode("span", {
-                                                                style: _normalizeStyle({color:getSummary(viewCand.id).recomendacao==='Avançar para entrevista com o líder'?'#16A34A':'#DC2626'})
-                                                              }, "•", 4 /* STYLE */),
-                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                            ]))
-                                                          }), 128 /* KEYED_FRAGMENT */))
-                                                    ], 4 /* STYLE */))
-                                                  : _createCommentVNode("v-if", true),
+                                                _createElementVNode("div", { style: {"background":"#F0FDF4","border":"1px solid #86EFAC","border-radius":"9px","padding":"12px 14px","margin-bottom":"10px"} }, [
+                                                  _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#16A34A","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"4px"} }, "Recomendacao"),
+                                                  _createElementVNode("div", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(getSummary(viewCand.id).recomendacao), 1 /* TEXT */)
+                                                ]),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
                                                     key: row.label,
@@ -2711,56 +2661,6 @@ return function render(_ctx, _cache) {
                                                       : _createCommentVNode("v-if", true)
                                                   ])
                                                 ]),
-                                                (getSummary(viewCand.id).paraExplorar&&getSummary(viewCand.id).paraExplorar.length)
-                                                  ? (_openBlock(), _createElementBlock("div", {
-                                                      key: 'explorar',
-                                                      style: {"background":"#F5F3FF","border":"1px solid #DDD6FE","borderRadius":"7px","padding":"10px 12px","marginBottom":"10px"}
-                                                    }, [
-                                                      _createElementVNode("div", { style: {"display":"flex","justify-content":"space-between","align-items":"center","margin-bottom":"6px"} }, [
-                                                        _createElementVNode("p", {
-                                                          style: {"font-size":"9.5px","font-weight":"700","color":"#6D28D9","text-transform":"uppercase","letter-spacing":".06em","margin":"0"}
-                                                        }, "Para explorar com o candidato"),
-                                                        (!isEditing(viewCand.id,'paraExplorar'))
-                                                          ? (_openBlock(), _createElementBlock("button", {
-                                                              key: 0,
-                                                              onClick: $event => (startEdit(viewCand.id,'paraExplorar',getSummary(viewCand.id).paraExplorar)),
-                                                              style: {"background":"none","border":"none","cursor":"pointer","font-size":"13px","color":"#94A3B8","padding":"0"}
-                                                            }, "✎", 8 /* PROPS */, ["onClick"]))
-                                                          : (_openBlock(), _createElementBlock("div", {
-                                                              key: 1,
-                                                              style: {"display":"flex","gap":"5px"}
-                                                            }, [
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (saveEdit(viewCand.id,'paraExplorar')),
-                                                                style: {"background":"#2563EB","color":"#fff","border":"none","border-radius":"4px","padding":"2px 7px","font-size":"11px","cursor":"pointer","font-family":"Inter,sans-serif"}
-                                                              }, "Salvar", 8 /* PROPS */, ["onClick"]),
-                                                              _createElementVNode("button", {
-                                                                onClick: $event => (cancelEdit()),
-                                                                style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"4px","padding":"2px 6px","font-size":"11px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
-                                                              }, "X", 8 /* PROPS */, ["onClick"])
-                                                            ]))
-                                                      ]),
-                                                      (isEditing(viewCand.id,'paraExplorar'))
-                                                        ? _withDirectives((_openBlock(), _createElementBlock("textarea", {
-                                                            key: 0,
-                                                            "onUpdate:modelValue": $event => ((editFieldVal) = $event),
-                                                            rows: "3",
-                                                            placeholder: "Um ponto por linha",
-                                                            style: {"font-size":"12px","border":"1px solid #6366F1","border-radius":"4px","padding":"6px","resize":"vertical","background":"#fff","width":"100%"}
-                                                          }, null, 8 /* PROPS */, ["onUpdate:modelValue"])), [
-                                                            [_vModelText, editFieldVal]
-                                                          ])
-                                                        : (_openBlock(true), _createElementBlock(_Fragment, { key: 1 }, _renderList(getSummary(viewCand.id).paraExplorar, (p, i) => {
-                                                            return (_openBlock(), _createElementBlock("div", {
-                                                              key: i,
-                                                              style: {"display":"flex","gap":"6px","font-size":"12px","margin-bottom":"3px","align-items":"baseline"}
-                                                            }, [
-                                                              _createElementVNode("span", { style: {"color":"#6D28D9"} }, "•"),
-                                                              _createElementVNode("span", null, _toDisplayString(p), 1 /* TEXT */)
-                                                            ]))
-                                                          }), 128 /* KEYED_FRAGMENT */))
-                                                    ]))
-                                                  : _createCommentVNode("v-if", true),
                                                 _createElementVNode("div", { style: {"display":"flex","gap":"10px"} }, [
                                                   _createElementVNode("button", {
                                                     onClick: $event => (dlParecer(viewCand)),
@@ -2915,7 +2815,7 @@ return function render(_ctx, _cache) {
                                 type: "file",
                                 accept: "application/pdf",
                                 style: {"display":"none"},
-                                onChange: e=>handleFile(e.target.files[0])
+                                onChange: e=>handleFile(e.target.files[0]),multiple:true
                               }, null, 40 /* PROPS, NEED_HYDRATION */, ["onChange"]),
                               _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"8px"} }, "Curriculo em PDF *"),
                               pdfFile
@@ -3056,7 +2956,7 @@ return function render(_ctx, _cache) {
                                   : _createCommentVNode("v-if", true),
                                 _createElementVNode("span", {
                                   class: _normalizeClass(isAnalyzing?'pulse':'')
-                                }, _toDisplayString(isAnalyzing?analyzeStep:'Analisar'), 3 /* TEXT, CLASS */)
+                                }, _toDisplayString(isAnalyzing?analyzeStep:(batchQueue&&batchQueue.length>1?'Analisar em lote ('+batchQueue.length+')':'Analisar Perfil')), 3 /* TEXT, CLASS */)
                               ], 12 /* STYLE, PROPS */, ["onClick", "disabled"])
                             ])),
                         latestResult
@@ -3614,47 +3514,22 @@ return function render(_ctx, _cache) {
 };
 try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
+
+
+
 </script>
 <script>
-function supabaseCall(action, table, id, data) {
-  return fetch('/api/db', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action, table, id, data})
-  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
-}
+function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
+
 
 // ── JSONBin.io API functions ──────────────────────────────────────────────────
-function jsonBinCreate(masterKey) { return Promise.resolve("supabase"); }
-function jsonBinPush(masterKey, binId, data) {
-  if(!data) return Promise.resolve(null);
-  return Promise.all([
-    supabaseCall('saveMany','jobs',null,data.jobs||[]),
-    supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
-    supabaseCall('setState','app_state','notes',data.notes||{}),
-    supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
-    supabaseCall('setState','app_state','summaries',data.summaries||{}),
-    supabaseCall('setState','app_state','intDates',data.intDates||{}),
-  ]).then(function(){ return {ok:true}; }).catch(function(){ return null; });
+function jsonBinCreate(masterKey){return Promise.resolve("supabase");}
+function jsonBinPush(masterKey,binId,data){
+  if(!data)return Promise.resolve(null);
+  return Promise.all([supabaseCall('saveMany','jobs',null,data.jobs||[]),supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),supabaseCall('setState','app_state','notes',data.notes||{}),supabaseCall('setState','app_state','transcripts',data.transcripts||{}),supabaseCall('setState','app_state','summaries',data.summaries||{}),supabaseCall('setState','app_state','intDates',data.intDates||{})]).then(function(){return{ok:true};}).catch(function(){return null;});
 }
-function jsonBinPull(masterKey, binId) {
-  return Promise.all([
-    supabaseCall('loadAll','jobs'),
-    supabaseCall('loadAll','candidates'),
-    supabaseCall('getState','app_state','notes'),
-    supabaseCall('getState','app_state','transcripts'),
-    supabaseCall('getState','app_state','summaries'),
-    supabaseCall('getState','app_state','intDates'),
-  ]).then(function(results){
-    return {
-      jobs: results[0].data||[],
-      candidates: results[1].data||[],
-      notes: results[2].data||{},
-      transcripts: results[3].data||{},
-      summaries: results[4].data||{},
-      intDates: results[5].data||{}
-    };
-  }).catch(function(){ return null; });
+function jsonBinPull(masterKey,binId){
+  return Promise.all([supabaseCall('loadAll','jobs'),supabaseCall('loadAll','candidates'),supabaseCall('getState','app_state','notes'),supabaseCall('getState','app_state','transcripts'),supabaseCall('getState','app_state','summaries'),supabaseCall('getState','app_state','intDates')]).then(function(r){return{jobs:r[0].data||[],candidates:r[1].data||[],notes:r[2].data||{},transcripts:r[3].data||{},summaries:r[4].data||{},intDates:r[5].data||{}};}).catch(function(){return null;});
 }
 
 
@@ -3732,10 +3607,6 @@ function buildMailto(job,candidates){
   return 'mailto:'+(job.leaderEmail||'')+'?subject='+subject+'&body='+encodeURIComponent(body);
 }
 function buildPrompt(job){
-  var hasCustomClass = /perfil\s*a\b/i.test(job.desc||'') && /perfil\s*b\b/i.test(job.desc||'');
-  var classificationRule = hasCustomClass
-    ? '- classification: a descrição da vaga acima já define seu próprio sistema de classificação (ex: "Perfil A", "Perfil B", "Perfil C", "Perfil D"). Use EXATAMENTE a nomenclatura e os critérios definidos na descrição da vaga para decidir qual classificação atribuir — não use a escala "Forte/Moderada/Baixa aderência" nem misture as duas nomenclaturas\n'
-    : '- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n';
   return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência em avaliação de perfis executivos.\n'
     +'Analise o currículo do candidato com profundidade consultiva e retorne APENAS JSON válido, sem markdown.\n\n'
     +'VAGA: '+job.title+' | '+(job.dept||'')+'\n'+job.desc+'\n\n'
@@ -3760,7 +3631,7 @@ function buildPrompt(job){
     +'- score.softSkills: 0-15 (peso 15% — analise evidências comportamentais)\n'
     +'- score.culturalFit: 0-10 (peso 10% — alinhamento com a cultura descrita na vaga)\n'
     +'- score.total = soma dos quatro\n'
-    +classificationRule
+    +'- classification: "Forte aderência"(80-100), "Aderência moderada"(60-79), "Baixa aderência"(<60)\n'
     +'- recommendation: "Avançar para entrevista", "Manter em banco de talentos", "Reprovar"\n'
     +'- executiveSummary.strengths: 3-5 frases consultivas sobre o perfil geral — NÃO liste tópicos\n'
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
@@ -3769,23 +3640,9 @@ function buildPrompt(job){
     +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
-function buildCvContext(candidate){
-  var a = candidate.analysis;
-  if(!a) return '';
-  var es = a.executiveSummary||{};
-  var ca = a.candidateAnalysis||{};
-  var comp = a.comparison||{};
-  var out = '';
-  if(a.classification||a.score) out += 'Classificação: '+(a.classification||'')+(a.score&&a.score.total?' (score '+a.score.total+'/100)':'')+'\n';
-  if(es.strengths) out += 'Resumo do currículo: '+es.strengths+'\n';
-  if(es.reasoning) out += 'Justificativa da análise de currículo: '+es.reasoning+'\n';
-  if((comp.matched||[]).length) out += 'Requisitos já confirmados pelo currículo: '+comp.matched.join('; ')+'\n';
-  if((comp.missing||[]).length) out += 'Requisitos não evidenciados pelo currículo: '+comp.missing.join('; ')+'\n';
-  if((ca.relevantExperiences||[]).length) out += 'Experiências relevantes identificadas: '+ca.relevantExperiences.join('; ')+'\n';
-  return out;
-}
 
 function buildInterviewPrompt(candidate,transcript,job){
+  job=job||{};
   var ctx = '';
   if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
   if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
@@ -3838,23 +3695,6 @@ function buildInterviewPrompt(candidate,transcript,job){
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
-function buildReconciliationPrompt(candidate,transcript,targetRec,job){
-  return 'A decisão final deste processo seletivo já foi tomada pelo RH: "'+targetRec+'".\n'
-    +'Essa decisão considera fatores além da entrevista — aderência ao perfil da vaga, benchmarking com outros candidatos, critérios eliminatórios do processo, percepção técnica do recrutador — que não estão necessariamente refletidos na transcrição.\n'
-    +'Sua tarefa NÃO é decidir de novo, nem emitir uma segunda recomendação independente. É reescrever o parecer para ser consistente com essa decisão final, usando apenas evidências REAIS da transcrição abaixo. NUNCA invente fatos, problemas ou comportamentos que não aconteceram na entrevista.\n'
-    +'Lembre-se da regra de peso: a recomendação não é sobre quantos requisitos foram atendidos, é sobre o peso dos requisitos mais críticos da vaga. Ancore a justificativa nos requisitos que mais pesam, não em uma lista completa.\n'
-    +'Se a entrevista em si foi positiva mas a decisão final é "Não avançar", seja honesto: reconheça o que foi positivo, mas deixe claro que a decisão considerou critérios adicionais do processo seletivo que vão além do que a entrevista isoladamente demonstra. Em nenhum campo escreva algo que soe como uma recomendação diferente da decisão final.\n\n'
-    +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
-    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA:\n'+job.desc+'\n\n':'')
-    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
-    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
-    +'Retorne APENAS este JSON, reescrevendo os três campos para sustentar a decisão final "'+targetRec+'", sem redundância entre eles:\n'
-    +'{"parecerExecutivo":"","fatoresRecomendacao":["","",""],"pontosAtencao":["",""]}\n'
-    +'- parecerExecutivo: 4 a 6 linhas, cita pelo menos 1 evidência concreta da entrevista, fecha reforçando a decisão final\n'
-    +'- fatoresRecomendacao: 3 a 5 bullets curtos (frase única, ~12 palavras) com os elementos que sustentam essa decisão\n'
-    +'- pontosAtencao: 3 a 4 bullets curtos e reais — baseados na transcrição, ou reconhecendo objetivamente que a decisão considerou critérios do processo além da entrevista';
-}
-
 
 function generateAnalysisPDF(candidate) {
   if(!candidate||!candidate.analysis){return;}
@@ -3875,11 +3715,10 @@ function generateAnalysisPDF(candidate) {
   var matched = (a.comparison&&a.comparison.matched)||[];
   var missing  = (a.comparison&&a.comparison.missing)||[];
 
-  var densTxt = ((es.strengths||'').length + (es.reasoning||'').length);
-  var fSum = densTxt>750?'9.5px':'10.5px';
-  var fReason = densTxt>750?'9px':'10px';
-  var lnSum = densTxt>750?1.45:1.55;
-  var lnReason = densTxt>750?1.4:1.5;
+  function truncate(text, maxLen) {
+    if(!text)return '';
+    return text.length>maxLen?text.substring(0,maxLen)+'...':text;
+  }
   function sbar(label, val, max) {
     var pct = max>0?Math.round(val/max*100):0;
     var col = pct>=80?'#16A34A':pct>=60?'#EA580C':'#DC2626';
@@ -3957,7 +3796,7 @@ function generateAnalysisPDF(candidate) {
     // EXEC SUMMARY
     +(es.strengths?'<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#1D4ED8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Resumo Executivo</p>'
-    +'<p style="font-size:'+fSum+';color:#1e293b;line-height:'+lnSum+'">'+es.strengths+'</p>'
+    +'<p style="font-size:10.5px;color:#1e293b;line-height:1.55">'+truncate(es.strengths, 420)+'</p>'
     +'</div>':'')
 
     // COMPETÊNCIAS + PERFIL COMPORTAMENTAL
@@ -3996,7 +3835,7 @@ function generateAnalysisPDF(candidate) {
     // REASONING
     +(es.reasoning?'<div style="background:#F8FAFC;border:1px solid #e2e8f0;border-radius:7px;padding:7px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Justificativa</p>'
-    +'<p style="font-size:'+fReason+';color:#334155;line-height:'+lnReason+'">'+es.reasoning+'</p>'
+    +'<p style="font-size:10px;color:#334155;line-height:1.5">'+truncate(es.reasoning, 380)+'</p>'
     +'</div>':'')
 
     // FOOTER
@@ -4014,16 +3853,6 @@ function generateAnalysisPDF(candidate) {
 }
 
 
-function computeConfianca(summary){
-  if(!summary)return null;
-  var dims=[summary.fitExperiencia,summary.fitTecnico,summary.fitComportamental,summary.fitModeloTrabalho,summary.fitSalarial];
-  var aplicaveis=dims.filter(function(v){return v&&v!=='Não se aplica';});
-  if(!aplicaveis.length)return null;
-  var insuf=aplicaveis.filter(function(v){return v==='Dado insuficiente';}).length;
-  if(insuf===0)return{label:'Alta',bg:'#dcfce7',col:'#166534'};
-  if(insuf===1)return{label:'Média',bg:'#fef3c7',col:'#b45309'};
-  return{label:'Baixa',bg:'#fee2e2',col:'#991b1b'};
-}
 
 function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
@@ -4231,6 +4060,9 @@ function generateSummaryPDF(job,candidates){
 <script>
 
 
+
+
+
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4271,13 +4103,12 @@ createApp({
     var isAnalyzing=ref(false),analyzeStep=ref(''),latestResult=ref(null);
     var viewCand=ref(null),error=ref(''),pipFilter=ref('all'),saveMsg=ref('');
     var isGenSum=ref(false),genSumStep=ref('');
-    var reconcilingCid=ref(null);
     var alertTab=ref('cand');
     var detTab=ref('ai');
     var candSearch=ref('');var insightFilter=ref(null);var filterMonth=ref('');
     // JSONBin sync
-    var jbKey=ref('supabase');
-    var jbBin=ref('supabase');
+    var jbKey=ref(DEFAULT_JB_KEY||lsGet('recruitarh_jbkey',''));
+    var jbBin=ref(DEFAULT_JB_BIN||lsGet('recruitarh_jbbin',''));
     var jbStatus=ref('');
     var showSyncModal=ref(false);
     var jbKeyInput=ref('');
@@ -4432,10 +4263,7 @@ createApp({
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
       if(insightFilter.value==='alta_aderencia')list=list.filter(function(c){return c.analysis&&c.analysis.score&&c.analysis.score.total>=80;});
       if(insightFilter.value==='aguardando_lider')list=list.filter(function(c){return c.status==='aguardando_lider';});
-      if(candSearch.value.trim()){
-        var s=candSearch.value.trim().toLowerCase();
-        list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});
-      }
+      if(candSearch.value.trim()){var s=candSearch.value.trim().toLowerCase();list=list.filter(function(c){return c.name.toLowerCase().includes(s)||(c.jobTitle||'').toLowerCase().includes(s);});}
       var f=candStatusFilter.value;
       if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
       else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
@@ -4448,7 +4276,7 @@ createApp({
       return list;
     });
 
-    function isVagaCrit(job){ return job.status==='aberta'&&!job.prazoEstendido&&bizDaysSince(job.openDate)>10; }
+    function isVagaCrit(job){ return job.status==='aberta'&&bizDaysSince(job.openDate)>10; }
 
     function applyData(d){
       if(!d)return;
@@ -4475,7 +4303,7 @@ createApp({
     function saveSyncConfig(){showSyncModal.value=false;pullSync();flash('Sincronizando...');}
     function deactivateSync(){jbKey.value='';jbBin.value='';jbStatus.value='';flash('Compartilhamento desativado');}
 
-    onMounted(function(){
+    onMounted(function(){loadNotifications();
       if(jbKey.value&&jbBin.value){
         pullSync();
         setInterval(pullSync,10000);
@@ -4493,7 +4321,7 @@ createApp({
     function saveEdit(cid,field){
       var s=Object.assign({},summaries.value);
       s[cid]=Object.assign({},s[cid]);
-      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao','paraExplorar'];
+      var arr=['pontosPositivos','pontosAtencao'];
       if(arr.indexOf(field)>=0){
         s[cid][field]=editFieldVal.value.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       } else {
@@ -4507,51 +4335,6 @@ createApp({
     }
     function cancelEdit(){editingField.value=null;editFieldVal.value='';}
     function isEditing(cid,field){return editingField.value&&editingField.value.cid===cid&&editingField.value.field===field;}
-    function setRecomendacao(cid,val){
-      var cur=summaries.value[cid];
-      if(!cur)return;
-      var already=cur.recomendacao===val;
-      var s=Object.assign({},summaries.value);
-      s[cid]=Object.assign({},s[cid]);
-      s[cid].recomendacao=val;
-      summaries.value=s;
-      if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
-      pushSync();
-      if(already){flash('Recomendação atualizada');return;}
-      var transcript=getTranscript(cid);
-      var cand=candidates.value.find(function(c){return c.id===cid;});
-      if(!transcript.trim()||!cand){flash('Recomendação atualizada');return;}
-      if(!apiKey.value){showApiModal.value=true;return;}
-      reconcilingCid.value=cid;
-      var jb=jobs.value.find(function(j){return j.id===cand.jobId;});
-      flash('Recomendação atualizada — ajustando o parecer para refletir a decisão...');
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:3000,messages:[{role:'user',content:buildReconciliationPrompt(cand,transcript,val,jb)}]})})
-      .then(function(r){return r.json();}).then(function(data){
-        if(data.error)throw new Error(data.error.message);
-        var raw=data.content.map(function(i){return i.text||'';}).join('');
-        var parsed;
-        try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-        catch(pe){
-          var m=raw.match(/\{[\s\S]*\}/);
-          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-        }
-        if(!parsed){console.error('Falha ao reconciliar parecer. raw:',raw);flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');reconcilingCid.value=null;return;}
-        var s2=Object.assign({},summaries.value);
-        s2[cid]=Object.assign({},s2[cid]);
-        if(parsed.parecerExecutivo)s2[cid].parecerExecutivo=parsed.parecerExecutivo;
-        if(parsed.fatoresRecomendacao)s2[cid].fatoresRecomendacao=parsed.fatoresRecomendacao;
-        if(parsed.pontosAtencao)s2[cid].pontosAtencao=parsed.pontosAtencao;
-        summaries.value=s2;
-        if(viewCand.value&&viewCand.value.id===cid)viewCand.value=Object.assign({},viewCand.value);
-        reconcilingCid.value=null;
-        flash('Parecer ajustado para refletir a decisão final');
-        pushSync();
-      }).catch(function(e){
-        console.error('Erro ao reconciliar parecer:',e);
-        flash('Recomendação salva, mas não consegui reajustar o texto automaticamente — revise manualmente.');
-        reconcilingCid.value=null;
-      });
-    }
 
     // ── Jobs ──────────────────────────────────────────────────────────────
     function addJob(){
@@ -4571,22 +4354,6 @@ createApp({
       }
       editingJob.value=null;flash('Vaga atualizada');pushSync();
     }
-    function deleteJob(id){
-      var toRemove=candidates.value.filter(function(c){return c.jobId===id;});
-      var n=toRemove.length;
-      var msg=n>0
-        ?'Esta vaga tem '+n+' candidato(s) vinculado(s). Excluir a vaga também removerá esses candidatos. Deseja continuar?'
-        :'Excluir esta vaga? A ação não pode ser desfeita.';
-      if(!confirm(msg))return;
-      jobs.value=jobs.value.filter(function(j){return j.id!==id;});
-      candidates.value=candidates.value.filter(function(c){return c.jobId!==id;});
-      editingJob.value=null;
-      Promise.all(
-        [supabaseCall('delete','jobs',id)].concat(toRemove.map(function(c){return supabaseCall('delete','candidates',c.id);}))
-      ).catch(function(e){console.error('Erro ao excluir no banco:',e);});
-      pushSync();
-      flash('Vaga excluída.');
-    }
 
     // ── Analyze ───────────────────────────────────────────────────────────
     function handleFile(file){
@@ -4599,29 +4366,28 @@ createApp({
     function analyze(){
       if(!apiKey.value){showApiModal.value=true;return;}
       if(!selJobId.value){error.value='Selecione uma vaga.';return;}
-      if(!pdfFile.value){error.value='Anexe o curr\u00edculo.';return;}
+      if(!pdfFile.value&&(!batchQueue.value||!batchQueue.value.length)){error.value='Anexe o curriculo.';return;}
+      if(batchQueue.value&&batchQueue.value.length>1){
+        var job=jobs.value.find(function(j){return j.id===selJobId.value;});if(!job)return;
+        isAnalyzing.value=true;error.value='';
+        var files=batchQueue.value.slice();var done=0;
+        function nextFile(i){
+          if(i>=files.length){isAnalyzing.value=false;batchQueue.value=[];pdfFile.value=null;flash('Analise concluida: '+done+' curriculo(s) processado(s)');return;}
+          analyzeStep.value='Analisando '+(i+1)+' de '+files.length+': '+files[i].name+'...';
+          analyzeSingle(files[i],job).then(function(r){if(r.ok)done++;setTimeout(function(){nextFile(i+1);},600);});
+        }
+        nextFile(0);return;
+      }
       var job=jobs.value.find(function(j){return j.id===selJobId.value;});if(!job)return;
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var parsed;
-          try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-          catch(pe){
-            var m=raw.match(/\{[\s\S]*\}/);
-            if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-            if(!parsed){
-              console.error('Falha ao interpretar resposta da análise. stop_reason:',data.stop_reason,'raw:',raw);
-              var msg=data.stop_reason==='max_tokens'
-                ?'A análise deste currículo ficou mais longa do que o esperado e foi cortada. Tente novamente — se persistir, o currículo pode ser incomum em tamanho/complexidade.'
-                :'A resposta da análise veio em formato inesperado. Tente analisar este currículo novamente.';
-              throw new Error(msg);
-            }
-          }
-          var initStatus='aguardando_lider';
+          var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+          var initStatus=parsed.recommendation==='Avan\u00e7ar para entrevista'?'aguardando_lider':parsed.recommendation==='Manter em banco de talentos'?'banco':'reprovado';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4644,27 +4410,6 @@ createApp({
     function getNote(cid){return notes.value[cid]||'';}
     function getTranscript(cid){return transcripts.value[cid]||'';}
     function setTranscript(cid,txt){var t=Object.assign({},transcripts.value);t[cid]=txt;transcripts.value=t;}
-    var isUploadingTranscript=ref(false);
-    function handleTranscriptFile(cid,file){
-      if(!file)return;
-      var name=(file.name||'').toLowerCase();
-      if(!name.endsWith('.docx')){flash('Envie um arquivo .docx (Word)');return;}
-      isUploadingTranscript.value=true;
-      var reader=new FileReader();
-      reader.onload=function(e){
-        mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(result){
-          setTranscript(cid,result.value||'');
-          isUploadingTranscript.value=false;
-          flash('Transcrição importada do Word');
-        }).catch(function(err){
-          console.error('Erro ao ler .docx:',err);
-          isUploadingTranscript.value=false;
-          flash('Não consegui ler esse arquivo. Tente colar o texto manualmente.');
-        });
-      };
-      reader.onerror=function(){isUploadingTranscript.value=false;flash('Falha ao abrir o arquivo.');};
-      reader.readAsArrayBuffer(file);
-    }
     function getSummary(cid){return summaries.value[cid]||null;}
     function getIntDate(cid){return intDates.value[cid]||'';}
     function setIntDate(cid,d){var v=Object.assign({},intDates.value);v[cid]=d;intDates.value=v;}
@@ -4672,25 +4417,12 @@ createApp({
     function generateInterviewSummary(candidate){
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
-      var job=jobs.value.find(function(j){return j.id===candidate.jobId;});
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:6000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id),job)}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
-        var parsed;
-        try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}
-        catch(pe){
-          var m=raw.match(/\{[\s\S]*\}/);
-          if(m){try{parsed=JSON.parse(m[0]);}catch(pe2){}}
-          if(!parsed){
-            console.error('Falha ao interpretar resumo da entrevista. stop_reason:',data.stop_reason,'raw:',raw);
-            var msg=data.stop_reason==='max_tokens'
-              ?'O resumo desta entrevista ficou mais longo do que o esperado e foi cortado. Tente novamente — se persistir, a transcrição pode ser incomum em tamanho.'
-              :'O resumo da entrevista veio em formato inesperado. Tente gerar novamente.';
-            throw new Error(msg);
-          }
-        }
+        var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
         var s=Object.assign({},summaries.value);s[candidate.id]=parsed;summaries.value=s;
         if(viewCand.value&&viewCand.value.id===candidate.id)viewCand.value=Object.assign({},viewCand.value);
         flash('Resumo gerado');isGenSum.value=false;genSumStep.value='';pushSync();
@@ -4710,11 +4442,9 @@ createApp({
       var isPos=s.recomendacao==='Avan\u00e7ar para entrevista com o l\u00edder';
       var pos=(s.pontosPositivos||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
       var neg=(s.pontosAtencao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nPRETENSÃO SALARIAL: '+s.expectativaSalarial:'';
+      var sal=s.expectativaSalarial&&s.expectativaSalarial.trim()?'\nEXPECTATIVA SALARIAL: '+s.expectativaSalarial:'';
       var disp=s.disponibilidade&&s.disponibilidade.trim()?'\nDISPONIBILIDADE: '+s.disponibilidade:'';
-      var fat=(s.fatoresRecomendacao||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var explorar=(s.paraExplorar||[]).map(function(p,i){return (i+1)+'. '+p;}).join('\n');
-      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\n'+(isPos?'PRINCIPAIS FATORES PARA AVAN\u00c7AR':'PRINCIPAIS FATORES PARA N\u00c3O AVAN\u00c7AR')+':\n'+fat+'\n\nPARECER EXECUTIVO:\n'+s.parecerExecutivo+'\n\nCONTEXTO PROFISSIONAL:\n'+s.contextoProfissional+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(explorar?'\n\nPARA EXPLORAR COM O CANDIDATO:\n'+explorar:'')+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES OBJETIVAS:'+sal+disp):'')+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+      var body='Ol\u00e1,\n\nSegue o parecer da entrevista realizada com '+candidate.name+' para a vaga de '+candidate.jobTitle+'.\n\nMOTIVA\u00c7\u00d5ES:\n'+s.motivacoes+'\n\nMOMENTO ATUAL:\n'+s.momentoAtual+'\n\nPONTOS POSITIVOS:\n'+pos+'\n\nPONTOS DE ATEN\u00c7\u00c3O:\n'+neg+(sal||disp?('\n\nINFORMA\u00c7\u00d5ES COMPLEMENTARES:'+sal+disp):'')+'\n\nIMPRESS\u00c3O GERAL DO RH:\n'+s.impressaoGeral+'\n\nRECOMENDA\u00c7\u00c3O: '+s.recomendacao+'\n\n'+s.justificativa+'\n\n'+(isPos?'Aguardamos seu retorno para agendar a entrevista com o l\u00edder.':'Optamos por n\u00e3o avan\u00e7ar com o(a) candidato(a).')+'\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
       var subject=encodeURIComponent('[R&S RH] Parecer \u2014 '+candidate.name+' | '+candidate.jobTitle);
       window.location.href='mailto:'+(job&&job.leaderEmail?job.leaderEmail:'')+'?subject='+subject+'&body='+encodeURIComponent(body);
     }
@@ -4755,25 +4485,15 @@ createApp({
     function daysSince(d){return Math.max(0,Math.floor((Date.now()-new Date(d))/86400000));}
     function bizDaysSince(d){
       if(!d)return 0;
-      var start=new Date(d);start.setHours(0,0,0,0);
+      var p=d.split('-');var start=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));start.setHours(0,0,0,0);
       var end=new Date();end.setHours(0,0,0,0);
-      var count=0,cur=new Date(start);
+      var count=0;var cur=new Date(start);cur.setDate(cur.getDate()+1);
       while(cur<=end){var dw=cur.getDay();if(dw!==0&&dw!==6)count++;cur.setDate(cur.getDate()+1);}
       return Math.max(0,count);
     }
     var filtCands=computed(function(){
-      var ACTIVE_S=['aguardando_lider','entrevista_rh','entrevista_lider','proposta'];
       var list=candidates.value.filter(function(c){return inPeriod(c.submittedAt);});
       if(pipFilter.value!=='all')list=list.filter(function(c){return c.jobId===pipFilter.value;});
-      var f=candStatusFilter.value;
-      if(f==='active')list=list.filter(function(c){return ACTIVE_S.indexOf(c.status)>=0;});
-      else if(f==='reprovado')list=list.filter(function(c){return c.status==='reprovado';});
-      else if(f==='banco')list=list.filter(function(c){return c.status==='banco';});
-      else if(f==='declinou')list=list.filter(function(c){return c.status==='declinou';});
-      var s=candSort.value;
-      if(s==='date_asc')list=list.slice().sort(function(a,b){return new Date(a.submittedAt)-new Date(b.submittedAt);});
-      else if(s==='score_desc')list=list.slice().sort(function(a,b){var sa=(b.analysis&&b.analysis.score?b.analysis.score.total:0);var sb=(a.analysis&&a.analysis.score?a.analysis.score.total:0);return sa-sb;});
-      else list=list.slice().sort(function(a,b){return new Date(b.submittedAt)-new Date(a.submittedAt);});
       return list;
     });
     var vcTrans=computed(function(){return viewCand.value?(TRANSITIONS[viewCand.value.status]||[]):[];});
@@ -4781,9 +4501,15 @@ createApp({
     var execBlocks=computed(function(){if(!viewCand.value||!viewCand.value.analysis)return[];var e=viewCand.value.analysis.executiveSummary||{};return [{l:'Pontos fortes',t:e.strengths,bg:'#dcfce7',c:'#166534'},{l:'Pontos de aten\u00e7\u00e3o',t:e.attentionPoints,bg:'#fef3c7',c:'#b45309'},{l:'Motivo da recomenda\u00e7\u00e3o',t:e.reasoning,bg:'#dbeafe',c:'#1d4ed8'}];});
     var summaryRows=computed(function(){
       var s=viewCand.value?getSummary(viewCand.value.id):null;if(!s)return[];
+      var isPos=s.recomendacao==='Avançar para entrevista com o líder';
       var rows=[
-        {label:'Parecer executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f8fafc',col:'#1e1b4b'},
-        {label:'Contexto profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f0f9ff',col:'#6366f1'},
+        {label:'Motivações',field:'motivacoes',value:s.motivacoes,bg:'#f0f9ff',col:'#0369a1'},
+        {label:'Motivadores para mudança',field:'motivadoresMudanca',value:s.motivadoresMudanca,bg:'#fdf4ff',col:'#7e22ce'},
+        {label:'Interesse na vaga',field:'interesseVaga',value:s.interesseVaga,bg:'#fff7ed',col:'#c2410c'},
+        {label:'Expectativas de carreira',field:'expectativasCarreira',value:s.expectativasCarreira,bg:'#f0fdf4',col:'#166534'},
+        {label:'Momento atual',field:'momentoAtual',value:s.momentoAtual,bg:'#f8fafc',col:'#475569'},
+        {label:'Impressão geral',field:'impressaoGeral',value:s.impressaoGeral,bg:'#f8fafc',col:'#475569'},
+        {label:'Justificativa da recomendação',field:'justificativa',value:s.justificativa,bg:isPos?'#dcfce7':'#fee2e2',col:isPos?'#166534':'#991b1b'},
       ];
       return rows.filter(function(r){return r.value;});
     });
@@ -4834,7 +4560,6 @@ createApp({
       if(!confirm('Excluir este candidato? A ação não pode ser desfeita.'))return;
       candidates.value=candidates.value.filter(function(c){return c.id!==id;});
       viewCand.value=null;
-      supabaseCall('delete','candidates',id).catch(function(e){console.error('Erro ao excluir no banco:',e);});
       pushSync();
       flash('Candidato excluído.');
     }
@@ -4881,50 +4606,85 @@ createApp({
     }
     function cancelEditAnalysis(){editAnaMode.value=false;}
 
-    // ── Filter refs ─────────────────────────────────────────────────────────
-    var candStatusFilter=ref('active');
-    var candSort=ref('date_desc');
-
-    // ── Declinou ─────────────────────────────────────────────────────────────
+    var candStatusFilter=ref('active');var candSort=ref('date_desc');
     var DECLINOU_MOTIVOS=['Aceitou outra oportunidade','Pretensao salarial incompativel','Mudanca de planos','Sem interesse na vaga','Horario incompativel','Localizacao incompativel','Nao informado'];
-    var showDeclinouModal=ref(false);
-    var declinouCandId=ref(null);
-    var declinouMotivo=ref('');
-    var declinouObs=ref('');
+    var showDeclinouModal=ref(false);var declinouCandId=ref(null);var declinouMotivo=ref('');var declinouObs=ref('');
     function openDeclinouModal(cid){declinouCandId.value=cid;declinouMotivo.value='';declinouObs.value='';showDeclinouModal.value=true;}
     function cancelDeclinou(){showDeclinouModal.value=false;declinouCandId.value=null;}
-    function confirmDeclinou(){
-      if(!declinouMotivo.value)return;
-      var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});
-      if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});
-      showDeclinouModal.value=false;declinouCandId.value=null;pushSync();
-    }
-
-    // ── Prazo justificativa ──────────────────────────────────────────────────
-    var PRAZO_MOTIVOS=['Vaga continua (processo de expansao, sem prazo fixo)','Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
-    var showJustModal=ref(false);
-    var justJobId=ref(null);
-    var justMotivo=ref('');
-    var justObs=ref('');
+    function confirmDeclinou(){if(!declinouMotivo.value)return;var i=candidates.value.findIndex(function(c){return c.id===declinouCandId.value;});if(i>=0)candidates.value[i]=Object.assign({},candidates.value[i],{status:'declinou',declinouMotivo:declinouMotivo.value,declinouObs:declinouObs.value,declinouDate:new Date().toISOString()});showDeclinouModal.value=false;declinouCandId.value=null;pushSync();}
+    var PRAZO_MOTIVOS=['Volume elevado de candidaturas','Perfil tecnico escasso no mercado','Alinhamento pendente com lideranca','Processo de aprovacao interno em andamento','Candidatos em fase de decisao com outras empresas','Rescheduling de entrevistas','Outro motivo estrategico'];
+    var showJustModal=ref(false);var justJobId=ref(null);var justMotivo=ref('');var justObs=ref('');
     function openJustModal(job){justJobId.value=job.id;justMotivo.value='';justObs.value='';showJustModal.value=true;}
     function cancelJust(){showJustModal.value=false;justJobId.value=null;}
-    function saveJustificativa(){
-      if(!justMotivo.value)return;
-      var i=jobs.value.findIndex(function(j){return j.id===justJobId.value;});
-      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value});
-      showJustModal.value=false;justJobId.value=null;pushSync();
-    }
-    function removeJustificativa(jid){
-      var i=jobs.value.findIndex(function(j){return j.id===jid;});
-      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});
-      pushSync();
-    }
-
-    // ── Pretensao + Disponibilidade ──────────────────────────────────────────
+    function saveJustificativa(){if(!justMotivo.value)return;var i=jobs.value.findIndex(function(j){return j.id===justJobId.value;});if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:true,prazoMotivo:justMotivo.value,prazoObs:justObs.value});showJustModal.value=false;justJobId.value=null;pushSync();}
+    function removeJustificativa(jid){var i=jobs.value.findIndex(function(j){return j.id===jid;});if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{prazoEstendido:false,prazoMotivo:'',prazoObs:''});pushSync();}
     var DISPONIBILIDADE_OPTS=['Imediata','15 dias','30 dias','45 dias','60 dias','A combinar'];
     function setCandSalario(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{salario:val});pushSync();}}
     function setCandDisp(cid,val){var i=candidates.value.findIndex(function(c){return c.id===cid;});if(i>=0){candidates.value[i]=Object.assign({},candidates.value[i],{disponibilidade:val});pushSync();}}
     function getCandField(cid,field){var c=candidates.value.find(function(x){return x.id===cid;});return c?(c[field]||''):'';}
+    var jobFilter=ref('abertas');
+    var filteredJobs=computed(function(){var list=jobs.value.slice();if(jobFilter.value==='abertas')return list.filter(function(j){return j.status==='aberta';});if(jobFilter.value==='encerradas')return list.filter(function(j){return j.status!=='aberta';});list.sort(function(a,b){if(a.status==='aberta'&&b.status!=='aberta')return -1;if(a.status!=='aberta'&&b.status==='aberta')return 1;return(b.openDate||'').localeCompare(a.openDate||'');});return list;});
+    function setJobFilter(v){jobFilter.value=v;}
+    // Batch analysis
+    var batchQueue=ref([]);
+    var batchRunning=ref(false);
+    var batchProgress=ref('');
+    function handleFile(file){if(!file)return;if(file instanceof FileList||Array.isArray(file)){batchQueue.value=Array.from(file||[]);if(batchQueue.value.length===1)pdfFile.value=batchQueue.value[0];else pdfFile.value=null;}else{batchQueue.value=[file];pdfFile.value=file;}}
+    function analyzeSingle(file,job){
+      return readBase64(file).then(function(base64){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          var raw=data.content&&data.content[0]?data.content[0].text||'':'';
+          var clean=raw.replace(/```json|```/g,'').trim();
+          var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
+          if(open>0)clean+=Array(open+1).join('}');
+          var parsed=JSON.parse(clean);
+          var newC={id:'c'+Date.now()+Math.random().toString(36).slice(2),jobId:job.id,jobTitle:job.title,name:parsed.candidateName||file.name.replace('.pdf',''),email:parsed.candidateEmail||'',status:'aguardando_lider',submittedAt:new Date().toISOString(),analysis:parsed,pdfName:file.name,pdfBase64:base64};
+          candidates.value=[newC].concat(candidates.value);
+          pushSync();
+          return{ok:true,name:newC.name};
+        });
+      }).catch(function(e){return{ok:false,name:file.name};});
+    }
+
+
+    // ── Painel do Gestor ──────────────────────────────────────────────────────
+    var notifications=ref([]);
+    var showNotifPanel=ref(false);
+
+    function getGestorCands(job){
+      if(!job)return[];
+      return candidates.value.filter(function(c){return c.jobId===job.id&&c.status==='aguardando_lider';});
+    }
+
+    function sendToGestor(job){
+      var cands=getGestorCands(job);
+      if(!cands.length){flash('Nenhum candidato em Aguardando lider.');return;}
+      var token=job.id+'-'+Date.now().toString(36);
+      var i=jobs.value.findIndex(function(j){return j.id===job.id;});
+      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{gestorToken:token,gestorTokenDate:new Date().toISOString()});
+      pushSync();
+      var base=window.location.origin;
+      var link=base+'/gestor.html?token='+encodeURIComponent(token)+'&job='+encodeURIComponent(job.id);
+      var nomes=cands.map(function(c){return c.name;}).join(', ');
+      var subject=encodeURIComponent('Avaliacao de candidatos - '+job.title);
+      var body=encodeURIComponent('Ola,'+String.fromCharCode(10)+String.fromCharCode(10)+'O RH selecionou '+cands.length+' candidato(s) para a vaga de '+job.title+'.'+String.fromCharCode(10)+String.fromCharCode(10)+'Candidatos: '+nomes+String.fromCharCode(10)+String.fromCharCode(10)+'Acesse o link para aprovar ou reprovar:'+String.fromCharCode(10)+link+String.fromCharCode(10)+String.fromCharCode(10)+'Link valido por 7 dias.'+String.fromCharCode(10)+String.fromCharCode(10)+'Atenciosamente,'+String.fromCharCode(10)+'Equipe de RH');
+      window.location.href='mailto:'+encodeURIComponent(job.leaderEmail||'')+'?subject='+subject+'&body='+body;
+      flash('E-mail gerado para '+job.title+'!');
+    }
+
+    function markNotifRead(id){
+      var i=notifications.value.findIndex(function(n){return n.id===id;});
+      if(i>=0)notifications.value[i]=Object.assign({},notifications.value[i],{read:true});
+      supabaseCall('setState','app_state','notifications',notifications.value.slice(0,50));
+    }
+
+    function loadNotifications(){
+      supabaseCall('getState','app_state','notifications').then(function(r){if(r&&r.data)notifications.value=r.data;});
+    }
+
+    var unreadCount=computed(function(){return notifications.value.filter(function(n){return!n.read;}).length;});
 
 
     return {
@@ -4934,20 +4694,18 @@ createApp({
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
       jbKey,jbBin,jbStatus,showSyncModal,jbKeyInput,jbCreating,
       editingField,editFieldVal,
-      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,deleteJob,handleFile,onFileDrop,analyze,
-      advanceStatus,saveNote,getNote,getTranscript,setTranscript,handleTranscriptFile,isUploadingTranscript,getSummary,getIntDate,setIntDate,
+      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,handleFile,onFileDrop,analyze,
+      advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
-      startEdit,saveEdit,cancelEdit,isEditing,setRecomendacao,reconcilingCid,
+      startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,
-      candStatusFilter,candSort,
-      showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,
-      showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,
-      DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,
-    };
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
+
+
 
 
 
