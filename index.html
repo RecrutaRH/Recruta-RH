@@ -3640,26 +3640,58 @@ function buildPrompt(job){
     +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
-function buildInterviewPrompt(candidate,transcript){
-  var ctx='';
-  if(candidate.salario) ctx+='Pretensão salarial declarada: '+candidate.salario+'\n';
-  if(candidate.disponibilidade) ctx+='Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  return 'Você é um Especialista Sênior em Recrutamento e Seleção elaborando um Parecer de Entrevista formal para o gestor da área.\n\n'
+
+function buildInterviewPrompt(candidate,transcript,job){
+  job=job||{};
+  var ctx = '';
+  if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
+  if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
+  var estiloRef = 'Exemplo de Parecer Executivo correto (conecta ideias, interpreta em vez de listar, evita jargão de IA):\n'
+    +'"Ana chega ao processo em transição consciente de carreira, com o MBA do Insper já funcionando como ponte real para o mercado financeiro — ela cita, sem hesitar, os pontos do curso que mais se aproximam da rotina de um assessor. Essa clareza de motivo pesa a favor, mas a entrevista não chegou a testar a frente comercial: não houve espaço para ela relatar uma situação concreta de negociação ou captação, que é o critério mais pesado da vaga. Recomenda-se avançar, com a ressalva de que a próxima etapa precisa fechar essa lacuna antes da decisão final."\n\n'
+    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao/paraExplorar (frase única, direta, sem "Demonstrou/Apresentou/Informou/Mencionou/Possui" e sem explicação em excesso — mas carregando o fato E, quando for ponto de atenção, o motivo de importar): "Geriu o próprio negócio por três anos, com autonomia total sobre decisão comercial." — NÃO: "O candidato demonstrou ao longo da entrevista que geriu seu próprio negócio, o que indica maturidade e autonomia."\n\n';
+  return 'Você é um Recrutador Sênior com mais de 15 anos de experiência em seleção de profissionais. Sua responsabilidade NÃO é resumir a entrevista — é elaborar um parecer executivo que ajude o gestor a decidir e a conduzir melhor a próxima etapa. O texto precisa parecer escrito por uma pessoa que já fez centenas dessas triagens, nunca por uma IA.\n'
+    +'O leitor não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações, com pouco tempo, que precisa entender rápido quem é o candidato, por que o RH recomenda (ou não) avançar, e o que falta validar.\n\n'
+    +'SEU PROCESSO DE RACIOCÍNIO TEM 2 CAMADAS + 1 FILTRO — sempre nessa ordem, internamente, ANTES de escrever qualquer campo do JSON final. Isso nunca aparece no resultado, só o produto final dele:\n\n'
+    +'CAMADA 1 — ANÁLISE (interna). Tem dois passos, não um só:\n'
+    +'  1a) EXTRAÇÃO: cruze a descrição da vaga (os requisitos e critérios abaixo), a ANÁLISE DE PERFIL já feita a partir do currículo (contexto obrigatório — nunca trate este candidato como se estivesse sendo avaliado pela primeira vez) e a transcrição da entrevista. Para cada requisito relevante, classifique: CONFIRMADA (evidência concreta a favor), CONTRADITA (evidência contra), PARCIAL (indício fraco ou indireto, sem exemplo concreto) ou AUSENTE (não abordado). Uma afirmação genérica do candidato sem exemplo concreto quando perguntado é PARCIAL, não CONFIRMADA — a lacuna entre o que ele diz e o que ele demonstra é, em si, um sinal a levar pra frente. Além disso, pra cada achado da entrevista, verifique a relação dele com o que a análise de currículo já tinha identificado: a entrevista CONFIRMA (reforça o que já era conhecido), COMPLEMENTA (traz informação nova e coerente), CONTRADIZ (conflita com o currículo — isso é um sinal importante) ou DEIXA SEM VALIDAÇÃO (currículo levantou a questão, entrevista não tocou nela)?\n'
+    +'  1b) INTERPRETAÇÃO: aqui é onde você para de ser um resumidor e vira recrutador. Para cada evidência CONFIRMADA ou CONTRADITA que sobreviver, não registre só o fato — responda "o que isso significa pra capacidade dessa pessoa performar NESTA vaga específica?" Transforme fato em conclusão profissional. Fato: "geriu o próprio negócio por 3 anos." Conclusão fraca (não escreva assim): "isso mostra experiência." Conclusão de recrutador sênior (escreva assim): "já naturalizou responsabilidade por resultado, o que reduz o risco de adaptação ao modelo de remuneração variável da vaga." É essa transformação — fato vira implicação pra decisão — que precisa acontecer pra CADA evidência que for usada no parecer final.\n\n'
+    +'CAMADA 2 — PRIORIZAÇÃO (interna). Nem toda conclusão da Camada 1b pesa igual. Pergunte-se: "essa conclusão específica muda a decisão de avançar ou não?" Uma conclusão sobre requisito secundário PARCIAL/AUSENTE pode ficar de fora. Uma conclusão sobre requisito crítico PARCIAL/AUSENTE precisa aparecer, porque muda a decisão — normalmente vira item de paraExplorar, não motivo pra reprovar de cara.\n\n'
+    +'REGRA DE OURO: a recomendação final NÃO é sobre quantidade de requisitos atendidos — é sobre o peso dos requisitos mais críticos e a força da evidência disponível. Um candidato com 9 de 10 requisitos mas falho no crítico pesa MENOS que um com 6 de 10 que acerta em cheio os 3 mais críticos. Julgue como recrutador experiente, não como sistema de pontuação.\n\n'
+    +'FILTRO — descarte da Camada 1 tudo que a Camada 2 marcou como baixa relevância. O parecer final não é um checklist de requisitos nem uma lista de fatos — é a síntese interpretada só do que pesa na decisão.\n\n'
+    +'CAMADA 3 — ESCRITA. Só agora você escreve, usando as CONCLUSÕES da 1b que sobreviveram ao filtro — nunca os fatos crus. Regras de voz, só pros campos em prosa (parecerExecutivo e contextoProfissional — os bullets seguem sendo curtos por design, isso não muda):\n'
+    +'  - Nunca use "Demonstrou", "Apresentou", "Informou", "Mencionou", "Possui" em sequência ou como muleta — varie a construção, conecte ideias com conectivos naturais, escreva como quem está contando a leitura que fez de uma pessoa, não descrevendo uma gravação\n'
+    +'  - Evite frase telegráfica nesses dois campos — são parágrafos corridos que contam uma leitura profissional, não uma lista disfarçada de prosa\n'
+    +'  - parecerExecutivo: 120 a 180 palavras. Responde, sem citar as perguntas literalmente: quem é o candidato, por que o RH recomenda isso, quais evidências sustentam, o que falta validar. Não é resumo cronológico da entrevista, não repete pergunta e resposta — sintetiza e conecta\n\n'
+    +estiloRef
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
+    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA (referência obrigatória da análise):\n'+job.desc+'\n\n':'')
+    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto obrigatório, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
-    +'TRANSCRIÇÃO DA ENTREVISTA:\n'+transcript+'\n\n'
-    +'INSTRUÇÕES:\n'
-    +'- Escreva como recrutador sênior — linguagem objetiva, consultiva e profissional\n'
-    +'- NUNCA mencione a transcrição, áudio ou ausência de dados\n'
-    +'- NUNCA escreva "não mencionado" ou "não informado" — retorne string vazia se ausente\n'
-    +'- fitVaga: avalie cada dimensão como "Adequado", "Parcial" ou "Inadequado"\n'
-    +'- principaisFatores: 3 a 5 bullet points objetivos que fundamentam a recomendação\n'
-    +'- parecerExecutivo: parágrafo integrado com motivação, background, pontos fortes e riscos\n'
-    +'- contextoProfissional: parágrafo descritivo do momento e trajetória profissional do candidato\n'
-    +'- pontosPositivos e pontosAtencao: arrays de strings, 2 a 4 itens cada\n'
-    +'- cidadeAtual, modeloTrabalhoAtual, necessitaMudanca: extrair da entrevista quando mencionado\n\n'
+    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
+    +'INSTRUÇÕES OBRIGATÓRIAS:\n'
+    +'- REGRA MAIS IMPORTANTE: toda frase precisa ter por trás um FATO CONCRETO da transcrição ou do currículo (empresa, ferramenta, iniciativa, resultado, prazo) — mas o que você ESCREVE é a interpretação desse fato (Camada 1b), nunca o fato cru sozinho\n'
+    +'- ZERO REDUNDÂNCIA ENTRE TODOS OS CAMPOS DE TEXTO (parecerExecutivo, contextoProfissional, fatoresRecomendacao, pontosPositivos, pontosAtencao, paraExplorar): cada campo responde uma pergunta diferente do gestor. Antes de escrever uma frase em qualquer um desses campos, verifique se essa mesma ideia já foi dita em outro — se sim, ou corta, ou reformula pra acrescentar algo novo. parecerExecutivo = síntese da decisão. contextoProfissional = só a narrativa de carreira (onde está, por que quer sair, interesse na vaga). fatoresRecomendacao = os 3-5 elementos mais decisivos, em bullet. pontosPositivos/pontosAtencao = observações específicas que não estão nem no parecer nem nos fatores. paraExplorar = só o que ainda falta descobrir\n'
+    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao. Se vier "Dado insuficiente" E o critério for importante pra vaga (não secundário), isso TEM que aparecer em paraExplorar — um selo cinza importante não pode ficar sem explicação em lugar nenhum do parecer\n'
+    +'- Quando não houver evidência suficiente pra avaliar uma dimensão do fit, retorne "Dado insuficiente" — NUNCA force "Adequado" ou "Parcial" só pra preencher. Se o critério nem se aplica a esta etapa, retorne "Não se aplica"\n'
+    +'- DISTINÇÃO FATO x INTERPRETAÇÃO: quando a frase é um fato relatado diretamente (o candidato disse/fez algo específico), afirme direto. Quando a frase é uma leitura sua sobre o que aquele fato implica (Camada 1b), sinalize com linguagem de inferência natural — "o que sugere", "isso indica", "tende a" — nunca apresente uma interpretação como se fosse fato relatado\n'
+    +'- PROIBIDO HEDGING: nunca use "pode ser considerado", "possivelmente", "de certa forma", "até certo ponto" ou equivalentes. Se você tem evidência suficiente pra uma leitura, afirme com segurança. Se não tem, isso é "Dado insuficiente" ou vazio — não meio-termo linguístico\n'
+    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados genericamente. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
+    +'CAMPO A CAMPO:\n'
+    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação\n'
+    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com as conclusões que sobreviveram ao FILTRO\n'
+    +'- parecerExecutivo: 120 a 180 palavras (ver CAMADA 3 acima)\n'
+    +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Integra o que a análise de currículo já mostrou com o que a entrevista confirmou, complementou ou contradisse — não é só sobre a entrevista isolada. Quando currículo e entrevista forem coerentes entre si, destaque isso explicitamente (é um sinal positivo de consistência). Quando surgir informação nova relevante na entrevista, integre ao invés de listar separado. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista, e sem repetir o currículo palavra por palavra\n'
+    +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente\n'
+    +'- pontosAtencao: MÁXIMO 3 itens, frase única cada, mas a frase inclui o motivo de importar (não é julgamento, é explicação objetiva). Ausência de informação NÃO é automaticamente um problema — só entra aqui se a ausência for sobre algo que pesa pra decisão\n'
+    +'- paraExplorar: MÁXIMO 3 bullets — perguntas ou pontos de investigação concretos pro PRÓXIMO entrevistador (o líder). Um item só entra se (1) é requisito importante da vaga E (2) ainda não há evidência suficiente. Nunca repita algo já respondido na entrevista atual. Formule como ação concreta (ex: "Pedir exemplo real de negociação com cliente"), nunca pergunta burocrática de baixo valor\n'
+    +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
+    +'- disponibilidade: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc.\n'
+    +'- cidadeAtual: cidade onde mora hoje, se mencionada. Senão, string vazia\n'
+    +'- modeloTrabalhoAtual: presencial/híbrido/remoto no emprego atual, se mencionado. Senão, string vazia\n'
+    +'- necessitaMudanca: "Sim", "Não" ou string vazia se não abordado\n'
+    +'- disponibilidadeViagens: "Sim", "Não", "Parcial" ou string vazia se não abordado\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"recomendacao":"Avançar para entrevista com o líder","fitVaga":{"experiencia":"Adequado","conhecimentoTecnico":"Adequado","comportamental":"Adequado","modeloTrabalho":"Adequado","expectativaSalarial":"Adequado"},"principaisFatores":[""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":[""],"pontosAtencao":[""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":""}\n'
+    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"paraExplorar":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
@@ -3821,149 +3853,170 @@ function generateAnalysisPDF(candidate) {
 }
 
 
+
 function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
-  var date = interviewDate ? new Date(interviewDate+'T12:00:00').toLocaleDateString('pt-BR') : now;
-  var isPos = (summary.recomendacao||'').indexOf('Avan') !== -1;
-  var recCol = isPos ? '#166534' : '#991b1b';
-  var recBg  = isPos ? '#f0fdf4' : '#fef2f2';
+  var date = interviewDate ? new Date(interviewDate + 'T12:00:00').toLocaleDateString('pt-BR') : now;
+  var isPos = summary.recomendacao === 'Avan\u00e7ar para entrevista com o l\u00edder';
+  var recCol    = isPos ? '#166534' : '#991b1b';
+  var recBg     = isPos ? '#f0fdf4' : '#fef2f2';
   var recBorder = isPos ? '#86efac' : '#fca5a5';
-  var recIcon   = isPos ? '&#10003;' : '&#10007;';
+  var recIcon   = isPos ? '\u2713' : '\u00d7';
+  var salario   = summary.expectativaSalarial || candidate.salario || '';
+  var disponib  = summary.disponibilidade || candidate.disponibilidade || '';
 
-  var salario  = summary.expectativaSalarial || candidate.salario || '';
-  var disponib = summary.disponibilidade || candidate.disponibilidade || '';
+  // ── Modo compacto: quanto mais texto, mais denso o layout, para caber em 1 página ──
+  var totalChars = [summary.parecerExecutivo,summary.contextoProfissional]
+    .concat(summary.pontosPositivos||[]).concat(summary.pontosAtencao||[])
+    .concat(summary.fatoresRecomendacao||[]).concat(summary.paraExplorar||[])
+    .reduce(function(sum,t){return sum+(t?String(t).length:0);},0);
+  var dense  = totalChars > 2600;
+  var xdense = totalChars > 3400;
+  var fBody  = xdense?'9.5px':dense?'10.5px':'11px';
+  var fLine  = xdense?1.42:dense?1.48:1.6;
+  var fLbl   = xdense?'7.3px':'8px';
+  var padBlk = xdense?'6px 9px':dense?'7px 10px':'8px 12px';
+  var mrgBlk = xdense?'6px':dense?'7px':'8px';
+  var gpBlk  = xdense?'5px':dense?'6px':'7px';
+  var pagePad= xdense?'10px 16px':dense?'12px 17px':'14px 18px';
 
-  function fitBadge(label, val) {
-    var col = val==='Adequado'?'#166534':val==='Parcial'?'#92400E':'#991b1b';
-    var bg  = val==='Adequado'?'#f0fdf4':val==='Parcial'?'#fff7ed':'#fef2f2';
-    var bdr = val==='Adequado'?'#bbf7d0':val==='Parcial'?'#fde68a':'#fca5a5';
-    if(!val||val==='Não identificado')return '';
-    return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:'+col+';background:'+bg+';border:1px solid '+bdr+';border-radius:99px;padding:2px 9px;margin:2px 3px 2px 0;white-space:nowrap">'+label+' <span style="font-size:9px;font-weight:400">'+val+'</span></span>';
+  function lbl(text, color) {
+    return '<p style="font-size:'+fLbl+';font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
   }
-
-  function bullets(arr, col) {
-    return (arr||[]).filter(Boolean).map(function(p){
-      return '<div style="display:flex;gap:7px;margin-bottom:5px;page-break-inside:avoid">'
-        +'<span style="color:'+col+';font-weight:700;font-size:12px;line-height:1.5;flex-shrink:0">&#8226;</span>'
-        +'<span style="font-size:11px;color:#334155;line-height:1.55">'+p+'</span></div>';
+  function block(label, value, color, bg) {
+    if(!value) return '';
+    return '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:'+padBlk+'">'
+      + lbl(label, color)
+      + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin:0">'+value+'</p>'
+      + '</div>';
+  }
+  function pill(arr, col) {
+    return (arr || []).map(function(p) {
+      return '<div style="display:flex;gap:6px;margin-bottom:3px;page-break-inside:avoid;break-inside:avoid">'
+        + '<span style="color:'+col+';font-weight:700;font-size:'+fBody+';line-height:'+fLine+';flex-shrink:0">&#8226;</span>'
+        + '<span style="font-size:'+fBody+';color:#334155;line-height:'+fLine+'">'+p+'</span></div>';
     }).join('');
   }
-
-  function lbl(text, color){
-    return '<p style="font-size:8px;font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px">'+text+'</p>';
+  function fitColors(v){
+    if(v==='Excelente')return{bg:'#dcfce7',col:'#166534'};
+    if(v==='Adequado')return{bg:'#dbeafe',col:'#1d4ed8'};
+    if(v==='Parcial')return{bg:'#fef3c7',col:'#b45309'};
+    if(v==='Atenção'||v==='Atencao')return{bg:'#fee2e2',col:'#991b1b'};
+    return{bg:'#f1f5f9',col:'#94a3b8'};
   }
-
-  function section(label, content, color){
-    if(!content) return '';
-    return '<div style="margin-bottom:10px;page-break-inside:avoid;break-inside:avoid">'
-      +lbl(label, color||'#475569')
-      +'<p style="font-size:11px;color:#1e293b;line-height:1.6;margin:0">'+content+'</p>'
-      +'</div>';
+  function fitBadge(label,v){
+    if(!v)return'';
+    var c=fitColors(v);
+    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 9px;background:'+c.bg+';border-radius:6px;margin-bottom:4px;page-break-inside:avoid;break-inside:avoid">'
+      +'<span style="font-size:'+fBody+';color:#334155;font-weight:500">'+label+'</span>'
+      +'<span style="font-size:'+fBody+';color:'+c.col+';font-weight:700">'+v+'</span></div>';
   }
-
-  var fit = summary.fitVaga || {};
 
   var htm = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>'
-    +'<title>Parecer RH \u2014 '+candidate.name+'</title>'
-    +'<style>'
-    +'@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
-    +'*{box-sizing:border-box;margin:0;padding:0}'
-    +'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
-    +'.page{max-width:780px;margin:0 auto;padding:14px 18px}'
-    +'.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
-    +'.btn-print{background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
-    +'.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
-    +'@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:8mm 10mm;size:A4}}'
-    +'</style></head><body>'
-    +'<div class="no-print">'
-    +'<button class="btn-close" onclick="window.close()">Fechar</button>'
-    +'<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
-    +'<div class="page">'
+    + '<title>Parecer RH \u2014 ' + candidate.name + '</title>'
+    + '<style>'
+    + '@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
+    + '*{box-sizing:border-box;margin:0;padding:0}'
+    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:'+fBody+';-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+    + '.page{max-width:780px;margin:0 auto;padding:'+pagePad+'}'
+    + '.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
+    + '.btn-print{background:#6366f1;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
+    + '.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
+    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:'+(xdense?'6mm 8mm':dense?'7mm 9mm':'8mm 10mm')+';size:A4}}'
+    + '</style></head><body>'
+    + '<div class="no-print"><button class="btn-close" onclick="window.close()">Fechar</button>'
+    + '<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
+    + '<div class="page">'
 
     // ── HEADER ──
-    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid #e2e8f0;margin-bottom:10px">'
-    +'<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
-    +'<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
-    +'<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
-    +'<p style="font-size:11px;font-weight:600;color:#475569">'+now+'</p></div>'
-    +'</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:'+gpBlk+';border-bottom:2px solid #e2e8f0;margin-bottom:'+mrgBlk+'">'
+    + '<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
+    + '<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
+    + '<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
+    + '<p style="font-size:11px;font-weight:600;color:#475569">' + now + '</p></div>'
+    + '</div>'
 
-    // ── CANDIDATO / VAGA / DATA ──
-    +'<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
-    +'<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'
-    +(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
-    +'<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a;line-height:1.4">'+candidate.jobTitle+'</p></div>'
-    +'<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
-    +'</div>'
+    // ── CANDIDATO INFO ──
+    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
+    + '<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'+(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
+    + '<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+candidate.jobTitle+'</p></div>'
+    + '<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
+    + '</div>'
 
     // ── RECOMENDAÇÃO ──
-    +'<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
-    +'<span style="font-size:18px;color:'+recCol+';font-weight:800">'+recIcon+'</span>'
-    +'<div><p style="font-size:9px;font-weight:700;color:'+recCol+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Recomendação do RH</p>'
-    +'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
-    +'</div>'
+    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';display:flex;align-items:center;gap:10px">'
+    + '<div style="width:22px;height:22px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:12px;font-weight:700">'+recIcon+'</span></div>'
+    + '<div>'+lbl('Recomenda\u00e7\u00e3o do RH',recCol)+'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
+    + '</div>'
 
-    // ── FIT DA VAGA ──
-    +'<div style="margin-bottom:10px">'
-    +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Fit da Vaga</p>'
-    +'<div style="display:flex;flex-wrap:wrap;gap:2px">'
-    +fitBadge('Experiência', fit.experiencia)
-    +fitBadge('Conhecimento Técnico', fit.conhecimentoTecnico)
-    +fitBadge('Comportamental', fit.comportamental)
-    +fitBadge('Modelo de Trabalho', fit.modeloTrabalho)
-    +fitBadge('Expectativa Salarial', fit.expectativaSalarial)
-    +'</div></div>'
+    // ── 1. FIT DA VAGA (quadro resumido, 5 dimensões, sem Aderência Geral) ──
+    + '<div style="margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Fit da Vaga','#1e1b4b')
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px">'
+    + fitBadge('Experiência',summary.fitExperiencia)
+    + fitBadge('Conhecimento Técnico',summary.fitTecnico)
+    + fitBadge('Comportamental',summary.fitComportamental)
+    + fitBadge('Modelo de Trabalho',summary.fitModeloTrabalho)
+    + fitBadge('Expectativa Salarial',summary.fitSalarial)
+    + '</div></div>'
 
-    // ── PRINCIPAIS FATORES ──
-    +((summary.principaisFatores&&summary.principaisFatores.filter(Boolean).length)?
-      '<div style="margin-bottom:10px;page-break-inside:avoid">'
-      +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">'
-      +(isPos?'Principais fatores para avançar':'Principais fatores para não avançar')+'</p>'
-      +bullets(summary.principaisFatores,'#2563eb')
-      +'</div>':'' )
+    // ── 2. PRINCIPAIS FATORES DA RECOMENDAÇÃO ──
+    + (summary.fatoresRecomendacao&&summary.fatoresRecomendacao.length?
+    '<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl(isPos?'Principais fatores para avan\u00e7ar':'Principais fatores para n\u00e3o avan\u00e7ar',recCol)+'<div style="margin-top:4px">'+pill(summary.fatoresRecomendacao,recCol)+'</div></div>':'')
 
-    // ── PARECER EXECUTIVO ──
-    +(summary.parecerExecutivo?
-      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;margin-bottom:10px;page-break-inside:avoid">'
-      +lbl('Parecer Executivo (Justificativa integrada)','#475569')
-      +'<p style="font-size:11px;color:#1e293b;line-height:1.65;margin:0">'+summary.parecerExecutivo+'</p>'
-      +'</div>':'')
+    // ── 3. PARECER EXECUTIVO ──
+    + (summary.parecerExecutivo?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Parecer Executivo','#1e1b4b')
+    + '<p style="font-size:'+fBody+';color:#1e293b;line-height:'+fLine+';margin-top:2px">'+summary.parecerExecutivo+'</p>'
+    + '</div>':'')
 
-    // ── CONTEXTO PROFISSIONAL ──
-    +section('Contexto Profissional', summary.contextoProfissional)
+    // ── 4. CONTEXTO PROFISSIONAL (sempre presente) ──
+    + '<div style="margin-bottom:'+mrgBlk+'">'
+    + block('Contexto profissional', summary.contextoProfissional, '#6366f1', '#f0f9ff')
+    + '</div>'
 
-    // ── PONTOS POSITIVOS / ATENÇÃO ──
-    +((summary.pontosPositivos&&summary.pontosPositivos.filter(Boolean).length)||(summary.pontosAtencao&&summary.pontosAtencao.filter(Boolean).length)?
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;page-break-inside:avoid">'
-      +(summary.pontosPositivos&&summary.pontosPositivos.filter(Boolean).length?
-        '<div><p style="font-size:8px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Pontos Positivos</p>'
-        +bullets(summary.pontosPositivos,'#16a34a')+'</div>':'')
-      +(summary.pontosAtencao&&summary.pontosAtencao.filter(Boolean).length?
-        '<div><p style="font-size:8px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Pontos de Atenção</p>'
-        +bullets(summary.pontosAtencao,'#d97706')+'</div>':'')
-      +'</div>':'')
+    // ── 5-6. PONTOS: 2 colunas ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+gpBlk+';margin-bottom:'+mrgBlk+'">'
+    + (summary.pontosPositivos&&summary.pontosPositivos.length?
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Pontos positivos','#166534')+'<div style="margin-top:4px">'+pill(summary.pontosPositivos,'#166534')+'</div></div>':'')
+    + (summary.pontosAtencao&&summary.pontosAtencao.length?
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:'+padBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Pontos de aten\u00e7\u00e3o','#b45309')+'<div style="margin-top:4px">'+pill(summary.pontosAtencao,'#b45309')+'</div></div>':'')
+    + '</div>'
 
-    // ── INFORMAÇÕES OBJETIVAS ──
-    +'<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;margin-bottom:12px">'
-    +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px">Informações Objetivas</p>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">'
-    +(summary.cidadeAtual?'<div>'+lbl('Cidade atual','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.cidadeAtual+'</p></div>':'')
-    +(summary.modeloTrabalhoAtual?'<div>'+lbl('Modelo de trabalho atual','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.modeloTrabalhoAtual+'</p></div>':'')
-    +(summary.necessitaMudanca?'<div>'+lbl('Necessita mudança?','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.necessitaMudanca+'</p></div>':'')
-    +(salario?'<div>'+lbl('Expectativa salarial','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
-    +(disponib?'<div>'+lbl('Disponibilidade','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
-    +'</div></div>'
+    // ── PARA EXPLORAR COM O CANDIDATO (roteiro pro próximo entrevistador) ──
+    + (summary.paraExplorar&&summary.paraExplorar.length?
+    '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:'+padBlk+';margin-bottom:'+mrgBlk+';page-break-inside:avoid;break-inside:avoid">'
+    + lbl('Para explorar com o candidato','#6d28d9')+'<div style="margin-top:4px">'+pill(summary.paraExplorar,'#6d28d9')+'</div></div>':'')
+
+    // ── 7. INFORMAÇÕES OBJETIVAS ──
+    + ((salario||disponib||summary.cidadeAtual||summary.modeloTrabalhoAtual||summary.necessitaMudanca||summary.disponibilidadeViagens)?
+    '<div style="padding:'+padBlk+';background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:'+mrgBlk+'">'
+    + lbl('Informa\u00e7\u00f5es objetivas','#64748b')
+    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px">'
+    + (salario?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Pretens\u00e3o salarial</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
+    + (disponib?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Disponibilidade</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
+    + (summary.cidadeAtual?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Cidade atual</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.cidadeAtual+'</p></div>':'')
+    + (summary.modeloTrabalhoAtual?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Modelo de trabalho atual</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.modeloTrabalhoAtual+'</p></div>':'')
+    + (summary.necessitaMudanca?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Necessita mudan\u00e7a?</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.necessitaMudanca+'</p></div>':'')
+    + (summary.disponibilidadeViagens?'<div><p style="font-size:8px;color:#94a3b8;margin-bottom:1px">Disponibilidade para viagens</p><p style="font-size:11.5px;font-weight:600;color:#0f172a">'+summary.disponibilidadeViagens+'</p></div>':'')
+    + '</div></div>':'')
 
     // ── FOOTER ──
-    +'<div style="border-top:1px solid #e2e8f0;padding-top:6px;display:flex;justify-content:space-between;align-items:center">'
-    +'<p style="font-size:9px;color:#94a3b8">R&amp;S RH &middot; Documento confidencial de uso interno</p>'
-    +'<p style="font-size:9px;color:#94a3b8">'+now+'</p>'
-    +'</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #e2e8f0">'
+    + '<p style="font-size:9px;color:#94a3b8">R&S RH \u00b7 Documento confidencial de uso interno</p>'
+    + '<p style="font-size:9px;color:#94a3b8">'+now+'</p>'
+    + '</div>'
 
-    +'</div></body></html>';
+    + '</div></body></html>';
 
-  var win = window.open('', '_blank', 'width=860,height=700');
-  if(win){win.document.write(htm);win.document.close();}
+  var blob = new Blob([htm], {type: 'text/html;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var win  = window.open(url, '_blank');
+  if (!win) { var a = document.createElement('a'); a.href=url; a.download='Parecer_'+candidate.name.replace(/\s+/g,'_')+'.html'; a.click(); }
+  setTimeout(function(){URL.revokeObjectURL(url);}, 120000);
 }
 
 
