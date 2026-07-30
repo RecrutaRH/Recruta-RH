@@ -239,7 +239,6 @@ input,select,textarea{transition:border-color .15s,box-shadow .15s}
 [style*="borderRadius:'99px'"][style*="background:#F0FDF4"]{letter-spacing:.01em}
 [style*="borderRadius:'99px'"][style*="background:#FFF7ED"]{letter-spacing:.01em}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 <body>
 <style>#rs-login{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;z-index:99999!important;}.rs-hidden{display:none!important;}</style>
@@ -269,7 +268,6 @@ function rsDoLogin(){var u=(document.getElementById('rs-u').value||'').trim().to
 
 
 
-
 /**
 * vue v3.4.21
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -285,14 +283,8 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
-
 </script>
 <script>
-
-
-
-
-
 
 
 
@@ -1504,13 +1496,7 @@ return function render(_ctx, _cache) {
                           _createElementVNode("div", { style: {"display":"flex","gap":"6px","margin-bottom":"14px","flex-wrap":"wrap"} }, [
                               _createElementVNode("button", { onClick: $event => setJobFilter('abertas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Abertas"),
                               _createElementVNode("button", { onClick: $event => setJobFilter('encerradas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Encerradas"),
-                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas"),
-                              getCandsMissingXP&&getCandsMissingXP().length
-                                ? _createElementVNode("button", {
-                                    onClick: $event => reanalyzeMissingXP(),
-                                    style: _normalizeStyle({marginLeft:"auto",fontSize:"11px",padding:"6px 12px",borderRadius:"6px",background:reanalyzeRunning?"#64748B":"#D97706",color:"#fff",border:"none",cursor:"pointer",fontFamily:"Inter,sans-serif",fontWeight:700})
-                                  }, reanalyzeRunning?"Classificando "+reanalyzeCurrent+"/"+reanalyzeTotal+"...":"⚡ Classificar XP ("+getCandsMissingXP().length+")")
-                                : _createCommentVNode("v-if",true)
+                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas")
                             ]),
                             _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
@@ -1871,19 +1857,7 @@ return function render(_ctx, _cache) {
                                   }), 128 /* KEYED_FRAGMENT */))
                                 ], 40 /* PROPS, NEED_HYDRATION */, ["onChange"])
                               ]),
-                              getCandsMissingXP().length
-              ? _createElementVNode("div", { style: {"background":"#FFFBEB","border-bottom":"1px solid #FDE68A","padding":"8px 14px","display":"flex","align-items":"center","justify-content":"space-between","gap":"10px","flex-wrap":"wrap"} }, [
-                  _createElementVNode("p", { style: {"font-size":"12px","color":"#92400E","margin":"0","font-weight":500} },
-                    reanalyzeRunning
-                      ? "⟳ Reanalisando "+reanalyzeCurrent+" de "+reanalyzeTotal+"... aguarde"
-                      : "⚠️ "+getCandsMissingXP().length+" candidato(s) do Programa XP Future sem classificação A/B/C/D"),
-                  !reanalyzeRunning ? _createElementVNode("button", {
-                    onClick: $event => reanalyzeMissingXP(),
-                    style: {"font-size":"11px","padding":"4px 12px","border-radius":"6px","background":"#D97706","color":"#fff","border":"none","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":700}
-                  }, "Classificar agora") : _createCommentVNode("v-if",true)
-                ])
-              : _createCommentVNode("v-if",true),
-_createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap":"4px","border-bottom":"1px solid #E5E7EB","flex-wrap":"wrap"} }, [
+                              _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap":"4px","border-bottom":"1px solid #E5E7EB","flex-wrap":"wrap"} }, [
                                 _createElementVNode("button", {
                                   onClick: $event => (candStatusFilter='active'),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='active'?'#2563EB':'#F1F5F9',color:candStatusFilter==='active'?'#fff':'#64748B'})
@@ -2314,53 +2288,7 @@ _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap"
                                                   : _createCommentVNode("v-if", true)
                                               ]))
                                             : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis&&viewCand.analysis.perfilXP)
-                                            ? (_openBlock(), _createElementBlock("div", {
-                                                key: 991,
-                                                style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"12px 14px","margin-bottom":"10px"}
-                                              }, [
-                                                _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"8px"} }, [
-                                                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Classificação XP Future"),
-                                                  _createElementVNode("select", {
-                                                    onChange: $event => setPerfilXP(viewCand.id,$event.target.value),
-                                                    style: {"font-size":"11px","padding":"3px 7px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#475569","background":"#fff","cursor":"pointer"}
-                                                  }, [
-                                                    _createElementVNode("option", { value: "" }, "IA: Perfil "+(viewCand.analysis.perfilXP.perfil||"?")),
-                                                    _createElementVNode("option", { value: "A" }, "Ajustar: Perfil A"),
-                                                    _createElementVNode("option", { value: "B" }, "Ajustar: Perfil B"),
-                                                    _createElementVNode("option", { value: "C" }, "Ajustar: Perfil C"),
-                                                    _createElementVNode("option", { value: "D" }, "Ajustar: Perfil D")
-                                                  ], 40, ["onChange"]),
-                                                ]),
-                                                _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"10px","margin-bottom":"8px"} }, [
-                                                  _createElementVNode("div", {
-                                                    style: _normalizeStyle({width:"38px",height:"38px",borderRadius:"8px",background:getPerfilXP(viewCand)==="A"?"#166534":getPerfilXP(viewCand)==="B"?"#1D4ED8":getPerfilXP(viewCand)==="C"?"#92400E":"#991B1B",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"18px",fontWeight:800,flexShrink:0})
-                                                  }, _toDisplayString(getPerfilXP(viewCand)||"?"), 5),
-                                                  _createElementVNode("div", { style: {"flex":"1"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"13px","font-weight":"700","color":"#0F172A","margin":"0"} }, "Perfil "+_toDisplayString(getPerfilXP(viewCand)||"?")),
-                                                    _createElementVNode("p", { style: {"font-size":"11.5px","color":"#64748B","margin":"2px 0 0","line-height":"1.5"} }, _toDisplayString(viewCand.analysis.perfilXP.justificativa||""), 1)
-                                                  ])
-                                                ]),
-                                                _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr 1fr","gap":"6px"} }, [
-                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Universidade"),
-                                                    _createElementVNode("p", { style: {"font-size":"11px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.perfilXP.universidade||"Não identificada"), 1),
-                                                    _createElementVNode("p", { style: {"font-size":"10px","color":"#64748B","margin":"1px 0 0"} }, _toDisplayString(viewCand.analysis.perfilXP.estrelas||"")+" estrelas", 1)
-                                                  ]),
-                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Empresa"),
-                                                    _createElementVNode("p", { style: _normalizeStyle({fontSize:"11px",fontWeight:600,margin:0,color:viewCand.analysis.perfilXP.empresaValor1000?"#166534":"#991B1B"}) }, _toDisplayString(viewCand.analysis.perfilXP.empresaAtual||"Não identificada"), 5),
-                                                    _createElementVNode("p", { style: _normalizeStyle({fontSize:"10px",margin:"1px 0 0",color:viewCand.analysis.perfilXP.empresaValor1000?"#166534":"#991B1B"}) }, viewCand.analysis.perfilXP.empresaValor1000?"Valor 1000 / Banco":"Fora do perfil", 4)
-                                                  ]),
-                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
-                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Curso"),
-                                                    _createElementVNode("p", { style: {"font-size":"11px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.perfilXP.curso||"Não identificado"), 1)
-                                                  ])
-                                                ]),
-                                                viewCand.perfilXPManual ? _createElementVNode("p", { style: {"font-size":"10px","color":"#2563EB","margin":"6px 0 0","font-style":"italic"} }, "* Classificação ajustada pelo RH") : _createCommentVNode("v-if",true)
-                                              ]))
-                                            : _createCommentVNode("v-if",true),
-(viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
+                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 3,
                                                 style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"10px 12px"}
@@ -2543,13 +2471,7 @@ _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap"
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"6px"} }, [
-                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
-                                          _createElementVNode("button", {
-                                            onClick: $event => importDocxTranscript(viewCand.id),
-                                            style: {"font-size":"11px","padding":"3px 10px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#F8FAFC","color":"#2563EB","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"display":"flex","align-items":"center","gap":"4px"}
-                                          }, "📎 Importar .docx", 8, ["onClick"])
-                                        ]),
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
@@ -2595,16 +2517,7 @@ _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap"
                                             ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
                                                 _createElementVNode("div", { style: {"background":"#F0FDF4","border":"1px solid #86EFAC","border-radius":"9px","padding":"12px 14px","margin-bottom":"10px"} }, [
                                                   _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#16A34A","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"4px"} }, "Recomendacao"),
-                                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","gap":"8px"} }, [
-                                                  _createElementVNode("div", { style: _normalizeStyle({fontSize:"13px",fontWeight:700,color:getSummary(viewCand.id).recomendacao&&getSummary(viewCand.id).recomendacao.indexOf("Avan")>=0?"#16A34A":"#991B1B"}) }, 
-                                                    _toDisplayString(getSummary(viewCand.id).recomendacao), 5),
-                                                  getSummary(viewCand.id).recomendacao
-                                                    ? _createElementVNode("button", {
-                                                        onClick: $event => toggleRecomendacao(viewCand.id),
-                                                        style: {"font-size":"11px","padding":"3px 10px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#fff","color":"#475569","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"white-space":"nowrap"}
-                                                      }, getSummary(viewCand.id).recomendacao&&getSummary(viewCand.id).recomendacao.indexOf("Avan")>=0?"↕ Alterar para Não avançar":"↕ Alterar para Avançar")
-                                                    : _createCommentVNode("v-if",true)
-                                                ])
+                                                  _createElementVNode("div", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(getSummary(viewCand.id).recomendacao), 1 /* TEXT */)
                                                 ]),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
@@ -2902,7 +2815,7 @@ _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap"
                                 type: "file",
                                 accept: "application/pdf",
                                 style: {"display":"none"},
-                                onChange: e=>handleFile(e.target.files),multiple:true
+                                onChange: e=>handleFile(e.target.files[0]),multiple:true
                               }, null, 40 /* PROPS, NEED_HYDRATION */, ["onChange"]),
                               _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"8px"} }, "Curriculo em PDF *"),
                               pdfFile
@@ -3604,15 +3517,8 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
-
-
-
-
-
 </script>
 <script>
-
-
 function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
 
 
@@ -3731,23 +3637,7 @@ function buildPrompt(job){
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
     +'- executiveSummary.reasoning: justificativa clara da recomendação em 2-3 frases\n'
     +'- comparison.matched: habilidades e experiências CONFIRMADAS no currículo (array de strings)\n'
-    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)'
-    +(hasPerfilXP(job)?
-      '\n\nEsta vaga possui critérios de classificação de Perfil (A/B/C/D). Aplique-os obrigatoriamente.\n'
-      +'REGRAS DO PERFIL XP:\n'
-      +'Perfil A: Universidade 4-5★ + curso Adm/Eco/Eng/Cont + empresa Valor 1000 (ou banco grande) + salário acima de R$10.000\n'
-      +'Perfil B op1: Universidade 3★ + curso Adm/Eco/Eng/Cont + empresa Valor 1000. Op2: Universidade 4-5★ + qualquer curso + empresa Valor 1000\n'
-      +'Perfil C: Universidade 3★ + qualquer curso + empresa Valor 1000 (ou banco)\n'
-      +'Perfil D: Abaixo dos critérios acima.\n'
-      +'Universidades 4-5★: USP, FGV, Insper, Unicamp, Mackenzie, PUC, UFRJ, UFMG, UFRGS, UFPR, ESPM, Ibmec, ITA, UFSCar\n'
-      +'Bancos válidos: Itaú, Bradesco, Santander, BB, Caixa, XP, BTG, Nubank, Inter, C6, Safra\n'
-      +'Adicione ao JSON: "perfilXP":{"perfil":"A","justificativa":"...","universidade":"...","estrelas":"5","curso":"...","empresaValor1000":true,"empresaAtual":"...","salarioAcima10k":null}'
-      :'');
-}
-
-function hasPerfilXP(job){
-  var desc=(job.descr||job.desc||'').toLowerCase();
-  return desc.indexOf('perfil a')>=0&&desc.indexOf('perfil b')>=0&&desc.indexOf('valor 1000')>=0;
+    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
 }
 
 
@@ -4174,180 +4064,8 @@ function generateSummaryPDF(job,candidates){
 
 
 
-    // ── Reanálise de candidatos sem perfilXP ────────────────────────────────
-    var reanalyzeRunning=ref(false);
-    var reanalyzeCurrent=ref(0);
-    var reanalyzeTotal=ref(0);
-
-    function getCandsMissingXP(){
-      return candidates.value.filter(function(c){
-        var job=jobs.value.find(function(j){return j.id===c.jobId;});
-        return job && hasPerfilXP(job) && c.pdfBase64 && !(c.analysis&&c.analysis.perfilXP);
-      });
-    }
-
-    function reanalyzeMissingXP(){
-      var missing=getCandsMissingXP();
-      if(!missing.length){flash('Todos os candidatos XP já possuem classificação.');return;}
-      reanalyzeRunning.value=true;
-      reanalyzeCurrent.value=0;
-      reanalyzeTotal.value=missing.length;
-      function next(i){
-        if(i>=missing.length){reanalyzeRunning.value=false;flash('Reanálise concluída: '+missing.length+' candidato(s) atualizados.');return;}
-        reanalyzeCurrent.value=i+1;
-        var cand=missing[i];
-        var job=jobs.value.find(function(j){return j.id===cand.jobId;});
-        if(!job){next(i+1);return;}
-        // Use stored pdfBase64 to re-run analysis
-        fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
-            messages:[{role:'user',content:[
-              {type:'document',source:{type:'base64',media_type:'application/pdf',data:cand.pdfBase64}},
-              {type:'text',text:buildPrompt(job)}
-            ]}]})
-        }).then(function(r){return r.json();})
-        .then(function(data){
-          var raw=data.content&&data.content[0]?data.content[0].text||'':'';
-          var clean=raw.replace(/```json|```/g,'').trim();
-          var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
-          if(open>0)clean+=Array(open+1).join('}');
-          var parsed=JSON.parse(clean);
-          var idx=candidates.value.findIndex(function(c){return c.id===cand.id;});
-          if(idx>=0){
-            candidates.value[idx]=Object.assign({},candidates.value[idx],{
-              analysis:Object.assign({},candidates.value[idx].analysis,{perfilXP:parsed.perfilXP||null})
-            });
-          }
-          pushSync();
-          setTimeout(function(){next(i+1);},800);
-        }).catch(function(){next(i+1);});
-      }
-      next(0);
-    }
-
-    // ── Reanálise XP Future ──────────────────────────────────────────────────
-    var reanalyzeRunning=ref(false);
-    var reanalyzeCurrent=ref(0);
-    var reanalyzeTotal=ref(0);
-
-    function getCandsMissingXP(){
-      return candidates.value.filter(function(c){
-        var job=jobs.value.find(function(j){return j.id===c.jobId;});
-        return job&&hasPerfilXP(job)&&c.pdfBase64&&!(c.analysis&&c.analysis.perfilXP);
-      });
-    }
-
-    function reanalyzeMissingXP(){
-      var missing=getCandsMissingXP();
-      if(!missing.length){flash('Todos os candidatos XP já possuem classificação.');return;}
-      if(!window.confirm('Reanalisar '+missing.length+' candidato(s) do Programa XP Future para adicionar a classificação A/B/C/D?'))return;
-      reanalyzeRunning.value=true;
-      reanalyzeCurrent.value=0;
-      reanalyzeTotal.value=missing.length;
-      function next(i){
-        if(i>=missing.length){
-          reanalyzeRunning.value=false;
-          flash('Reanálise concluída: '+missing.length+' candidato(s) classificados!');
-          return;
-        }
-        reanalyzeCurrent.value=i+1;
-        var cand=missing[i];
-        var job=jobs.value.find(function(j){return j.id===cand.jobId;});
-        if(!job){next(i+1);return;}
-        fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
-            messages:[{role:'user',content:[
-              {type:'document',source:{type:'base64',media_type:'application/pdf',data:cand.pdfBase64}},
-              {type:'text',text:buildPrompt(job)}
-            ]}]})
-        }).then(function(r){return r.json();})
-        .then(function(data){
-          var raw=data.content&&data.content[0]?data.content[0].text||'':'';
-          var clean=raw.replace(/```json|```/g,'').trim();
-          var open=0;
-          for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
-          if(open>0)clean+=Array(open+1).join('}');
-          try{
-            var parsed=JSON.parse(clean);
-            var idx=candidates.value.findIndex(function(c){return c.id===cand.id;});
-            if(idx>=0&&parsed.perfilXP){
-              candidates.value[idx]=Object.assign({},candidates.value[idx],{
-                analysis:Object.assign({},candidates.value[idx].analysis,{perfilXP:parsed.perfilXP})
-              });
-              pushSync();
-            }
-          }catch(e){}
-          setTimeout(function(){next(i+1);},800);
-        }).catch(function(){setTimeout(function(){next(i+1);},800);});
-      }
-      next(0);
-    }
-
-    // ── Editar recomendação da entrevista ────────────────────────────────────
-    function setRecomendacao(candId, val){
-      var s=Object.assign({},summaries.value);
-      s[candId]=Object.assign({},s[candId]||{},{recomendacao:val});
-      summaries.value=s;
-      supabaseCall('setState','app_state','summaries',s);
-    }
-    function toggleRecomendacao(candId){
-      var s=getSummary(candId);
-      var atual=(s&&s.recomendacao)||'';
-      var nova=atual.indexOf('Avan')>=0
-        ?'Não avançar no processo'
-        :'Avançar para entrevista com o líder';
-      setRecomendacao(candId,nova);
-    }
-
-    // ── Classificação XP manual override ─────────────────────────────────────
-    function setPerfilXP(candId,val){
-      var i=candidates.value.findIndex(function(c){return c.id===candId;});
-      if(i<0)return;
-      candidates.value[i]=Object.assign({},candidates.value[i],{perfilXPManual:val||null});
-      pushSync();
-    }
-    function getPerfilXP(cand){
-      if(!cand)return null;
-      if(cand.perfilXPManual)return cand.perfilXPManual;
-      if(cand.analysis&&cand.analysis.perfilXP)return cand.analysis.perfilXP.perfil;
-      return null;
-    }
-
-    // ── Importar .docx para transcrição ──────────────────────────────────────
-    function importDocxTranscript(candId){
-      var input=document.createElement('input');
-      input.type='file';
-      input.accept='.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      input.onchange=function(e){
-        var file=e.target.files[0];
-        if(!file)return;
-        var reader=new FileReader();
-        reader.onload=function(ev){
-          var arrayBuffer=ev.target.result;
-          if(typeof mammoth==='undefined'){
-            flash('Erro: biblioteca mammoth não carregada.');
-            return;
-          }
-          mammoth.extractRawText({arrayBuffer:arrayBuffer}).then(function(result){
-            var text=result.value||'';
-            if(!text.trim()){flash('Arquivo vazio ou sem texto legível.');return;}
-            setTranscript(candId,text);
-            flash('Transcrição importada com sucesso!');
-          }).catch(function(){
-            flash('Erro ao ler o arquivo Word. Tente copiar e colar o texto.');
-          });
-        };
-        reader.readAsArrayBuffer(file);
-      };
-      input.click();
-    }
-
-
-
-
 </script>
 <script>
-
 
 
 
@@ -4678,7 +4396,7 @@ createApp({
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus='aguardando_lider'; // RH decide, não a IA
+          var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
@@ -4799,17 +4517,11 @@ createApp({
         {label:'Fit — Comportamental',field:'fitComportamental',value:s.fitComportamental,bg:'#f8fafc',col:'#475569'},
         {label:'Fit — Modelo de Trabalho',field:'fitModeloTrabalho',value:s.fitModeloTrabalho,bg:'#f8fafc',col:'#475569'},
         {label:'Fit — Expectativa Salarial',field:'fitSalarial',value:s.fitSalarial,bg:'#f8fafc',col:'#475569'},
+        {label:'Fatores da recomendação',field:'fatoresRecomendacao',value:(s.fatoresRecomendacao||[]).join('\n'),bg:'#eff6ff',col:'#1d4ed8'},
+        {label:'Parecer Executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f0f9ff',col:'#0369a1'},
+        {label:'Contexto Profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f8fafc',col:'#334155'},
+        {label:'Para explorar na próxima etapa',field:'paraExplorar',value:(s.paraExplorar||[]).join('\n'),bg:'#fdf4ff',col:'#7e22ce'},
       ];
-      if(isPos){
-        rows.push({label:'Fatores para avançar',field:'fatoresRecomendacao',value:(s.fatoresRecomendacao||[]).join('\n'),bg:'#eff6ff',col:'#1d4ed8'});
-      } else {
-        rows.push({label:'Justificativa (não avançar)',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#fef2f2',col:'#991b1b'});
-      }
-      if(isPos){
-        rows.push({label:'Parecer Executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f0f9ff',col:'#0369a1'});
-      }
-      rows.push({label:'Contexto Profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f8fafc',col:'#334155'});
-      rows.push({label:'Para explorar na próxima etapa',field:'paraExplorar',value:(s.paraExplorar||[]).join('\n'),bg:'#fdf4ff',col:'#7e22ce'});
       return rows.filter(function(r){return r.value;});
     });
 
@@ -5002,7 +4714,6 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
-
 
 
 
