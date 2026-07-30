@@ -286,6 +286,8 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 </script>
 <script>
 
+
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -706,6 +708,42 @@ return function render(_ctx, _cache) {
                   : _createCommentVNode("v-if", true)
               ], 12 /* STYLE, PROPS */, ["onClick"]))
             }), 128 /* KEYED_FRAGMENT */))
+          ]),
+          _createElementVNode("div", { style: {"padding":"8px 10px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
+            _createElementVNode("button", {
+              onClick: $event => { showNotifPanel=!showNotifPanel; if(showNotifPanel)notifications.forEach(function(n){if(!n.read)markNotifRead(n.id);}); },
+              style: _normalizeStyle({display:"flex",alignItems:"center",gap:"8px",width:"100%",padding:"7px 9px",borderRadius:"7px",border:"none",cursor:"pointer",fontSize:"13px",fontFamily:"Inter,sans-serif",fontWeight:600,background:showNotifPanel?"rgba(255,255,255,.12)":"transparent",color:"#fff",position:"relative"})
+            }, [
+              _createElementVNode("i", { class: "ti ti-bell", style: {"font-size":"15px","flex-shrink":"0"} }),
+              _createTextVNode(" Notificacoes "),
+              unreadCount>0 ? _createElementVNode("span", { style: {"position":"absolute","right":"9px","min-width":"16px","height":"16px","border-radius":"99px","background":"#EF4444","color":"#fff","font-size":"9px","font-weight":700,"display":"flex","align-items":"center","justify-content":"center","padding":"0 3px"} }, _toDisplayString(unreadCount)) : _createCommentVNode("v-if",true)
+            ], 12, ["onClick"]),
+            showNotifPanel && notifications.length ? _createElementVNode("div", { style: {"margin-top":"6px","max-height":"220px","overflow-y":"auto"} }, [
+              _renderList(notifications.slice(0,10), function(n,ni) {
+                return _createElementVNode("div", { key: ni, style: _normalizeStyle({padding:"8px 10px",borderRadius:"7px",marginBottom:"4px",background:n.read?"rgba(255,255,255,.04)":"rgba(255,255,255,.12)",cursor:"pointer"}) }, [
+                  _createElementVNode("p", { style: {"font-size":"11px","font-weight":600,"color":"#fff","margin":"0 0 2px"} }, (n.type==="aprovado"?"✓ ":"✗ ")+n.candName),
+                  _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.6)","margin":"0"} }, n.type==="aprovado"?"Aprovado pelo gestor":"Reprovado pelo gestor"),
+                  n.justificativa ? _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.5)","margin":"2px 0 0","font-style":"italic"} }, '"'+n.justificativa+'"') : _createCommentVNode("v-if",true)
+                ], 12, ["onClick"]);
+              })
+            ], 4) : _createCommentVNode("v-if",true)
+          ]),
+          _createElementVNode("div", { style: {"padding":"6px 10px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
+            _createElementVNode("button", {
+              onClick: $event => { showNotifPanel=!showNotifPanel; },
+              style: {"display":"flex","alignItems":"center","gap":"8px","width":"100%","padding":"7px 9px","borderRadius":"7px","border":"none","cursor":"pointer","fontSize":"13px","fontFamily":"Inter,sans-serif","fontWeight":600,"background":"transparent","color":"#fff","position":"relative"}
+            }, [
+              _createElementVNode("i", { class: "ti ti-bell", style: {"font-size":"15px"} }),
+              _createTextVNode(" Notificacoes"),
+              unreadCount>0 ? _createElementVNode("span", { style: {"margin-left":"auto","min-width":"18px","height":"18px","border-radius":"99px","background":"#EF4444","color":"#fff","font-size":"10px","font-weight":700,"display":"flex","align-items":"center","justify-content":"center","padding":"0 4px"} }, _toDisplayString(unreadCount)) : _createCommentVNode("v-if",true)
+            ], 8, ["onClick"]),
+            showNotifPanel ? _createElementVNode("div", { style: {"margin":"4px 0 6px","max-height":"200px","overflow-y":"auto"} }, [
+              notifications.length ? _renderList(notifications.slice(0,10), function(n,ni){ return _createElementVNode("div", { key: ni, style: {"padding":"8px 9px","border-radius":"6px","margin-bottom":"3px","background":"rgba(255,255,255,.08)"}, onClick: $event => markNotifRead(n.id) }, [
+                _createElementVNode("p", { style: {"font-size":"11px","font-weight":600,"color":"#fff","margin":"0 0 1px"} }, (n.type==="aprovado"?"✓ ":"✗ ")+_toDisplayString(n.candName)),
+                _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.55)","margin":"0"} }, n.type==="aprovado"?"Aprovado pelo gestor · "+_toDisplayString(n.jobTitle):"Reprovado pelo gestor · "+_toDisplayString(n.jobTitle)),
+                n.justificativa ? _createElementVNode("p", { style: {"font-size":"10px","color":"rgba(255,255,255,.4)","margin":"2px 0 0","font-style":"italic"} }, '"'+_toDisplayString(n.justificativa)+'"') : _createCommentVNode("v-if",true)
+              ], 8, ["onClick"]); }) : _createElementVNode("p", { style: {"font-size":"11px","color":"rgba(255,255,255,.4)","padding":"4px 0","margin":"0"} }, "Nenhuma notificacao")
+            ], 4) : _createCommentVNode("v-if",true)
           ]),
           _createElementVNode("div", { style: {"padding":"12px 13px","border-top":"1px solid rgba(255,255,255,.06)"} }, [
             jbStatus
@@ -1555,7 +1593,8 @@ return function render(_ctx, _cache) {
                                     }, _toDisplayString(job.status), 5 /* TEXT, STYLE */)
                                   ]),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
-                                    _createElementVNode("div", { style: {"display":"flex","gap":"6px"} }, [
+                                    _createElementVNode("div", { style: {"display":"flex","gap":"6px","flex-wrap":"wrap"} }, [
+                                      getGestorCands(job).length ? _createElementVNode("button", { onClick: $event => sendToGestor(job), style: {"font-size":"11px","padding":"4px 10px","border-radius":"6px","background":"#EFF6FF","color":"#1D4ED8","border":"1px solid #BFDBFE","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"white-space":"nowrap"} }, "✉ Gestor ("+getGestorCands(job).length+")") : _createCommentVNode("v-if",true),
                                       _createElementVNode("button", {
                                         onClick: $event => (openEdit(job)),
                                         style: {"background":"none","border":"1px solid #E5E7EB","border-radius":"6px","color":"#64748B","font-size":"11px","cursor":"pointer","padding":"3px 8px","font-family":"Inter,sans-serif"}
@@ -3476,6 +3515,8 @@ return function render(_ctx, _cache) {
 try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
 
+
+
 </script>
 <script>
 function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
@@ -3600,28 +3641,25 @@ function buildPrompt(job){
 }
 
 function buildInterviewPrompt(candidate,transcript){
-  var ctx = '';
-  if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
-  if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência na elaboração de pareceres executivos para gestores.\n'
-    +'Analise a transcrição da entrevista e elabore um Parecer Executivo completo e integrado.\n\n'
+  var ctx='';
+  if(candidate.salario) ctx+='Pretensão salarial declarada: '+candidate.salario+'\n';
+  if(candidate.disponibilidade) ctx+='Disponibilidade declarada: '+candidate.disponibilidade+'\n';
+  return 'Você é um Especialista Sênior em Recrutamento e Seleção elaborando um Parecer de Entrevista formal para o gestor da área.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
     +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
-    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
-    +'INSTRUÇÕES OBRIGATÓRIAS:\n'
-    +'- Escreva como recrutador sênior elaborando um parecer para o gestor da área — linguagem consultiva, objetiva e profissional\n'
-    +'- A JUSTIFICATIVA deve ser o elemento central: sintetize motivadores, interesse na vaga, expectativas de carreira, pontos fortes e pontos de atenção em um parecer executivo coerente que fundamente a recomendação final\n'
-    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados\n'
-    +'- NUNCA escreva "não mencionado", "não informado" ou frases similares — se ausente, retorne string vazia\n'
-    +'- DISPONIBILIDADE: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc. Nada além disso\n'
-    +'- EXPECTATIVA SALARIAL: apenas o valor ou faixa. Se não citada, retorne string vazia\n'
-    +'- MOTIVADORES PARA MUDANÇA: por que o candidato quer sair do emprego atual? O que o motiva?\n'
-    +'- INTERESSE NA VAGA: como o candidato demonstrou interesse? Pesquisou a empresa? Há alinhamento claro?\n'
-    +'- EXPECTATIVAS DE CARREIRA: onde quer estar em 3-5 anos? A vaga faz sentido para esse trajeto?\n'
-    +'- IMPRESSÃO GERAL: avalie postura, comunicação, autoconhecimento e fit cultural percebido na entrevista\n'
-    +'- JUSTIFICATIVA: parágrafo executivo completo que integre todos os elementos acima e fundamente a recomendação\n\n'
+    +'TRANSCRIÇÃO DA ENTREVISTA:\n'+transcript+'\n\n'
+    +'INSTRUÇÕES:\n'
+    +'- Escreva como recrutador sênior — linguagem objetiva, consultiva e profissional\n'
+    +'- NUNCA mencione a transcrição, áudio ou ausência de dados\n'
+    +'- NUNCA escreva "não mencionado" ou "não informado" — retorne string vazia se ausente\n'
+    +'- fitVaga: avalie cada dimensão como "Adequado", "Parcial" ou "Inadequado"\n'
+    +'- principaisFatores: 3 a 5 bullet points objetivos que fundamentam a recomendação\n'
+    +'- parecerExecutivo: parágrafo integrado com motivação, background, pontos fortes e riscos\n'
+    +'- contextoProfissional: parágrafo descritivo do momento e trajetória profissional do candidato\n'
+    +'- pontosPositivos e pontosAtencao: arrays de strings, 2 a 4 itens cada\n'
+    +'- cidadeAtual, modeloTrabalhoAtual, necessitaMudanca: extrair da entrevista quando mencionado\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"motivacoes":"","momentoAtual":"","motivadoresMudanca":"","interesseVaga":"","expectativasCarreira":"","pontosPositivos":["",""],"pontosAtencao":["",""],"expectativaSalarial":"","disponibilidade":"","impressaoGeral":"","recomendacao":"Avançar para entrevista com o líder","justificativa":""}\n'
+    +'{"recomendacao":"Avançar para entrevista com o líder","fitVaga":{"experiencia":"Adequado","conhecimentoTecnico":"Adequado","comportamental":"Adequado","modeloTrabalho":"Adequado","expectativaSalarial":"Adequado"},"principaisFatores":[""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":[""],"pontosAtencao":[""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":""}\n'
     +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
 
@@ -3785,124 +3823,147 @@ function generateAnalysisPDF(candidate) {
 
 function generateParecer(candidate, summary, interviewDate) {
   var now  = new Date().toLocaleDateString('pt-BR');
-  var date = interviewDate ? new Date(interviewDate + 'T12:00:00').toLocaleDateString('pt-BR') : now;
-  var isPos = summary.recomendacao === 'Avan\u00e7ar para entrevista com o l\u00edder';
-  var recCol    = isPos ? '#166534' : '#991b1b';
-  var recBg     = isPos ? '#f0fdf4' : '#fef2f2';
+  var date = interviewDate ? new Date(interviewDate+'T12:00:00').toLocaleDateString('pt-BR') : now;
+  var isPos = (summary.recomendacao||'').indexOf('Avan') !== -1;
+  var recCol = isPos ? '#166534' : '#991b1b';
+  var recBg  = isPos ? '#f0fdf4' : '#fef2f2';
   var recBorder = isPos ? '#86efac' : '#fca5a5';
-  var recIcon   = isPos ? '\u2713' : '\u00d7';
-  var salario   = summary.expectativaSalarial || candidate.salario || '';
-  var disponib  = summary.disponibilidade || candidate.disponibilidade || '';
+  var recIcon   = isPos ? '&#10003;' : '&#10007;';
 
-  function lbl(text, color) {
-    return '<p style="font-size:8px;font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">'+text+'</p>';
+  var salario  = summary.expectativaSalarial || candidate.salario || '';
+  var disponib = summary.disponibilidade || candidate.disponibilidade || '';
+
+  function fitBadge(label, val) {
+    var col = val==='Adequado'?'#166534':val==='Parcial'?'#92400E':'#991b1b';
+    var bg  = val==='Adequado'?'#f0fdf4':val==='Parcial'?'#fff7ed':'#fef2f2';
+    var bdr = val==='Adequado'?'#bbf7d0':val==='Parcial'?'#fde68a':'#fca5a5';
+    if(!val||val==='Não identificado')return '';
+    return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:'+col+';background:'+bg+';border:1px solid '+bdr+';border-radius:99px;padding:2px 9px;margin:2px 3px 2px 0;white-space:nowrap">'+label+' <span style="font-size:9px;font-weight:400">'+val+'</span></span>';
   }
-  function block(label, value, color, bg) {
-    if(!value) return '';
-    return '<div style="margin-bottom:8px;page-break-inside:avoid;break-inside:avoid;background:'+(bg||'#f8fafc')+';border-radius:6px;padding:8px 10px">'
-      + lbl(label, color)
-      + '<p style="font-size:11px;color:#1e293b;line-height:1.55;margin:0">'+value+'</p>'
-      + '</div>';
-  }
-  function pill(arr, col) {
-    return (arr || []).map(function(p) {
-      return '<div style="display:flex;gap:6px;margin-bottom:3px;page-break-inside:avoid;break-inside:avoid">'
-        + '<span style="color:'+col+';font-weight:700;font-size:11px;line-height:1.5;flex-shrink:0">&#8226;</span>'
-        + '<span style="font-size:11px;color:#334155;line-height:1.5">'+p+'</span></div>';
+
+  function bullets(arr, col) {
+    return (arr||[]).filter(Boolean).map(function(p){
+      return '<div style="display:flex;gap:7px;margin-bottom:5px;page-break-inside:avoid">'
+        +'<span style="color:'+col+';font-weight:700;font-size:12px;line-height:1.5;flex-shrink:0">&#8226;</span>'
+        +'<span style="font-size:11px;color:#334155;line-height:1.55">'+p+'</span></div>';
     }).join('');
   }
 
+  function lbl(text, color){
+    return '<p style="font-size:8px;font-weight:700;color:'+(color||'#6366f1')+';text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px">'+text+'</p>';
+  }
+
+  function section(label, content, color){
+    if(!content) return '';
+    return '<div style="margin-bottom:10px;page-break-inside:avoid;break-inside:avoid">'
+      +lbl(label, color||'#475569')
+      +'<p style="font-size:11px;color:#1e293b;line-height:1.6;margin:0">'+content+'</p>'
+      +'</div>';
+  }
+
+  var fit = summary.fitVaga || {};
+
   var htm = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/>'
-    + '<title>Parecer RH \u2014 ' + candidate.name + '</title>'
-    + '<style>'
-    + '@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
-    + '*{box-sizing:border-box;margin:0;padding:0}'
-    + 'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
-    + '.page{max-width:780px;margin:0 auto;padding:14px 18px}'
-    + '.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
-    + '.btn-print{background:#6366f1;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
-    + '.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
-    + '@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:8mm 10mm;size:A4}}'
-    + '</style></head><body>'
-    + '<div class="no-print"><button class="btn-close" onclick="window.close()">Fechar</button>'
-    + '<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
-    + '<div class="page">'
+    +'<title>Parecer RH \u2014 '+candidate.name+'</title>'
+    +'<style>'
+    +'@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");'
+    +'*{box-sizing:border-box;margin:0;padding:0}'
+    +'body{font-family:Inter,sans-serif;background:#fff;color:#1e293b;font-size:11px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+    +'.page{max-width:780px;margin:0 auto;padding:14px 18px}'
+    +'.no-print{position:fixed;top:10px;right:14px;display:flex;gap:8px;z-index:999}'
+    +'.btn-print{background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}'
+    +'.btn-close{background:#fff;color:#64748b;border:1px solid #e2e8f0;padding:8px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}'
+    +'@media print{.no-print{display:none!important}body{background:#fff}.page{padding:0}@page{margin:8mm 10mm;size:A4}}'
+    +'</style></head><body>'
+    +'<div class="no-print">'
+    +'<button class="btn-close" onclick="window.close()">Fechar</button>'
+    +'<button class="btn-print" onclick="window.print()">&#128438; Salvar PDF</button></div>'
+    +'<div class="page">'
 
     // ── HEADER ──
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid #e2e8f0;margin-bottom:10px">'
-    + '<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
-    + '<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
-    + '<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
-    + '<p style="font-size:11px;font-weight:600;color:#475569">' + now + '</p></div>'
-    + '</div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8px;border-bottom:2px solid #e2e8f0;margin-bottom:10px">'
+    +'<div><p style="font-size:16px;font-weight:800;color:#1e1b4b;letter-spacing:-.3px">R&amp;S RH</p>'
+    +'<p style="font-size:10px;color:#64748b;font-weight:500;margin-top:1px">Parecer de Entrevista \u2014 Recursos Humanos</p></div>'
+    +'<div style="text-align:right"><p style="font-size:9px;color:#94a3b8;margin-bottom:1px">Emitido em</p>'
+    +'<p style="font-size:11px;font-weight:600;color:#475569">'+now+'</p></div>'
+    +'</div>'
 
-    // ── CANDIDATO INFO ──
-    + '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
-    + '<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'+(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
-    + '<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+candidate.jobTitle+'</p></div>'
-    + '<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
-    + '</div>'
+    // ── CANDIDATO / VAGA / DATA ──
+    +'<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">'
+    +'<div>'+lbl('Candidato','#6366f1')+'<p style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:1px">'+candidate.name+'</p>'
+    +(candidate.email?'<p style="font-size:10px;color:#64748b">'+candidate.email+'</p>':'')+'</div>'
+    +'<div>'+lbl('Vaga','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a;line-height:1.4">'+candidate.jobTitle+'</p></div>'
+    +'<div>'+lbl('Data da entrevista','#6366f1')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+date+'</p></div>'
+    +'</div>'
 
     // ── RECOMENDAÇÃO ──
-    + '<div style="background:'+recBg+';border:1.5px solid '+recBorder+';border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
-    + '<div style="width:26px;height:26px;border-radius:50%;background:'+recCol+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:#fff;font-size:14px;font-weight:700">'+recIcon+'</span></div>'
-    + '<div>'+lbl('Recomenda\u00e7\u00e3o do RH',recCol)+'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
-    + '</div>'
+    +'<div style="background:'+recBg+';border:1px solid '+recBorder+';border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px">'
+    +'<span style="font-size:18px;color:'+recCol+';font-weight:800">'+recIcon+'</span>'
+    +'<div><p style="font-size:9px;font-weight:700;color:'+recCol+';text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Recomendação do RH</p>'
+    +'<p style="font-size:12px;font-weight:700;color:'+recCol+'">'+summary.recomendacao+'</p></div>'
+    +'</div>'
 
-    // ── PARECER EXECUTIVO (Justificativa integrada) ──
-    + (summary.justificativa?'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Parecer Executivo','#1e1b4b')
-    + '<p style="font-size:11px;color:#1e293b;line-height:1.6;margin-top:2px">'+summary.justificativa+'</p>'
-    + '</div>':'')
+    // ── FIT DA VAGA ──
+    +'<div style="margin-bottom:10px">'
+    +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Fit da Vaga</p>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:2px">'
+    +fitBadge('Experiência', fit.experiencia)
+    +fitBadge('Conhecimento Técnico', fit.conhecimentoTecnico)
+    +fitBadge('Comportamental', fit.comportamental)
+    +fitBadge('Modelo de Trabalho', fit.modeloTrabalho)
+    +fitBadge('Expectativa Salarial', fit.expectativaSalarial)
+    +'</div></div>'
 
-    // ── 3 NOVOS CAMPOS: Motivadores / Interesse / Expectativas ──
-    + ((summary.motivadoresMudanca||summary.interesseVaga||summary.expectativasCarreira)?
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px">'
-    + block('Motivadores para mudança', summary.motivadoresMudanca, '#7e22ce', '#fdf4ff')
-    + block('Interesse na vaga', summary.interesseVaga, '#c2410c', '#fff7ed')
-    + block('Expectativas de carreira', summary.expectativasCarreira, '#166534', '#f0fdf4')
-    + '</div>':'')
+    // ── PRINCIPAIS FATORES ──
+    +((summary.principaisFatores&&summary.principaisFatores.filter(Boolean).length)?
+      '<div style="margin-bottom:10px;page-break-inside:avoid">'
+      +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">'
+      +(isPos?'Principais fatores para avançar':'Principais fatores para não avançar')+'</p>'
+      +bullets(summary.principaisFatores,'#2563eb')
+      +'</div>':'' )
 
-    // ── PERFIL: Motivações + Momento atual ──
-    + ((summary.motivacoes||summary.momentoAtual)?
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
-    + block('Motivações e objetivos', summary.motivacoes, '#6366f1', '#f0f9ff')
-    + block('Momento atual', summary.momentoAtual, '#0369a1', '#f0f9ff')
-    + '</div>':'')
+    // ── PARECER EXECUTIVO ──
+    +(summary.parecerExecutivo?
+      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;margin-bottom:10px;page-break-inside:avoid">'
+      +lbl('Parecer Executivo (Justificativa integrada)','#475569')
+      +'<p style="font-size:11px;color:#1e293b;line-height:1.65;margin:0">'+summary.parecerExecutivo+'</p>'
+      +'</div>':'')
 
-    // ── PONTOS: 2 colunas ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">'
-    + (summary.pontosPositivos&&summary.pontosPositivos.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Pontos positivos','#166534')+'<div style="margin-top:4px">'+pill(summary.pontosPositivos,'#166534')+'</div></div>':'')
-    + (summary.pontosAtencao&&summary.pontosAtencao.length?
-    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;page-break-inside:avoid;break-inside:avoid">'
-    + lbl('Pontos de aten\u00e7\u00e3o','#b45309')+'<div style="margin-top:4px">'+pill(summary.pontosAtencao,'#b45309')+'</div></div>':'')
-    + '</div>'
+    // ── CONTEXTO PROFISSIONAL ──
+    +section('Contexto Profissional', summary.contextoProfissional)
 
-    // ── IMPRESSÃO GERAL ──
-    + block('Impress\u00e3o geral do RH', summary.impressaoGeral, '#475569', '#f8fafc')
+    // ── PONTOS POSITIVOS / ATENÇÃO ──
+    +((summary.pontosPositivos&&summary.pontosPositivos.filter(Boolean).length)||(summary.pontosAtencao&&summary.pontosAtencao.filter(Boolean).length)?
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;page-break-inside:avoid">'
+      +(summary.pontosPositivos&&summary.pontosPositivos.filter(Boolean).length?
+        '<div><p style="font-size:8px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Pontos Positivos</p>'
+        +bullets(summary.pontosPositivos,'#16a34a')+'</div>':'')
+      +(summary.pontosAtencao&&summary.pontosAtencao.filter(Boolean).length?
+        '<div><p style="font-size:8px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px">Pontos de Atenção</p>'
+        +bullets(summary.pontosAtencao,'#d97706')+'</div>':'')
+      +'</div>':'')
 
-    // ── DADOS PRÁTICOS ──
-    + ((salario||disponib)?
-    '<div style="display:flex;gap:20px;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px">'
-    + (salario?'<div>'+lbl('Pretens\u00e3o salarial','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
-    + (disponib?'<div>'+lbl('Disponibilidade','#64748b')+'<p style="font-size:12px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
-    + '</div>':'')
+    // ── INFORMAÇÕES OBJETIVAS ──
+    +'<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;margin-bottom:12px">'
+    +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px">Informações Objetivas</p>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">'
+    +(summary.cidadeAtual?'<div>'+lbl('Cidade atual','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.cidadeAtual+'</p></div>':'')
+    +(summary.modeloTrabalhoAtual?'<div>'+lbl('Modelo de trabalho atual','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.modeloTrabalhoAtual+'</p></div>':'')
+    +(summary.necessitaMudanca?'<div>'+lbl('Necessita mudança?','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+summary.necessitaMudanca+'</p></div>':'')
+    +(salario?'<div>'+lbl('Expectativa salarial','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+salario+'</p></div>':'')
+    +(disponib?'<div>'+lbl('Disponibilidade','#94a3b8')+'<p style="font-size:11px;font-weight:600;color:#0f172a">'+disponib+'</p></div>':'')
+    +'</div></div>'
 
     // ── FOOTER ──
-    + '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #e2e8f0">'
-    + '<p style="font-size:9px;color:#94a3b8">R&S RH \u00b7 Documento confidencial de uso interno</p>'
-    + '<p style="font-size:9px;color:#94a3b8">'+now+'</p>'
-    + '</div>'
+    +'<div style="border-top:1px solid #e2e8f0;padding-top:6px;display:flex;justify-content:space-between;align-items:center">'
+    +'<p style="font-size:9px;color:#94a3b8">R&amp;S RH &middot; Documento confidencial de uso interno</p>'
+    +'<p style="font-size:9px;color:#94a3b8">'+now+'</p>'
+    +'</div>'
 
-    + '</div></body></html>';
+    +'</div></body></html>';
 
-  var blob = new Blob([htm], {type: 'text/html;charset=utf-8'});
-  var url  = URL.createObjectURL(blob);
-  var win  = window.open(url, '_blank');
-  if (!win) { var a = document.createElement('a'); a.href=url; a.download='Parecer_'+candidate.name.replace(/\s+/g,'_')+'.html'; a.click(); }
-  setTimeout(function(){URL.revokeObjectURL(url);}, 120000);
+  var win = window.open('', '_blank', 'width=860,height=700');
+  if(win){win.document.write(htm);win.document.close();}
 }
 
 
@@ -3944,6 +4005,9 @@ function generateSummaryPDF(job,candidates){
 
 </script>
 <script>
+
+
+
 
 
 const {createApp,ref,computed,watch,onMounted}=Vue;
@@ -4186,7 +4250,7 @@ createApp({
     function saveSyncConfig(){showSyncModal.value=false;pullSync();flash('Sincronizando...');}
     function deactivateSync(){jbKey.value='';jbBin.value='';jbStatus.value='';flash('Compartilhamento desativado');}
 
-    onMounted(function(){
+    onMounted(function(){loadNotifications();
       if(jbKey.value&&jbBin.value){
         pullSync();
         setInterval(pullSync,10000);
@@ -4532,6 +4596,44 @@ createApp({
     }
 
 
+    // ── Painel do Gestor ──────────────────────────────────────────────────────
+    var notifications=ref([]);
+    var showNotifPanel=ref(false);
+
+    function getGestorCands(job){
+      if(!job)return[];
+      return candidates.value.filter(function(c){return c.jobId===job.id&&c.status==='aguardando_lider';});
+    }
+
+    function sendToGestor(job){
+      var cands=getGestorCands(job);
+      if(!cands.length){flash('Nenhum candidato em Aguardando lider.');return;}
+      var token=job.id+'-'+Date.now().toString(36);
+      var i=jobs.value.findIndex(function(j){return j.id===job.id;});
+      if(i>=0)jobs.value[i]=Object.assign({},jobs.value[i],{gestorToken:token,gestorTokenDate:new Date().toISOString()});
+      pushSync();
+      var base=window.location.origin;
+      var link=base+'/gestor.html?token='+encodeURIComponent(token)+'&job='+encodeURIComponent(job.id);
+      var nomes=cands.map(function(c){return c.name;}).join(', ');
+      var subject=encodeURIComponent('Avaliacao de candidatos - '+job.title);
+      var body=encodeURIComponent('Ola,'+String.fromCharCode(10)+String.fromCharCode(10)+'O RH selecionou '+cands.length+' candidato(s) para a vaga de '+job.title+'.'+String.fromCharCode(10)+String.fromCharCode(10)+'Candidatos: '+nomes+String.fromCharCode(10)+String.fromCharCode(10)+'Acesse o link para aprovar ou reprovar:'+String.fromCharCode(10)+link+String.fromCharCode(10)+String.fromCharCode(10)+'Link valido por 7 dias.'+String.fromCharCode(10)+String.fromCharCode(10)+'Atenciosamente,'+String.fromCharCode(10)+'Equipe de RH');
+      window.location.href='mailto:'+encodeURIComponent(job.leaderEmail||'')+'?subject='+subject+'&body='+body;
+      flash('E-mail gerado para '+job.title+'!');
+    }
+
+    function markNotifRead(id){
+      var i=notifications.value.findIndex(function(n){return n.id===id;});
+      if(i>=0)notifications.value[i]=Object.assign({},notifications.value[i],{read:true});
+      supabaseCall('setState','app_state','notifications',notifications.value.slice(0,50));
+    }
+
+    function loadNotifications(){
+      supabaseCall('getState','app_state','notifications').then(function(r){if(r&&r.data)notifications.value=r.data;});
+    }
+
+    var unreadCount=computed(function(){return notifications.value.filter(function(n){return!n.read;}).length;});
+
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4545,9 +4647,12 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,    };
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
+
+
 
 
 
