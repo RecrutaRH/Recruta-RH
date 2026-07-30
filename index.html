@@ -292,6 +292,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -2292,7 +2293,53 @@ return function render(_ctx, _cache) {
                                                   : _createCommentVNode("v-if", true)
                                               ]))
                                             : _createCommentVNode("v-if", true),
-                                          (viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
+                                          (viewCand.analysis&&viewCand.analysis.perfilXP)
+                                            ? (_openBlock(), _createElementBlock("div", {
+                                                key: 991,
+                                                style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"12px 14px","margin-bottom":"10px"}
+                                              }, [
+                                                _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"8px"} }, [
+                                                  _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#64748B","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Classificação XP Future"),
+                                                  _createElementVNode("select", {
+                                                    onChange: $event => setPerfilXP(viewCand.id,$event.target.value),
+                                                    style: {"font-size":"11px","padding":"3px 7px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#475569","background":"#fff","cursor":"pointer"}
+                                                  }, [
+                                                    _createElementVNode("option", { value: "" }, "IA: Perfil "+(viewCand.analysis.perfilXP.perfil||"?")),
+                                                    _createElementVNode("option", { value: "A" }, "Ajustar: Perfil A"),
+                                                    _createElementVNode("option", { value: "B" }, "Ajustar: Perfil B"),
+                                                    _createElementVNode("option", { value: "C" }, "Ajustar: Perfil C"),
+                                                    _createElementVNode("option", { value: "D" }, "Ajustar: Perfil D")
+                                                  ], 40, ["onChange"]),
+                                                ]),
+                                                _createElementVNode("div", { style: {"display":"flex","align-items":"center","gap":"10px","margin-bottom":"8px"} }, [
+                                                  _createElementVNode("div", {
+                                                    style: _normalizeStyle({width:"38px",height:"38px",borderRadius:"8px",background:getPerfilXP(viewCand)==="A"?"#166534":getPerfilXP(viewCand)==="B"?"#1D4ED8":getPerfilXP(viewCand)==="C"?"#92400E":"#991B1B",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"18px",fontWeight:800,flexShrink:0})
+                                                  }, _toDisplayString(getPerfilXP(viewCand)||"?"), 5),
+                                                  _createElementVNode("div", { style: {"flex":"1"} }, [
+                                                    _createElementVNode("p", { style: {"font-size":"13px","font-weight":"700","color":"#0F172A","margin":"0"} }, "Perfil "+_toDisplayString(getPerfilXP(viewCand)||"?")),
+                                                    _createElementVNode("p", { style: {"font-size":"11.5px","color":"#64748B","margin":"2px 0 0","line-height":"1.5"} }, _toDisplayString(viewCand.analysis.perfilXP.justificativa||""), 1)
+                                                  ])
+                                                ]),
+                                                _createElementVNode("div", { style: {"display":"grid","grid-template-columns":"1fr 1fr 1fr","gap":"6px"} }, [
+                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
+                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Universidade"),
+                                                    _createElementVNode("p", { style: {"font-size":"11px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.perfilXP.universidade||"Não identificada"), 1),
+                                                    _createElementVNode("p", { style: {"font-size":"10px","color":"#64748B","margin":"1px 0 0"} }, _toDisplayString(viewCand.analysis.perfilXP.estrelas||"")+" estrelas", 1)
+                                                  ]),
+                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
+                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Empresa"),
+                                                    _createElementVNode("p", { style: _normalizeStyle({fontSize:"11px",fontWeight:600,margin:0,color:viewCand.analysis.perfilXP.empresaValor1000?"#166534":"#991B1B"}) }, _toDisplayString(viewCand.analysis.perfilXP.empresaAtual||"Não identificada"), 5),
+                                                    _createElementVNode("p", { style: _normalizeStyle({fontSize:"10px",margin:"1px 0 0",color:viewCand.analysis.perfilXP.empresaValor1000?"#166534":"#991B1B"}) }, viewCand.analysis.perfilXP.empresaValor1000?"Valor 1000 / Banco":"Fora do perfil", 4)
+                                                  ]),
+                                                  _createElementVNode("div", { style: {"background":"#fff","border-radius":"6px","padding":"8px"} }, [
+                                                    _createElementVNode("p", { style: {"font-size":"9px","color":"#94A3B8","text-transform":"uppercase","margin":"0 0 3px"} }, "Curso"),
+                                                    _createElementVNode("p", { style: {"font-size":"11px","font-weight":"600","color":"#0F172A","margin":"0"} }, _toDisplayString(viewCand.analysis.perfilXP.curso||"Não identificado"), 1)
+                                                  ])
+                                                ]),
+                                                viewCand.perfilXPManual ? _createElementVNode("p", { style: {"font-size":"10px","color":"#2563EB","margin":"6px 0 0","font-style":"italic"} }, "* Classificação ajustada pelo RH") : _createCommentVNode("v-if",true)
+                                              ]))
+                                            : _createCommentVNode("v-if",true),
+(viewCand.analysis.executiveSummary&&viewCand.analysis.executiveSummary.reasoning)
                                             ? (_openBlock(), _createElementBlock("div", {
                                                 key: 3,
                                                 style: {"background":"#F8FAFC","border":"1px solid #E5E7EB","border-radius":"10px","padding":"10px 12px"}
@@ -3528,8 +3575,10 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 </script>
 <script>
+
 
 function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
 
@@ -3649,7 +3698,23 @@ function buildPrompt(job){
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
     +'- executiveSummary.reasoning: justificativa clara da recomendação em 2-3 frases\n'
     +'- comparison.matched: habilidades e experiências CONFIRMADAS no currículo (array de strings)\n'
-    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
+    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)'
+    +(hasPerfilXP(job)?
+      '\n\nEsta vaga possui critérios de classificação de Perfil (A/B/C/D). Aplique-os obrigatoriamente.\n'
+      +'REGRAS DO PERFIL XP:\n'
+      +'Perfil A: Universidade 4-5★ + curso Adm/Eco/Eng/Cont + empresa Valor 1000 (ou banco grande) + salário acima de R$10.000\n'
+      +'Perfil B op1: Universidade 3★ + curso Adm/Eco/Eng/Cont + empresa Valor 1000. Op2: Universidade 4-5★ + qualquer curso + empresa Valor 1000\n'
+      +'Perfil C: Universidade 3★ + qualquer curso + empresa Valor 1000 (ou banco)\n'
+      +'Perfil D: Abaixo dos critérios acima.\n'
+      +'Universidades 4-5★: USP, FGV, Insper, Unicamp, Mackenzie, PUC, UFRJ, UFMG, UFRGS, UFPR, ESPM, Ibmec, ITA, UFSCar\n'
+      +'Bancos válidos: Itaú, Bradesco, Santander, BB, Caixa, XP, BTG, Nubank, Inter, C6, Safra\n'
+      +'Adicione ao JSON: "perfilXP":{"perfil":"A","justificativa":"...","universidade":"...","estrelas":"5","curso":"...","empresaValor1000":true,"empresaAtual":"...","salarioAcima10k":null}'
+      :'');
+}
+
+function hasPerfilXP(job){
+  var desc=(job.descr||job.desc||'').toLowerCase();
+  return desc.indexOf('perfil a')>=0&&desc.indexOf('perfil b')>=0&&desc.indexOf('valor 1000')>=0;
 }
 
 
@@ -4076,6 +4141,20 @@ function generateSummaryPDF(job,candidates){
 
 
 
+    // ── Classificação XP manual override ─────────────────────────────────────
+    function setPerfilXP(candId,val){
+      var i=candidates.value.findIndex(function(c){return c.id===candId;});
+      if(i<0)return;
+      candidates.value[i]=Object.assign({},candidates.value[i],{perfilXPManual:val||null});
+      pushSync();
+    }
+    function getPerfilXP(cand){
+      if(!cand)return null;
+      if(cand.perfilXPManual)return cand.perfilXPManual;
+      if(cand.analysis&&cand.analysis.perfilXP)return cand.analysis.perfilXP.perfil;
+      return null;
+    }
+
     // ── Importar .docx para transcrição ──────────────────────────────────────
     function importDocxTranscript(candId){
       var input=document.createElement('input');
@@ -4107,8 +4186,10 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 </script>
 <script>
+
 
 
 
@@ -4757,6 +4838,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
