@@ -291,6 +291,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -2474,7 +2475,13 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
+                                          _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"6px"} }, [
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
+                                          _createElementVNode("button", {
+                                            onClick: $event => importDocxTranscript(viewCand.id),
+                                            style: {"font-size":"11px","padding":"3px 10px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#F8FAFC","color":"#2563EB","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"display":"flex","align-items":"center","gap":"4px"}
+                                          }, "📎 Importar .docx", 8, ["onClick"])
+                                        ]),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
@@ -3517,6 +3524,7 @@ return function render(_ctx, _cache) {
 };
 try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 })();
+
 
 
 
