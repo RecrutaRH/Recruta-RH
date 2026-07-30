@@ -3643,56 +3643,64 @@ function buildPrompt(job){
 
 function buildInterviewPrompt(candidate,transcript,job){
   job=job||{};
-  var ctx = '';
-  if(candidate.salario) ctx += 'Pretensão salarial declarada: '+candidate.salario+'\n';
-  if(candidate.disponibilidade) ctx += 'Disponibilidade declarada: '+candidate.disponibilidade+'\n';
-  var estiloRef = 'Exemplo de Parecer Executivo correto (conecta ideias, interpreta em vez de listar, evita jargão de IA):\n'
-    +'"Ana chega ao processo em transição consciente de carreira, com o MBA do Insper já funcionando como ponte real para o mercado financeiro — ela cita, sem hesitar, os pontos do curso que mais se aproximam da rotina de um assessor. Essa clareza de motivo pesa a favor, mas a entrevista não chegou a testar a frente comercial: não houve espaço para ela relatar uma situação concreta de negociação ou captação, que é o critério mais pesado da vaga. Recomenda-se avançar, com a ressalva de que a próxima etapa precisa fechar essa lacuna antes da decisão final."\n\n'
-    +'Exemplo de bullet correto para pontosPositivos/pontosAtencao/fatoresRecomendacao/paraExplorar (frase única, direta, sem "Demonstrou/Apresentou/Informou/Mencionou/Possui" e sem explicação em excesso — mas carregando o fato E, quando for ponto de atenção, o motivo de importar): "Geriu o próprio negócio por três anos, com autonomia total sobre decisão comercial." — NÃO: "O candidato demonstrou ao longo da entrevista que geriu seu próprio negócio, o que indica maturidade e autonomia."\n\n';
-  return 'Você é um Recrutador Sênior com mais de 15 anos de experiência em seleção de profissionais. Sua responsabilidade NÃO é resumir a entrevista — é elaborar um parecer executivo que ajude o gestor a decidir e a conduzir melhor a próxima etapa. O texto precisa parecer escrito por uma pessoa que já fez centenas dessas triagens, nunca por uma IA.\n'
-    +'O leitor não é especialista em RH — é Diretor Financeiro, Comercial ou de Operações, com pouco tempo, que precisa entender rápido quem é o candidato, por que o RH recomenda (ou não) avançar, e o que falta validar.\n\n'
-    +'SEU PROCESSO DE RACIOCÍNIO TEM 2 CAMADAS + 1 FILTRO — sempre nessa ordem, internamente, ANTES de escrever qualquer campo do JSON final. Isso nunca aparece no resultado, só o produto final dele:\n\n'
-    +'CAMADA 1 — ANÁLISE (interna). Tem dois passos, não um só:\n'
-    +'  1a) EXTRAÇÃO: cruze a descrição da vaga (os requisitos e critérios abaixo), a ANÁLISE DE PERFIL já feita a partir do currículo (contexto obrigatório — nunca trate este candidato como se estivesse sendo avaliado pela primeira vez) e a transcrição da entrevista. Para cada requisito relevante, classifique: CONFIRMADA (evidência concreta a favor), CONTRADITA (evidência contra), PARCIAL (indício fraco ou indireto, sem exemplo concreto) ou AUSENTE (não abordado). Uma afirmação genérica do candidato sem exemplo concreto quando perguntado é PARCIAL, não CONFIRMADA — a lacuna entre o que ele diz e o que ele demonstra é, em si, um sinal a levar pra frente. Além disso, pra cada achado da entrevista, verifique a relação dele com o que a análise de currículo já tinha identificado: a entrevista CONFIRMA (reforça o que já era conhecido), COMPLEMENTA (traz informação nova e coerente), CONTRADIZ (conflita com o currículo — isso é um sinal importante) ou DEIXA SEM VALIDAÇÃO (currículo levantou a questão, entrevista não tocou nela)?\n'
-    +'  1b) INTERPRETAÇÃO: aqui é onde você para de ser um resumidor e vira recrutador. Para cada evidência CONFIRMADA ou CONTRADITA que sobreviver, não registre só o fato — responda "o que isso significa pra capacidade dessa pessoa performar NESTA vaga específica?" Transforme fato em conclusão profissional. Fato: "geriu o próprio negócio por 3 anos." Conclusão fraca (não escreva assim): "isso mostra experiência." Conclusão de recrutador sênior (escreva assim): "já naturalizou responsabilidade por resultado, o que reduz o risco de adaptação ao modelo de remuneração variável da vaga." É essa transformação — fato vira implicação pra decisão — que precisa acontecer pra CADA evidência que for usada no parecer final.\n\n'
-    +'CAMADA 2 — PRIORIZAÇÃO (interna). Nem toda conclusão da Camada 1b pesa igual. Pergunte-se: "essa conclusão específica muda a decisão de avançar ou não?" Uma conclusão sobre requisito secundário PARCIAL/AUSENTE pode ficar de fora. Uma conclusão sobre requisito crítico PARCIAL/AUSENTE precisa aparecer, porque muda a decisão — normalmente vira item de paraExplorar, não motivo pra reprovar de cara.\n\n'
-    +'REGRA DE OURO: a recomendação final NÃO é sobre quantidade de requisitos atendidos — é sobre o peso dos requisitos mais críticos e a força da evidência disponível. Um candidato com 9 de 10 requisitos mas falho no crítico pesa MENOS que um com 6 de 10 que acerta em cheio os 3 mais críticos. Julgue como recrutador experiente, não como sistema de pontuação.\n\n'
-    +'FILTRO — descarte da Camada 1 tudo que a Camada 2 marcou como baixa relevância. O parecer final não é um checklist de requisitos nem uma lista de fatos — é a síntese interpretada só do que pesa na decisão.\n\n'
-    +'CAMADA 3 — ESCRITA. Só agora você escreve, usando as CONCLUSÕES da 1b que sobreviveram ao filtro — nunca os fatos crus. Regras de voz, só pros campos em prosa (parecerExecutivo e contextoProfissional — os bullets seguem sendo curtos por design, isso não muda):\n'
-    +'  - Nunca use "Demonstrou", "Apresentou", "Informou", "Mencionou", "Possui" em sequência ou como muleta — varie a construção, conecte ideias com conectivos naturais, escreva como quem está contando a leitura que fez de uma pessoa, não descrevendo uma gravação\n'
-    +'  - Evite frase telegráfica nesses dois campos — são parágrafos corridos que contam uma leitura profissional, não uma lista disfarçada de prosa\n'
-    +'  - parecerExecutivo: 120 a 180 palavras. Responde, sem citar as perguntas literalmente: quem é o candidato, por que o RH recomenda isso, quais evidências sustentam, o que falta validar. Não é resumo cronológico da entrevista, não repete pergunta e resposta — sintetiza e conecta\n\n'
-    +estiloRef
+  var ctx='';
+  if(candidate.salario) ctx+='Pretensão salarial declarada: '+candidate.salario+'\n';
+  if(candidate.disponibilidade) ctx+='Disponibilidade declarada: '+candidate.disponibilidade+'\n';
+
+  // Build CV analysis context for cross-reference
+  var cvCtx='';
+  var a=candidate.analysis||{};
+  var es=a.executiveSummary||{};
+  var ca=a.candidateAnalysis||{};
+  if(es.reasoning) cvCtx+='PARECER DO CURRÍCULO:\n'+es.reasoning+'\n\n';
+  if(ca.hardSkills&&ca.hardSkills.length) cvCtx+='Hard skills identificadas no currículo: '+ca.hardSkills.join(', ')+'\n';
+  if(ca.softSkills&&ca.softSkills.length) cvCtx+='Soft skills identificadas no currículo: '+ca.softSkills.join(', ')+'\n';
+  if(a.recommendation) cvCtx+='Recomendação do currículo: '+a.recommendation+'\n';
+  if(a.score&&a.score.total) cvCtx+='Score do currículo: '+a.score.total+'/100\n';
+
+  return 'Você é um Especialista Sênior em Recrutamento e Seleção de uma grande instituição financeira.\n'
+    +'Sua função é elaborar um Parecer de Entrevista executivo, objetivo e confiável, que apoie a decisão de contratação do gestor.\n\n'
     +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
-    +(job&&job.desc?'REQUISITOS E CRITÉRIOS DA VAGA (referência obrigatória da análise):\n'+job.desc+'\n\n':'')
-    +(function(){var cv=buildCvContext(candidate);return cv?'ANÁLISE DE PERFIL — CURRÍCULO (contexto obrigatório, já avaliado antes desta entrevista):\n'+cv+'\n':'';})()
-    +(ctx?'DADOS DO CANDIDATO:\n'+ctx+'\n':'')
-    +'TRANSCRIÇÃO:\n'+transcript+'\n\n'
-    +'INSTRUÇÕES OBRIGATÓRIAS:\n'
-    +'- REGRA MAIS IMPORTANTE: toda frase precisa ter por trás um FATO CONCRETO da transcrição ou do currículo (empresa, ferramenta, iniciativa, resultado, prazo) — mas o que você ESCREVE é a interpretação desse fato (Camada 1b), nunca o fato cru sozinho\n'
-    +'- ZERO REDUNDÂNCIA ENTRE TODOS OS CAMPOS DE TEXTO (parecerExecutivo, contextoProfissional, fatoresRecomendacao, pontosPositivos, pontosAtencao, paraExplorar): cada campo responde uma pergunta diferente do gestor. Antes de escrever uma frase em qualquer um desses campos, verifique se essa mesma ideia já foi dita em outro — se sim, ou corta, ou reformula pra acrescentar algo novo. parecerExecutivo = síntese da decisão. contextoProfissional = só a narrativa de carreira (onde está, por que quer sair, interesse na vaga). fatoresRecomendacao = os 3-5 elementos mais decisivos, em bullet. pontosPositivos/pontosAtencao = observações específicas que não estão nem no parecer nem nos fatores. paraExplorar = só o que ainda falta descobrir\n'
-    +'- Se algum indicador de fit vier "Parcial" ou "Atenção", o motivo TEM que aparecer em pontosAtencao. Se vier "Dado insuficiente" E o critério for importante pra vaga (não secundário), isso TEM que aparecer em paraExplorar — um selo cinza importante não pode ficar sem explicação em lugar nenhum do parecer\n'
-    +'- Quando não houver evidência suficiente pra avaliar uma dimensão do fit, retorne "Dado insuficiente" — NUNCA force "Adequado" ou "Parcial" só pra preencher. Se o critério nem se aplica a esta etapa, retorne "Não se aplica"\n'
-    +'- DISTINÇÃO FATO x INTERPRETAÇÃO: quando a frase é um fato relatado diretamente (o candidato disse/fez algo específico), afirme direto. Quando a frase é uma leitura sua sobre o que aquele fato implica (Camada 1b), sinalize com linguagem de inferência natural — "o que sugere", "isso indica", "tende a" — nunca apresente uma interpretação como se fosse fato relatado\n'
-    +'- PROIBIDO HEDGING: nunca use "pode ser considerado", "possivelmente", "de certa forma", "até certo ponto" ou equivalentes. Se você tem evidência suficiente pra uma leitura, afirme com segurança. Se não tem, isso é "Dado insuficiente" ou vazio — não meio-termo linguístico\n'
-    +'- NUNCA mencione a transcrição, áudio, limitações de informação ou ausência de dados genericamente. NUNCA escreva "não mencionado"/"não informado" — se ausente, retorne string vazia\n\n'
-    +'CAMPO A CAMPO:\n'
-    +'- fitExperiencia, fitTecnico, fitComportamental, fitModeloTrabalho, fitSalarial: cada um EXATAMENTE uma destas 6 palavras: "Excelente", "Adequado", "Parcial", "Atenção", "Dado insuficiente" ou "Não se aplica" — nunca uma frase. fitComportamental já inclui comunicação\n'
-    +'- fatoresRecomendacao: array de 3 a 5 bullets curtos (frase única, ~12 palavras) só com as conclusões que sobreviveram ao FILTRO\n'
-    +'- parecerExecutivo: 120 a 180 palavras (ver CAMADA 3 acima)\n'
-    +'- contextoProfissional: SEMPRE presente, profundidade proporcional à relevância — 1-2 frases quando não há nada que mereça atenção, até 3-4 quando há algo que sinaliza risco ou vale nota. Integra o que a análise de currículo já mostrou com o que a entrevista confirmou, complementou ou contradisse — não é só sobre a entrevista isolada. Quando currículo e entrevista forem coerentes entre si, destaque isso explicitamente (é um sinal positivo de consistência). Quando surgir informação nova relevante na entrevista, integre ao invés de listar separado. Cobre onde o candidato está hoje, por que quer sair, interesse real na vaga — em prosa conectada, não lista, e sem repetir o currículo palavra por palavra\n'
-    +'- pontosPositivos: MÁXIMO 3 itens, frase única e curta cada, cada um um comportamento ou competência OBSERVADA na entrevista que agrega valor pra esta vaga especificamente\n'
-    +'- pontosAtencao: MÁXIMO 3 itens, frase única cada, mas a frase inclui o motivo de importar (não é julgamento, é explicação objetiva). Ausência de informação NÃO é automaticamente um problema — só entra aqui se a ausência for sobre algo que pesa pra decisão\n'
-    +'- paraExplorar: MÁXIMO 3 bullets — perguntas ou pontos de investigação concretos pro PRÓXIMO entrevistador (o líder). Um item só entra se (1) é requisito importante da vaga E (2) ainda não há evidência suficiente. Nunca repita algo já respondido na entrevista atual. Formule como ação concreta (ex: "Pedir exemplo real de negociação com cliente"), nunca pergunta burocrática de baixo valor\n'
-    +'- expectativaSalarial: apenas o valor/faixa. Se não citada, string vazia\n'
-    +'- disponibilidade: apenas "Imediata", "30 dias", "60 dias (aviso prévio)" etc.\n'
-    +'- cidadeAtual: cidade onde mora hoje, se mencionada. Senão, string vazia\n'
-    +'- modeloTrabalhoAtual: presencial/híbrido/remoto no emprego atual, se mencionado. Senão, string vazia\n'
-    +'- necessitaMudanca: "Sim", "Não" ou string vazia se não abordado\n'
-    +'- disponibilidadeViagens: "Sim", "Não", "Parcial" ou string vazia se não abordado\n\n'
+    +(ctx?'DADOS COLETADOS:\n'+ctx+'\n':'')
+    +(cvCtx?'════════════════════════════════\nCONTEXTO DO CURRÍCULO (USE COMO BASE OBRIGATÓRIA):\n'+cvCtx+'════════════════════════════════\n\n':'')
+    +'TRANSCRIÇÃO DA ENTREVISTA:\n'+transcript+'\n\n'
+    +'════════════════════════════════\n'
+    +'INSTRUÇÕES OBRIGATÓRIAS:\n\n'
+    +'REGRA FUNDAMENTAL: Esta análise NÃO é independente. Antes de escrever qualquer seção, compare as evidências da entrevista com as identificadas no currículo.\n'
+    +'— Se a entrevista CONFIRMA o currículo: destaque a consistência\n'
+    +'— Se COMPLEMENTA: integre a nova informação ao contexto\n'
+    +'— Se CONTRADIZ: sinalize a divergência como ponto de atenção\n'
+    +'— Se algo do currículo NÃO foi validado: indique como pendência\n'
+    +'Nunca trate o candidato como se estivesse sendo analisado pela primeira vez.\n\n'
+    +'LINGUAGEM:\n'
+    +'— Executiva, objetiva, neutra e baseada em evidências\n'
+    +'— Sem elogios por educação, sem suposições sem base na entrevista\n'
+    +'— Separe claramente: fatos observados | interpretações | ausência de evidências\n'
+    +'— Nunca escreva "não mencionado" ou "não informado" — retorne string vazia se ausente\n\n'
+    +'ESTRUTURA DO PARECER (siga exatamente):\n\n'
+    +'fitExperiencia/fitTecnico/fitComportamental/fitModeloTrabalho/fitSalarial:\n'
+    +'Avalie como "Adequado", "Parcial" ou "Inadequado". Se não houver evidência suficiente: "Dado insuficiente".\n'
+    +'Para cada dimensão com "Parcial" ou "Inadequado", a justificativa deve aparecer em fatoresRecomendacao ou pontosAtencao.\n\n'
+    +'fatoresRecomendacao (3 a 5 itens):\n'
+    +'Bullets diretos que fundamentam a recomendação. Priorize evidências cruzadas (currículo + entrevista). Sem repetir o que aparece no parecerExecutivo.\n\n'
+    +'parecerExecutivo (1 parágrafo único, máx. 5 linhas):\n'
+    +'Visão consolidada do candidato integrando currículo e entrevista. Mostre o que foi confirmado, o que surgiu de novo e o principal risco. Um gestor deve conseguir decidir após ler apenas este bloco.\n\n'
+    +'contextoProfissional (1 parágrafo, máx. 3 linhas):\n'
+    +'Trajetória e momento atual. Apenas fatos — sem repetir análise ou riscos.\n\n'
+    +'pontosPositivos (2 a 4 itens):\n'
+    +'Apenas evidências observadas na entrevista ou confirmadas pelo cruzamento com currículo. Sem inferências.\n\n'
+    +'pontosAtencao (2 a 4 itens):\n'
+    +'Riscos reais ou lacunas identificadas. Separe: (a) riscos concretos, (b) aspectos não validados na entrevista.\n\n'
+    +'paraExplorar (2 a 4 itens):\n'
+    +'Perguntas ou tópicos que o líder DEVE aprofundar na próxima etapa. Baseie-se nas lacunas identificadas.\n\n'
+    +'CAMPOS DE INFORMAÇÃO OBJETIVA — extrair literalmente da entrevista:\n'
+    +'expectativaSalarial, disponibilidade, cidadeAtual, modeloTrabalhoAtual, necessitaMudanca, disponibilidadeViagens\n\n'
+    +'TOM DE REFERÊNCIA (escreva com este estilo):\n'
+    +'"O histórico profissional previamente identificado demonstra experiência empreendedora e gestão de clientes. Durante a entrevista, a candidata reforçou esse contexto ao explicar sua transição motivada pelo interesse em atividades analíticas. A conversa confirmou a coerência entre a trajetória do currículo e seu projeto de mudança de carreira, embora permaneçam pendentes evidências sobre conhecimentos técnicos específicos em investimentos."\n\n'
     +'Retorne APENAS JSON válido sem markdown:\n'
     +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"paraExplorar":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
-    +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
+    +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".\n'
+    +'Seja rigoroso. Não elogie por educação. Aponte todas as oportunidades de melhoria, mesmo pequenas, priorizando precisão e apoio à tomada de decisão.';
 }
 
 
