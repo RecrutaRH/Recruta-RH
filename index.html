@@ -292,6 +292,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -2854,7 +2855,7 @@ return function render(_ctx, _cache) {
                                       class: "ti ti-cloud-upload",
                                       style: {"font-size":"32px","color":"#94A3B8","margin-bottom":"10px","display":"block"}
                                     }),
-                                    _createElementVNode("p", { style: {"font-size":"14px","font-weight":"700","margin-bottom":"4px","color":"#0F172A"} }, "Arraste o curriculo aqui"),
+                                    _createElementVNode("p", { style: {"font-size":"14px","font-weight":"700","margin-bottom":"4px","color":"#0F172A"} }, _toDisplayString(batchQueue&&batchQueue.length>1?"✓ "+batchQueue.length+" PDFs selecionados":"Arraste um ou mais PDFs aqui"), 1),
                                     _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B"} }, [
                                       _createTextVNode("ou "),
                                       _createElementVNode("span", { style: {"color":"#2563EB","font-weight":"600"} }, "clique para selecionar")
@@ -3525,8 +3526,10 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 </script>
 <script>
+
 
 
 
@@ -3656,7 +3659,7 @@ function buildPrompt(job){
       '\n\nATENÇÃO — VAGA DO PROGRAMA XP FUTURE. Instruções especiais obrigatórias:\n'
       +'1. NÃO retorne "Aderência moderada" ou "Forte aderência" — esses termos NÃO se aplicam.\n'
       +'2. No campo "classification" retorne EXATAMENTE uma destas strings:\n'
-      +'   "Perfil A — XP Future" | "Perfil B — XP Future" | "Perfil C — XP Future" | "Perfil D — XP Future"\n'
+      +'   "Perfil A" | "Perfil B" | "Perfil C" | "Perfil D"\n'
       +'3. No campo "recommendation" retorne: "Avançar para entrevista" (perfis A/B/C com potencial) ou "Não avançar" (perfil D).\n'
       +'4. Score e aderência não devem ser usados como critério — use APENAS as regras abaixo.\n'
       +'REGRAS DE CLASSIFICAÇÃO XP FUTURE:\n'
@@ -4105,8 +4108,10 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 </script>
 <script>
+
 
 
 
@@ -4425,7 +4430,7 @@ createApp({
       if(file.size>10*1024*1024){error.value='M\u00e1ximo 10 MB.';return;}
       error.value='';pdfFile.value=file;
     }
-    function onFileDrop(e){e.preventDefault();isDragging.value=false;handleFile(e.dataTransfer.files[0]);}
+    function onFileDrop(e){e.preventDefault();isDragging.value=false;handleFile(e.dataTransfer.files);}
     function analyze(){
       if(!apiKey.value){showApiModal.value=true;return;}
       if(!selJobId.value){error.value='Selecione uma vaga.';return;}
@@ -4788,6 +4793,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
