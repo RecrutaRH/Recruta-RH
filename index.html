@@ -288,6 +288,10 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
+
+
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -2815,7 +2819,7 @@ return function render(_ctx, _cache) {
                                 type: "file",
                                 accept: "application/pdf",
                                 style: {"display":"none"},
-                                onChange: e=>handleFile(e.target.files[0]),multiple:true
+                                onChange: e=>handleFile(e.target.files),multiple:true
                               }, null, 40 /* PROPS, NEED_HYDRATION */, ["onChange"]),
                               _createElementVNode("p", { style: {"font-size":"12px","color":"#64748B","margin-bottom":"8px"} }, "Curriculo em PDF *"),
                               pdfFile
@@ -3517,8 +3521,18 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
+
+
+
 </script>
 <script>
+
+
+
+
+
+
 function supabaseCall(action,table,id,data){return fetch('/api/db',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,table,id,data})}).then(function(r){return r.json();}).catch(function(e){return{ok:false};});}
 
 
@@ -3637,7 +3651,28 @@ function buildPrompt(job){
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
     +'- executiveSummary.reasoning: justificativa clara da recomendação em 2-3 frases\n'
     +'- comparison.matched: habilidades e experiências CONFIRMADAS no currículo (array de strings)\n'
-    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
+    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)'
+    +(hasPerfilXP(job)?
+      '\n\nATENÇÃO — VAGA DO PROGRAMA XP FUTURE. Instruções especiais obrigatórias:\n'
+      +'1. NÃO retorne "Aderência moderada" ou "Forte aderência" — esses termos NÃO se aplicam.\n'
+      +'2. No campo "classification" retorne EXATAMENTE uma destas strings:\n'
+      +'   "Perfil A — XP Future" | "Perfil B — XP Future" | "Perfil C — XP Future" | "Perfil D — XP Future"\n'
+      +'3. No campo "recommendation" retorne: "Avançar para entrevista" (perfis A/B/C com potencial) ou "Não avançar" (perfil D).\n'
+      +'4. Score e aderência não devem ser usados como critério — use APENAS as regras abaixo.\n'
+      +'REGRAS DE CLASSIFICAÇÃO XP FUTURE:\n'
+      +'Perfil A: Universidade 4-5★ + curso Adm/Eco/Eng/Cont + empresa Valor1000 ou banco + salário >R$10k\n'
+      +'Perfil B: Op1: Univ 3★ + Adm/Eco/Eng/Cont + Valor1000/banco | Op2: Univ 4-5★ + qualquer curso + Valor1000/banco\n'
+      +'Perfil C: Univ 3★ + qualquer curso + Valor1000/banco | Ou: forte experiência comercial comprovada\n'
+      +'Perfil D: Não atende nenhum critério acima e sem diferencial comercial relevante\n'
+      +'Universidades 4-5★: USP,FGV,Insper,Unicamp,Mackenzie,PUC,UFRJ,UFMG,UFRGS,UFPR,ESPM,Ibmec,ITA,UFSCar,Unifei,UFSC\n'
+      +'Bancos válidos (mesmo fora do Valor1000): Itaú,Bradesco,Santander,BB,Caixa,XP,BTG,Nubank,Inter,C6,Safra\n'
+      +'5. Adicione ao JSON: "perfilXP":{"perfil":"B","justificativa":"razão em 1 frase","universidade":"nome","estrelas":"3","curso":"nome","empresaValor1000":true,"empresaAtual":"nome","salarioAcima10k":null}'
+      :'');
+}
+
+function hasPerfilXP(job){
+  var desc=(job.descr||job.desc||'').toLowerCase();
+  return desc.indexOf('perfil a')>=0&&desc.indexOf('perfil b')>=0&&(desc.indexOf('valor 1000')>=0||desc.indexOf('xp future')>=0||desc.indexOf('programa de formação')>=0);
 }
 
 
@@ -4064,8 +4099,18 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
+
+
+
+
+
 </script>
 <script>
+
+
+
+
 
 
 
@@ -4367,6 +4412,15 @@ createApp({
     // ── Analyze ───────────────────────────────────────────────────────────
     function handleFile(file){
       if(!file)return;
+      // Handle FileList from multiple selection
+      if(file instanceof FileList||Array.isArray(file)){
+        var arr=Array.from(file).filter(function(f){return f.type==='application/pdf';});
+        if(!arr.length){error.value='Selecione arquivos PDF.';return;}
+        batchQueue.value=arr;
+        pdfFile.value=arr.length===1?arr[0]:null;
+        error.value='';
+        return;
+      }
       if(file.type!=='application/pdf'){error.value='Apenas PDFs.';return;}
       if(file.size>10*1024*1024){error.value='M\u00e1ximo 10 MB.';return;}
       error.value='';pdfFile.value=file;
@@ -4569,8 +4623,10 @@ createApp({
     }
     function deleteCandidate(id){
       if(!confirm('Excluir este candidato? A ação não pode ser desfeita.'))return;
+      // Explicitly delete from Supabase (saveMany does UPSERT, not delete)
+      supabaseCall('delete','candidates',id,null);
       candidates.value=candidates.value.filter(function(c){return c.id!==id;});
-      viewCand.value=null;
+      if(viewCand.value&&viewCand.value.id===id)viewCand.value=null;
       pushSync();
       flash('Candidato excluído.');
     }
@@ -4698,6 +4754,24 @@ createApp({
     var unreadCount=computed(function(){return notifications.value.filter(function(n){return!n.read;}).length;});
 
 
+    // ── Classificação XP ────────────────────────────────────────────────────
+    function getPerfilXP(cand){
+      if(!cand)return null;
+      if(cand.perfilXPManual)return cand.perfilXPManual;
+      if(cand.analysis&&cand.analysis.perfilXP)return cand.analysis.perfilXP.perfil;
+      // Fallback: se classification começa com "Perfil", extrai a letra
+      if(cand.analysis&&cand.analysis.classification&&cand.analysis.classification.indexOf('Perfil')===0){
+        return cand.analysis.classification.replace('Perfil ','').trim().charAt(0);
+      }
+      return null;
+    }
+    function setPerfilXP(candId,val){
+      var i=candidates.value.findIndex(function(c){return c.id===candId;});
+      if(i<0)return;
+      candidates.value[i]=Object.assign({},candidates.value[i],{perfilXPManual:val||null});
+      pushSync();
+    }
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4711,9 +4785,13 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
+      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
+
+
+
 
 
 
