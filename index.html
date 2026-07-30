@@ -4122,6 +4122,7 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4713,8 +4714,11 @@ createApp({
           if(open>0)clean+=Array(open+1).join('}');
           var parsed=JSON.parse(clean);
           var newC={id:'c'+Date.now()+Math.random().toString(36).slice(2),jobId:job.id,jobTitle:job.title,name:parsed.candidateName||file.name.replace('.pdf',''),email:parsed.candidateEmail||'',status:'aguardando_lider',submittedAt:new Date().toISOString(),analysis:parsed,pdfName:file.name,pdfBase64:base64};
+          // Save directly to Supabase (avoids race condition with auto-sync)
+          var saveC=Object.assign({},newC);delete saveC.pdfBase64;
+          supabaseCall('saveMany','candidates',null,[saveC]);
+          // Add to local array after saving
           candidates.value=[newC].concat(candidates.value);
-          pushSync();
           return{ok:true,name:newC.name};
         });
       }).catch(function(e){return{ok:false,name:file.name};});
@@ -4793,6 +4797,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
