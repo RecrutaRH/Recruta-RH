@@ -295,6 +295,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -1503,7 +1504,13 @@ return function render(_ctx, _cache) {
                           _createElementVNode("div", { style: {"display":"flex","gap":"6px","margin-bottom":"14px","flex-wrap":"wrap"} }, [
                               _createElementVNode("button", { onClick: $event => setJobFilter('abertas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='abertas'?'#2563EB':'#F1F5F9',color:jobFilter==='abertas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Abertas"),
                               _createElementVNode("button", { onClick: $event => setJobFilter('encerradas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='encerradas'?'#64748B':'#F1F5F9',color:jobFilter==='encerradas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Encerradas"),
-                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas")
+                              _createElementVNode("button", { onClick: $event => setJobFilter('todas'), style: _normalizeStyle({padding:'6px 14px',borderRadius:'7px',border:'none',cursor:'pointer',fontSize:'12px',fontWeight:600,background:jobFilter==='todas'?'#0F172A':'#F1F5F9',color:jobFilter==='todas'?'#fff':'#64748B',fontFamily:'Inter,sans-serif'}) }, "Todas"),
+                              getCandsMissingXP&&getCandsMissingXP().length
+                                ? _createElementVNode("button", {
+                                    onClick: $event => reanalyzeMissingXP(),
+                                    style: _normalizeStyle({marginLeft:"auto",fontSize:"11px",padding:"6px 12px",borderRadius:"6px",background:reanalyzeRunning?"#64748B":"#D97706",color:"#fff",border:"none",cursor:"pointer",fontFamily:"Inter,sans-serif",fontWeight:700})
+                                  }, reanalyzeRunning?"Classificando "+reanalyzeCurrent+"/"+reanalyzeTotal+"...":"⚡ Classificar XP ("+getCandsMissingXP().length+")")
+                                : _createCommentVNode("v-if",true)
                             ]),
                             _createElementVNode("table", { style: {"width":"100%","border-collapse":"collapse"} }, [
                             _createElementVNode("thead", null, [
@@ -3601,6 +3608,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 </script>
 <script>
 
@@ -4217,6 +4225,64 @@ function generateSummaryPDF(job,candidates){
       next(0);
     }
 
+    // ── Reanálise XP Future ──────────────────────────────────────────────────
+    var reanalyzeRunning=ref(false);
+    var reanalyzeCurrent=ref(0);
+    var reanalyzeTotal=ref(0);
+
+    function getCandsMissingXP(){
+      return candidates.value.filter(function(c){
+        var job=jobs.value.find(function(j){return j.id===c.jobId;});
+        return job&&hasPerfilXP(job)&&c.pdfBase64&&!(c.analysis&&c.analysis.perfilXP);
+      });
+    }
+
+    function reanalyzeMissingXP(){
+      var missing=getCandsMissingXP();
+      if(!missing.length){flash('Todos os candidatos XP já possuem classificação.');return;}
+      if(!window.confirm('Reanalisar '+missing.length+' candidato(s) do Programa XP Future para adicionar a classificação A/B/C/D?'))return;
+      reanalyzeRunning.value=true;
+      reanalyzeCurrent.value=0;
+      reanalyzeTotal.value=missing.length;
+      function next(i){
+        if(i>=missing.length){
+          reanalyzeRunning.value=false;
+          flash('Reanálise concluída: '+missing.length+' candidato(s) classificados!');
+          return;
+        }
+        reanalyzeCurrent.value=i+1;
+        var cand=missing[i];
+        var job=jobs.value.find(function(j){return j.id===cand.jobId;});
+        if(!job){next(i+1);return;}
+        fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
+            messages:[{role:'user',content:[
+              {type:'document',source:{type:'base64',media_type:'application/pdf',data:cand.pdfBase64}},
+              {type:'text',text:buildPrompt(job)}
+            ]}]})
+        }).then(function(r){return r.json();})
+        .then(function(data){
+          var raw=data.content&&data.content[0]?data.content[0].text||'':'';
+          var clean=raw.replace(/```json|```/g,'').trim();
+          var open=0;
+          for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
+          if(open>0)clean+=Array(open+1).join('}');
+          try{
+            var parsed=JSON.parse(clean);
+            var idx=candidates.value.findIndex(function(c){return c.id===cand.id;});
+            if(idx>=0&&parsed.perfilXP){
+              candidates.value[idx]=Object.assign({},candidates.value[idx],{
+                analysis:Object.assign({},candidates.value[idx].analysis,{perfilXP:parsed.perfilXP})
+              });
+              pushSync();
+            }
+          }catch(e){}
+          setTimeout(function(){next(i+1);},800);
+        }).catch(function(){setTimeout(function(){next(i+1);},800);});
+      }
+      next(0);
+    }
+
     // ── Editar recomendação da entrevista ────────────────────────────────────
     function setRecomendacao(candId, val){
       var s=Object.assign({},summaries.value);
@@ -4612,7 +4678,7 @@ createApp({
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
-          var initStatus='aguardando_lider'; // RH decide o status, não a IA
+          var initStatus='aguardando_lider'; // RH decide, não a IA
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
