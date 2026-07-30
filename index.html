@@ -4071,6 +4071,7 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4329,7 +4330,7 @@ createApp({
     function saveEdit(cid,field){
       var s=Object.assign({},summaries.value);
       s[cid]=Object.assign({},s[cid]);
-      var arr=['pontosPositivos','pontosAtencao'];
+      var arr=['pontosPositivos','pontosAtencao','fatoresRecomendacao','paraExplorar'];
       if(arr.indexOf(field)>=0){
         s[cid][field]=editFieldVal.value.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       } else {
@@ -4509,15 +4510,17 @@ createApp({
     var execBlocks=computed(function(){if(!viewCand.value||!viewCand.value.analysis)return[];var e=viewCand.value.analysis.executiveSummary||{};return [{l:'Pontos fortes',t:e.strengths,bg:'#dcfce7',c:'#166534'},{l:'Pontos de aten\u00e7\u00e3o',t:e.attentionPoints,bg:'#fef3c7',c:'#b45309'},{l:'Motivo da recomenda\u00e7\u00e3o',t:e.reasoning,bg:'#dbeafe',c:'#1d4ed8'}];});
     var summaryRows=computed(function(){
       var s=viewCand.value?getSummary(viewCand.value.id):null;if(!s)return[];
-      var isPos=s.recomendacao==='Avançar para entrevista com o líder';
+      var isPos=(s.recomendacao||'').indexOf('Avan')!==-1;
       var rows=[
-        {label:'Motivações',field:'motivacoes',value:s.motivacoes,bg:'#f0f9ff',col:'#0369a1'},
-        {label:'Motivadores para mudança',field:'motivadoresMudanca',value:s.motivadoresMudanca,bg:'#fdf4ff',col:'#7e22ce'},
-        {label:'Interesse na vaga',field:'interesseVaga',value:s.interesseVaga,bg:'#fff7ed',col:'#c2410c'},
-        {label:'Expectativas de carreira',field:'expectativasCarreira',value:s.expectativasCarreira,bg:'#f0fdf4',col:'#166534'},
-        {label:'Momento atual',field:'momentoAtual',value:s.momentoAtual,bg:'#f8fafc',col:'#475569'},
-        {label:'Impressão geral',field:'impressaoGeral',value:s.impressaoGeral,bg:'#f8fafc',col:'#475569'},
-        {label:'Justificativa da recomendação',field:'justificativa',value:s.justificativa,bg:isPos?'#dcfce7':'#fee2e2',col:isPos?'#166534':'#991b1b'},
+        {label:'Fit — Experiência',field:'fitExperiencia',value:s.fitExperiencia,bg:'#f8fafc',col:'#475569'},
+        {label:'Fit — Conhecimento Técnico',field:'fitTecnico',value:s.fitTecnico,bg:'#f8fafc',col:'#475569'},
+        {label:'Fit — Comportamental',field:'fitComportamental',value:s.fitComportamental,bg:'#f8fafc',col:'#475569'},
+        {label:'Fit — Modelo de Trabalho',field:'fitModeloTrabalho',value:s.fitModeloTrabalho,bg:'#f8fafc',col:'#475569'},
+        {label:'Fit — Expectativa Salarial',field:'fitSalarial',value:s.fitSalarial,bg:'#f8fafc',col:'#475569'},
+        {label:'Fatores da recomendação',field:'fatoresRecomendacao',value:(s.fatoresRecomendacao||[]).join('\n'),bg:'#eff6ff',col:'#1d4ed8'},
+        {label:'Parecer Executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f0f9ff',col:'#0369a1'},
+        {label:'Contexto Profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f8fafc',col:'#334155'},
+        {label:'Para explorar na próxima etapa',field:'paraExplorar',value:(s.paraExplorar||[]).join('\n'),bg:'#fdf4ff',col:'#7e22ce'},
       ];
       return rows.filter(function(r){return r.value;});
     });
@@ -4711,6 +4714,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
