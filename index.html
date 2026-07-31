@@ -293,6 +293,9 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 
 
+
+
+
 var __vueRenderFn;
 (function(){
 var _b=function(Vue){
@@ -1864,27 +1867,27 @@ return function render(_ctx, _cache) {
                               ]),
                               _createElementVNode("div", { style: {"padding":"6px 12px","display":"flex","gap":"4px","border-bottom":"1px solid #E5E7EB","flex-wrap":"wrap"} }, [
                                 _createElementVNode("button", {
-                                  onClick: $event => (candStatusFilter='active'),
+                                  onClick: $event => (setCandStatusFilter('active')),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='active'?'#2563EB':'#F1F5F9',color:candStatusFilter==='active'?'#fff':'#64748B'})
                                 }, "Ativos", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("button", {
-                                  onClick: $event => (candStatusFilter='all'),
+                                  onClick: $event => (setCandStatusFilter('all')),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='all'?'#2563EB':'#F1F5F9',color:candStatusFilter==='all'?'#fff':'#64748B'})
                                 }, "Todos", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("button", {
-                                  onClick: $event => (candStatusFilter='reprovado'),
+                                  onClick: $event => (setCandStatusFilter('reprovado')),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='reprovado'?'#DC2626':'#F1F5F9',color:candStatusFilter==='reprovado'?'#fff':'#64748B'})
                                 }, "Reprovados", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("button", {
-                                  onClick: $event => (candStatusFilter='banco'),
+                                  onClick: $event => (setCandStatusFilter('banco')),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='banco'?'#7C3AED':'#F1F5F9',color:candStatusFilter==='banco'?'#fff':'#64748B'})
                                 }, "Banco", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("button", {
-                                  onClick: $event => (candStatusFilter='declinou'),
+                                  onClick: $event => (setCandStatusFilter('declinou')),
                                   style: _normalizeStyle({padding:'4px 10px',borderRadius:'6px',border:'none',cursor:'pointer',fontSize:'11px',fontWeight:600,background:candStatusFilter==='declinou'?'#7C3AED':'#F1F5F9',color:candStatusFilter==='declinou'?'#fff':'#64748B'})
                                 }, "Declinou", 12 /* STYLE, PROPS */, ["onClick"]),
                                 _createElementVNode("select", {
-                                  onChange: $event => (candSort=$event.target.value),
+                                  onChange: $event => setCandSort($event.target.value),
                                   style: {"margin-left":"auto","font-size":"11px","padding":"4px 8px","border":"1px solid #E5E7EB","border-radius":"6px","color":"#0F172A","background":"#fff","cursor":"pointer"}
                                 }, [
                                   _createElementVNode("option", { value: "date_desc" }, "Mais recentes"),
@@ -2023,7 +2026,7 @@ return function render(_ctx, _cache) {
                                     (viewCand.pdfBase64)
                                       ? (_openBlock(), _createElementBlock("button", {
                                           key: 0,
-                                          onClick: $event => (downloadPdf(viewCand.pdfBase64,viewCand.pdfName||viewCand.name+'.pdf')),
+                                          onClick: $event => (loadCandidatePdf(viewCand)),
                                           style: {"margin-left":"auto","background":"none","border":"1px solid #E5E7EB","border-radius":"7px","padding":"6px 12px","font-size":"11.5px","cursor":"pointer","color":"#64748B","font-family":"Inter,sans-serif"}
                                         }, [
                                           _createElementVNode("i", {
@@ -2522,7 +2525,17 @@ return function render(_ctx, _cache) {
                                             ? (_openBlock(), _createElementBlock("div", { key: 0 }, [
                                                 _createElementVNode("div", { style: {"background":"#F0FDF4","border":"1px solid #86EFAC","border-radius":"9px","padding":"12px 14px","margin-bottom":"10px"} }, [
                                                   _createElementVNode("div", { style: {"font-size":"9.5px","font-weight":"700","color":"#16A34A","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"4px"} }, "Recomendacao"),
-                                                  _createElementVNode("div", { style: {"font-size":"13px","font-weight":"700","color":"#16A34A"} }, _toDisplayString(getSummary(viewCand.id).recomendacao), 1 /* TEXT */)
+                                                  _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","gap":"10px","flex":"1"} }, [
+                                                  _createElementVNode("div", {
+                                                    style: _normalizeStyle({fontSize:"13px",fontWeight:700,color:(getSummary(viewCand.id).recomendacao||"").indexOf("Avan")>=0?"#16A34A":"#991B1B"})
+                                                  }, _toDisplayString(getSummary(viewCand.id).recomendacao||"Aguardando avaliação"), 5),
+                                                  getSummary(viewCand.id).recomendacao
+                                                    ? _createElementVNode("button", {
+                                                        onClick: $event => toggleRecomendacao(viewCand.id),
+                                                        style: {"font-size":"11px","padding":"4px 12px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#fff","color":"#475569","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600,"white-space":"nowrap","flex-shrink":"0"}
+                                                      }, (getSummary(viewCand.id).recomendacao||"").indexOf("Avan")>=0?"↕ Não avançar":"↕ Avançar", 8, ["onClick"])
+                                                    : _createCommentVNode("v-if",true)
+                                                ])
                                                 ]),
                                                 (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(summaryRows, (row) => {
                                                   return (_openBlock(), _createElementBlock("div", {
@@ -3527,8 +3540,13 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
+
+
 </script>
 <script>
+
+
 
 
 
@@ -3666,7 +3684,10 @@ function buildPrompt(job){
       +'Perfil A: Universidade 4-5★ + curso Adm/Eco/Eng/Cont + empresa Valor1000 ou banco + salário >R$10k\n'
       +'Perfil B: Op1: Univ 3★ + Adm/Eco/Eng/Cont + Valor1000/banco | Op2: Univ 4-5★ + qualquer curso + Valor1000/banco\n'
       +'Perfil C: Univ 3★ + qualquer curso + Valor1000/banco | Ou: forte experiência comercial comprovada\n'
-      +'Perfil D: Não atende nenhum critério acima e sem diferencial comercial relevante\n'
+      +'Perfil D: Nao atende os criterios e sem potencial para o programa\n'
+      +'PROGRAMA DE FORMACAO: candidatos em transicao de carreira sao bem-vindos.\n'
+      +'Formacao solida + trajetoria + motivacao para financas = minimo Perfil C.\n'
+      +'Ausencia de exp. como assessor NAO elimina - o programa e de formacao.\n'
       +'Universidades 4-5★: USP,FGV,Insper,Unicamp,Mackenzie,PUC,UFRJ,UFMG,UFRGS,UFPR,ESPM,Ibmec,ITA,UFSCar,Unifei,UFSC\n'
       +'Bancos válidos (mesmo fora do Valor1000): Itaú,Bradesco,Santander,BB,Caixa,XP,BTG,Nubank,Inter,C6,Safra\n'
       +'5. Adicione ao JSON: "perfilXP":{"perfil":"B","justificativa":"razão em 1 frase","universidade":"nome","estrelas":"3","curso":"nome","empresaValor1000":true,"empresaAtual":"nome","salarioAcima10k":null}'
@@ -4109,8 +4130,14 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
+
 </script>
 <script>
+
+
+
+
 
 
 
@@ -4366,7 +4393,7 @@ createApp({
     onMounted(function(){loadNotifications();
       if(jbKey.value&&jbBin.value){
         pullSync();
-        setInterval(pullSync,10000);
+        window._syncInterval=setInterval(pullSync,10000);
         document.addEventListener('visibilitychange',function(){
           if(!document.hidden&&jbKey.value&&jbBin.value)pullSync();
         });
@@ -4439,11 +4466,56 @@ createApp({
       if(batchQueue.value&&batchQueue.value.length>1){
         var job=jobs.value.find(function(j){return j.id===selJobId.value;});if(!job)return;
         isAnalyzing.value=true;error.value='';
-        var files=batchQueue.value.slice();var done=0;
+        // Pause auto-sync to prevent race condition during batch
+        if(window._syncInterval){clearInterval(window._syncInterval);window._syncInterval=null;}
+        var files=batchQueue.value.slice();
+        var newCands=[];
+        var done=0;
         function nextFile(i){
-          if(i>=files.length){isAnalyzing.value=false;batchQueue.value=[];pdfFile.value=null;flash('Analise concluida: '+done+' curriculo(s) processado(s)');return;}
+          if(i>=files.length){
+            // Add ALL candidates at once then sync once
+            candidates.value=newCands.concat(candidates.value);
+            pushSync();
+            // Resume auto-sync
+            window._syncInterval=setInterval(pullSync,10000);
+            isAnalyzing.value=false;
+            batchQueue.value=[];pdfFile.value=null;
+            flash('Análise concluída: '+done+'/'+files.length+' currículo(s) processado(s)');
+            return;
+          }
           analyzeStep.value='Analisando '+(i+1)+' de '+files.length+': '+files[i].name+'...';
-          analyzeSingle(files[i],job).then(function(r){if(r.ok)done++;setTimeout(function(){nextFile(i+1);},600);});
+          readBase64(files[i]).then(function(base64){
+            return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},
+              body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,
+                messages:[{role:'user',content:[
+                  {type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},
+                  {type:'text',text:buildPrompt(job)}
+                ]}]})
+            }).then(function(r){return r.json();})
+            .then(function(data){
+              var raw=data.content&&data.content[0]?data.content[0].text||'':'';
+              var clean=raw.replace(/```json|```/g,'').trim();
+              var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
+              if(open>0)clean+=Array(open+1).join('}');
+              var parsed=JSON.parse(clean);
+              var newCid='c'+Date.now()+Math.random().toString(36).slice(2);
+              // Save PDF separately in app_state
+              supabaseCall('setState','app_state','pdf_'+newCid,base64);
+              newCands.push({
+                id:newCid,
+                jobId:job.id,jobTitle:job.title,
+                name:parsed.candidateName||files[i].name.replace('.pdf',''),
+                email:parsed.candidateEmail||'',
+                status:'aguardando_lider',
+                submittedAt:new Date().toISOString(),
+                analysis:parsed,
+                pdfName:files[i].name,
+                pdfBase64:base64
+              });
+              done++;
+              nextFile(i+1);
+            }).catch(function(){nextFile(i+1);});
+          }).catch(function(){nextFile(i+1);});
         }
         nextFile(0);return;
       }
@@ -4451,14 +4523,14 @@ createApp({
       isAnalyzing.value=true;error.value='';latestResult.value=null;analyzeStep.value='Lendo PDF...';
       readBase64(pdfFile.value).then(function(base64){
         analyzeStep.value='Analisando...';
-        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
+        return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},{type:'text',text:buildPrompt(job)}]}]})}).then(function(r){return r.json();}).then(function(data){
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
           var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
           var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
-          candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
+          if(newC.pdfBase64){supabaseCall('setState','app_state','pdf_'+newC.id,newC.pdfBase64);}candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
           isAnalyzing.value=false;analyzeStep.value='';
         });
       }).catch(function(e){error.value='Erro: '+e.message;isAnalyzing.value=false;analyzeStep.value='';});
@@ -4487,7 +4559,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4577,7 +4649,7 @@ createApp({
         {label:'Fit — Comportamental',field:'fitComportamental',value:s.fitComportamental,bg:'#f8fafc',col:'#475569'},
         {label:'Fit — Modelo de Trabalho',field:'fitModeloTrabalho',value:s.fitModeloTrabalho,bg:'#f8fafc',col:'#475569'},
         {label:'Fit — Expectativa Salarial',field:'fitSalarial',value:s.fitSalarial,bg:'#f8fafc',col:'#475569'},
-        {label:'Fatores da recomendação',field:'fatoresRecomendacao',value:(s.fatoresRecomendacao||[]).join('\n'),bg:'#eff6ff',col:'#1d4ed8'},
+        ...(isPos?[{label:'Fatores para avançar',field:'fatoresRecomendacao',value:(s.fatoresRecomendacao||[]).join('\n'),bg:'#eff6ff',col:'#1d4ed8'}]:[{label:'Justificativa (não avançar)',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#fef2f2',col:'#991b1b'}]),
         {label:'Parecer Executivo',field:'parecerExecutivo',value:s.parecerExecutivo,bg:'#f0f9ff',col:'#0369a1'},
         {label:'Contexto Profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f8fafc',col:'#334155'},
         {label:'Para explorar na próxima etapa',field:'paraExplorar',value:(s.paraExplorar||[]).join('\n'),bg:'#fdf4ff',col:'#7e22ce'},
@@ -4781,6 +4853,46 @@ createApp({
       pushSync();
     }
 
+    // ── Carregar PDF do candidato ─────────────────────────────────────────────
+    function loadCandidatePdf(cand){
+      if(cand.pdfBase64){
+        // Already in memory
+        downloadPdf(cand.pdfBase64, cand.pdfName||cand.name+'.pdf');
+        return;
+      }
+      // Load from app_state storage
+      flash('Carregando currículo...');
+      supabaseCall('getState','app_state','pdf_'+cand.id).then(function(r){
+        if(r&&r.data){
+          downloadPdf(r.data, cand.pdfName||cand.name+'.pdf');
+        } else {
+          flash('Currículo não disponível para este candidato.');
+        }
+      });
+    }
+
+
+    function setCandSort(v){ candSort.value=v; }
+    function setCandStatusFilter(v){ candStatusFilter.value=v; }
+
+
+    // ── Editar recomendação da entrevista ─────────────────────────────────────
+    function setRecomendacao(candId, val){
+      var s=Object.assign({},summaries.value);
+      s[candId]=Object.assign({},s[candId]||{},{recomendacao:val});
+      summaries.value=s;
+      supabaseCall('setState','app_state','summaries',s);
+    }
+    function toggleRecomendacao(candId){
+      var s=getSummary(candId);
+      var atual=(s&&s.recomendacao)||'';
+      var nova=atual.indexOf('Avan')>=0
+        ?'Não avançar no processo'
+        :'Avançar para entrevista com o líder';
+      setRecomendacao(candId,nova);
+    }
+
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4794,9 +4906,13 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
+      jobCands,pending,hired,downloadPdf,loadCandidatePdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,setCandSort,setCandStatusFilter,setRecomendacao,toggleRecomendacao,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
+
+
+
 
 
 
