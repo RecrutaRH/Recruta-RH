@@ -3554,6 +3554,28 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 </script>
 <script>
+function extractJSON(raw){
+      // Remove markdown fences
+      var s=raw.replace(/```json|```/g,'').trim();
+      // Find first { and extract to matching }
+      var start=s.indexOf('{');
+      if(start<0)throw new Error('Nenhum JSON encontrado na resposta');
+      var depth=0,end=-1;
+      for(var i=start;i<s.length;i++){
+        if(s[i]==='{')depth++;
+        else if(s[i]==='}'){depth--;if(depth===0){end=i;break;}}
+      }
+      if(end<0){
+        // Truncated: close open braces
+        var missing=depth;
+        s=s.substring(start)+Array(missing+1).join('}');
+      } else {
+        s=s.substring(start,end+1);
+      }
+      return JSON.parse(s);
+    }
+
+    
 
 
 
@@ -4141,6 +4163,7 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 </script>
 <script>
 
@@ -4504,10 +4527,7 @@ createApp({
             }).then(function(r){return r.json();})
             .then(function(data){
               var raw=data.content&&data.content[0]?data.content[0].text||'':'';
-              var clean=raw.replace(/```json|```/g,'').trim();
-              var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
-              if(open>0)clean+=Array(open+1).join('}');
-              var parsed=JSON.parse(clean);
+              var parsed=extractJSON(raw);
               var newCid='c'+Date.now()+Math.random().toString(36).slice(2);
               // Save PDF separately in app_state
               supabaseCall('setState','app_state','pdf_'+newCid,base64);
@@ -4537,10 +4557,7 @@ createApp({
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var clean=raw.replace(/```json|```/g,'').trim();
-        var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
-        if(open>0)clean+=Array(open+1).join('}');
-        var parsed=JSON.parse(clean);
+          var parsed=extractJSON(raw);
           var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           if(newC.pdfBase64){supabaseCall('setState','app_state','pdf_'+newC.id,newC.pdfBase64);}candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
@@ -4794,10 +4811,7 @@ createApp({
         .then(function(r){return r.json();})
         .then(function(data){
           var raw=data.content&&data.content[0]?data.content[0].text||'':'';
-          var clean=raw.replace(/```json|```/g,'').trim();
-          var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
-          if(open>0)clean+=Array(open+1).join('}');
-          var parsed=JSON.parse(clean);
+          var parsed=extractJSON(raw);
           var newC={id:'c'+Date.now()+Math.random().toString(36).slice(2),jobId:job.id,jobTitle:job.title,name:parsed.candidateName||file.name.replace('.pdf',''),email:parsed.candidateEmail||'',status:'aguardando_lider',submittedAt:new Date().toISOString(),analysis:parsed,pdfName:file.name,pdfBase64:base64};
           // Save directly to Supabase (avoids race condition with auto-sync)
           var saveC=Object.assign({},newC);delete saveC.pdfBase64;
