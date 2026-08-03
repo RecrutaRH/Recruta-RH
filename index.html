@@ -4527,7 +4527,10 @@ createApp({
           analyzeStep.value='Processando...';
           if(data.error)throw new Error(data.error.message);
           var raw=data.content.map(function(i){return i.text||'';}).join('');
-          var parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+          var clean=raw.replace(/```json|```/g,'').trim();
+        var open=0;for(var ci=0;ci<clean.length;ci++){if(clean[ci]==='{')open++;else if(clean[ci]==='}')open--;}
+        if(open>0)clean+=Array(open+1).join('}');
+        var parsed=JSON.parse(clean);
           var initStatus='aguardando_lider';
           var newC={id:Date.now()+'',name:parsed.candidateName||pdfFile.value.name.replace('.pdf',''),email:parsed.candidateEmail||'',jobId:selJobId.value,jobTitle:job.title,submittedAt:new Date().toLocaleString('pt-BR'),pdfName:pdfFile.value.name,pdfBase64:base64,status:initStatus,statusHistory:[{status:initStatus,at:new Date().toLocaleString('pt-BR')}],analysis:parsed,sentToLeader:false};
           if(newC.pdfBase64){supabaseCall('setState','app_state','pdf_'+newC.id,newC.pdfBase64);}candidates.value.push(newC);latestResult.value=newC;pdfFile.value=null;selJobId.value='';flash('Candidato salvo');pushSync();
@@ -4559,7 +4562,7 @@ createApp({
       var transcript=getTranscript(candidate.id);if(!transcript.trim())return;
       if(!apiKey.value){showApiModal.value=true;return;}
       isGenSum.value=true;genSumStep.value='Analisando entrevista...';
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:buildInterviewPrompt(candidate,getTranscript(candidate.id))}]})})
       .then(function(r){return r.json();}).then(function(data){
         if(data.error)throw new Error(data.error.message);
         var raw=data.content.map(function(i){return i.text||'';}).join('');
@@ -4567,7 +4570,7 @@ createApp({
         var s=Object.assign({},summaries.value);s[candidate.id]=parsed;summaries.value=s;
         if(viewCand.value&&viewCand.value.id===candidate.id)viewCand.value=Object.assign({},viewCand.value);
         flash('Resumo gerado');isGenSum.value=false;genSumStep.value='';pushSync();
-      }).catch(function(e){flash('Erro: '+e.message);isGenSum.value=false;genSumStep.value='';});
+      }).catch(function(e){console.error('Interview summary error:',e);flash('Erro ao gerar resumo: '+e.message+'. Verifique o console.');isGenSum.value=false;genSumStep.value='';});
     }
     function dlParecer(candidate){
       var s=getSummary(candidate.id);if(!s){flash('Gere o resumo primeiro');return;}
