@@ -239,6 +239,7 @@ input,select,textarea{transition:border-color .15s,box-shadow .15s}
 [style*="borderRadius:'99px'"][style*="background:#F0FDF4"]{letter-spacing:.01em}
 [style*="borderRadius:'99px'"][style*="background:#FFF7ED"]{letter-spacing:.01em}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 <body>
 <style>#rs-login{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;z-index:99999!important;}.rs-hidden{display:none!important;}</style>
@@ -285,6 +286,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 </script>
 <script>
+
 
 
 
@@ -2479,7 +2481,13 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
+                                          _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"6px"} }, [
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
+                                          _createElementVNode("button", {
+                                            onClick: $event => importDocxTranscript(viewCand.id),
+                                            style: {"font-size":"11px","padding":"3px 10px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#F8FAFC","color":"#2563EB","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600}
+                                          }, "📎 Importar .docx", 8, ["onClick"])
+                                        ]),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
@@ -3543,6 +3551,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 </script>
 <script>
 
@@ -4134,6 +4143,7 @@ function generateSummaryPDF(job,candidates){
 
 </script>
 <script>
+
 
 
 
@@ -4896,6 +4906,49 @@ createApp({
     }
 
 
+    // ── Importar .docx para transcrição ─────────────────────────────────────
+    function importDocxTranscript(candId){
+      var input=document.createElement('input');
+      input.type='file';
+      input.accept='.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      input.onchange=function(e){
+        var file=e.target.files[0];if(!file)return;
+        var reader=new FileReader();
+        reader.onload=function(ev){
+          if(typeof mammoth==='undefined'){flash('Erro: biblioteca mammoth não carregada.');return;}
+          mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(result){
+            var text=result.value||'';
+            if(!text.trim()){flash('Arquivo vazio ou sem texto legível.');return;}
+            setTranscript(candId,text);
+            flash('Transcrição importada com sucesso!');
+          }).catch(function(){flash('Erro ao ler o arquivo. Tente copiar e colar o texto.');});
+        };
+        reader.readAsArrayBuffer(file);
+      };
+      input.click();
+    }
+
+
+    // ── Processar decisão do gestor ───────────────────────────────────────────
+    function processGestorDecision(candId, decision, justificativa){
+      var i=candidates.value.findIndex(function(c){return c.id===candId;});
+      if(i<0)return;
+      var newStatus=decision==='aprovado'?'entrevista_rh':'reprovado';
+      candidates.value[i]=Object.assign({},candidates.value[i],{
+        status:newStatus,
+        gestorDecision:decision,
+        gestorJustificativa:justificativa||'',
+        gestorDate:new Date().toISOString()
+      });
+      var cand=candidates.value[i];
+      var notif={id:'n'+Date.now(),type:decision,candName:cand.name,jobTitle:cand.jobTitle||'',
+        justificativa:justificativa||'',date:new Date().toISOString(),read:false};
+      notifications.value=[notif].concat(notifications.value);
+      supabaseCall('setState','app_state','notifications',notifications.value.slice(0,50));
+      pushSync();
+    }
+
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4909,9 +4962,10 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,loadCandidatePdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,setCandSort,setCandStatusFilter,setRecomendacao,toggleRecomendacao,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
+      jobCands,pending,hired,downloadPdf,loadCandidatePdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,setCandSort,importDocxTranscript,setCandStatusFilter,setRecomendacao,toggleRecomendacao,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,getPerfilXP,setPerfilXP,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
