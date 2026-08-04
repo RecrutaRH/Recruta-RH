@@ -3521,6 +3521,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 <script>
 
 
+
 function extractJSON(raw){
   // Remove markdown fences
   var s=raw.replace(/```json/g,'').replace(/```/g,'').trim();
@@ -3552,6 +3553,122 @@ function extractJSON(raw){
 }
 
 
+
+function supabaseCall(action, table, id, data) {
+  return fetch('/api/db', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action, table, id, data})
+  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
+}
+
+// ── JSONBin.io API functions ──────────────────────────────────────────────────
+function jsonBinCreate(masterKey) { return Promise.resolve("supabase"); }
+function jsonBinPush(masterKey, binId, data) {
+  if(!data) return Promise.resolve(null);
+  return Promise.all([
+    supabaseCall('saveMany','jobs',null,data.jobs||[]),
+    supabaseCall('saveMany','candidates',null,(data.candidates||[]).map(function(c){var s=Object.assign({},c);delete s.pdfBase64;return s;})),
+    supabaseCall('setState','app_state','notes',data.notes||{}),
+    supabaseCall('setState','app_state','transcripts',data.transcripts||{}),
+    supabaseCall('setState','app_state','summaries',data.summaries||{}),
+    supabaseCall('setState','app_state','intDates',data.intDates||{}),
+  ]).then(function(){ return {ok:true}; }).catch(function(){ return null; });
+}
+function jsonBinPull(masterKey, binId) {
+  return Promise.all([
+    supabaseCall('loadAll','jobs'),
+    supabaseCall('loadAll','candidates'),
+    supabaseCall('getState','app_state','notes'),
+    supabaseCall('getState','app_state','transcripts'),
+    supabaseCall('getState','app_state','summaries'),
+    supabaseCall('getState','app_state','intDates'),
+  ]).then(function(results){
+    return {
+      jobs: results[0].data||[],
+      candidates: results[1].data||[],
+      notes: results[2].data||{},
+      transcripts: results[3].data||{},
+      summaries: results[4].data||{},
+      intDates: results[5].data||{}
+    };
+  }).catch(function(){ return null; });
+}
+
+
+
+
+
+const DEFAULT_API_KEY = "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";
+const DEFAULT_JB_KEY = "$2a$10$T64Xg0L6izM2FedcG0Hdfu2ofiCd8dEjMNg24oQBHqedY.8heo5IS";
+const DEFAULT_JB_BIN = "6a318f8ff5f4af5e29fcd518";
+
+const STAGES = [
+  {key:'aguardando_lider',label:'Aguardando l\u00edder',col:'#6d28d9',bg:'#ede9fe'},
+  {key:'entrevista_rh',label:'Entrevista RH',col:'#0369a1',bg:'#e0f2fe'},
+  {key:'entrevista_lider',label:'Entrevista l\u00edder',col:'#0f766e',bg:'#f0fdfa'},
+  {key:'proposta',label:'Proposta enviada',col:'#b45309',bg:'#fef3c7'},
+  {key:'contratado',label:'Contratado',col:'#166534',bg:'#dcfce7'},
+  {key:'banco',label:'Banco de talentos',col:'#64748b',bg:'#f1f5f9'},
+  {key:'reprovado',label:'Reprovado',col:'#991b1b',bg:'#fee2e2'},
+];
+const TRANSITIONS = {
+  aguardando_lider:[
+    {to:'entrevista_rh',label:'L\u00edder aprovou \u2014 agendar entrevista RH',style:'primary'},
+    {to:'reprovado',label:'L\u00edder reprovou',style:'danger'},
+  ],
+  entrevista_rh:[
+    {to:'entrevista_lider',label:'Aprovado na entrevista RH',style:'primary'},
+    {to:'banco',label:'Manter em banco de talentos',style:'secondary'},
+    {to:'reprovado',label:'Reprovado na entrevista RH',style:'danger'},
+  ],
+  entrevista_lider:[
+    {to:'proposta',label:'Aprovado pelo l\u00edder \u2014 enviar proposta',style:'primary'},
+    {to:'reprovado',label:'Reprovado pelo l\u00edder',style:'danger'},
+  ],
+  proposta:[
+    {to:'contratado',label:'Proposta aceita \u2014 contratado',style:'primary'},
+    {to:'reprovado',label:'Proposta recusada',style:'danger'},
+  ],
+};
+
+function scoreColor(s){return s>=80?'#166534':s>=60?'#b45309':'#991b1b';}
+function scoreBgCol(s){return s>=80?'#dcfce7':s>=60?'#fef3c7':'#fee2e2';}
+function stageMeta(k){return STAGES.find(function(s){return s.key===k;})||STAGES[STAGES.length-1];}
+function recMeta(r){return r==='Avan\u00e7ar para entrevista'?{bg:'#dcfce7',color:'#166534'}:r==='Manter em banco de talentos'?{bg:'#fef3c7',color:'#b45309'}:{bg:'#fee2e2',color:'#991b1b'};}
+function fitMeta(f){return f==='Alto fit cultural'?{bg:'#e0f2fe',color:'#0369a1'}:f==='M\u00e9dio fit cultural'?{bg:'#fef3c7',color:'#b45309'}:{bg:'#f1f5f9',color:'#64748b'};}
+function initials(n){return (n||'?').split(' ').map(function(x){return x[0];}).join('').slice(0,2).toUpperCase();}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function today(){return new Date().toISOString().split('T')[0];}
+function fmtDate(d){return d?new Date(d+'T12:00:00').toLocaleDateString('pt-BR'):'';}
+function businessDays(start,end){
+  var count=0,cur=new Date(start);cur.setHours(0,0,0,0);
+  var e=new Date(end);e.setHours(0,0,0,0);
+  while(cur<=e){var d=cur.getDay();if(d!==0&&d!==6)count++;cur.setDate(cur.getDate()+1);}
+  return Math.max(1,count);
+}
+function readBase64(file){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){res(r.result.split(',')[1]);};
+    r.onerror=function(){rej(new Error('Falha ao ler arquivo'));};
+    r.readAsDataURL(file);
+  });
+}
+function downloadPdf(base64,filename){
+  var bytes=atob(base64),arr=new Uint8Array(bytes.length);
+  for(var i=0;i<bytes.length;i++)arr[i]=bytes.charCodeAt(i);
+  var url=URL.createObjectURL(new Blob([arr],{type:'application/pdf'}));
+  var a=document.createElement('a');a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
+}
+function buildMailto(job,candidates){
+  var names=candidates.map(function(c,i){return (i+1)+'. '+c.name;}).join('\n');
+  var body='Ol\u00e1,\n\nConclu\u00edmos a triagem de curr\u00edculos para a vaga de '+job.title+(job.dept?' ('+job.dept+')':'')+' e identificamos '+candidates.length+' candidato'+(candidates.length>1?'s':'')+' com perfil aderente:\n\n'+names+'\n\nEm anexo o relat\u00f3rio completo com an\u00e1lise, score e curr\u00edculos.\n\nPor favor, nos informe at\u00e9 [PRAZO] quais candidatos devem avan\u00e7ar.\n\nAtenciosamente,\n[SEU NOME]\nRecursos Humanos';
+  var subject=encodeURIComponent('[R&S RH] Candidatos para avalia\u00e7\u00e3o \u2014 '+job.title);
+  return 'mailto:'+(job.leaderEmail||'')+'?subject='+subject+'&body='+encodeURIComponent(body);
+}
 function buildPrompt(job){
   return 'Você é um Especialista Sênior em Recrutamento e Seleção com 15 anos de experiência em avaliação de perfis executivos.\n'
     +'Analise o currículo do candidato com profundidade consultiva e retorne APENAS JSON válido, sem markdown.\n\n'
@@ -4005,6 +4122,7 @@ function generateSummaryPDF(job,candidates){
   window.open(url,'_blank');
   setTimeout(function(){URL.revokeObjectURL(url);},60000);
 }
+
 
 
 
