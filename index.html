@@ -239,6 +239,7 @@ input,select,textarea{transition:border-color .15s,box-shadow .15s}
 [style*="borderRadius:'99px'"][style*="background:#F0FDF4"]{letter-spacing:.01em}
 [style*="borderRadius:'99px'"][style*="background:#FFF7ED"]{letter-spacing:.01em}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 <body>
 <style>#rs-login{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;z-index:99999!important;}.rs-hidden{display:none!important;}</style>
@@ -285,6 +286,7 @@ function _i(e,t){const n=ns(e);class s extends xi{constructor(e){super(n,e,t)}}r
 
 </script>
 <script>
+
 
 
 
@@ -2471,7 +2473,13 @@ return function render(_ctx, _cache) {
                                               ], 40 /* PROPS, NEED_HYDRATION */, ["value", "onChange"])
                                             ])
                                           ]),
-                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin-bottom":"6px"} }, "Transcricao Teams"),
+                                          _createElementVNode("div", { style: {"display":"flex","align-items":"center","justify-content":"space-between","margin-bottom":"6px"} }, [
+                                          _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#94A3B8","text-transform":"uppercase","letter-spacing":".06em","margin":"0"} }, "Transcricao Teams"),
+                                          _createElementVNode("button", {
+                                            onClick: $event => importDocxTranscript(viewCand.id),
+                                            style: {"font-size":"11px","padding":"3px 10px","border-radius":"6px","border":"1px solid #E5E7EB","background":"#F8FAFC","color":"#2563EB","cursor":"pointer","font-family":"Inter,sans-serif","font-weight":600}
+                                          }, "📎 Importar .docx", 8, ["onClick"])
+                                        ]),
                                           _createElementVNode("textarea", {
                                             value: getTranscript(viewCand.id),
                                             onInput: $event => (setTranscript(viewCand.id,$event.target.value)),
@@ -3517,6 +3525,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 </script>
 <script>
 
@@ -4185,6 +4194,9 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
+
+
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4634,6 +4646,13 @@ createApp({
         {label:'Contexto Profissional',field:'contextoProfissional',value:s.contextoProfissional,bg:'#f8fafc',col:'#334155'},
         {label:'Para explorar na próxima etapa',field:'paraExplorar',value:(s.paraExplorar||[]).join('\n'),bg:'#fdf4ff',col:'#7e22ce'},
       ];
+      // Informações objetivas editáveis
+      if(s.cidadeAtual)            rows.push({label:'Cidade atual',field:'cidadeAtual',value:s.cidadeAtual,bg:'#f8fafc',col:'#475569'});
+      if(s.modeloTrabalhoAtual)    rows.push({label:'Modelo de trabalho atual',field:'modeloTrabalhoAtual',value:s.modeloTrabalhoAtual,bg:'#f8fafc',col:'#475569'});
+      if(s.necessitaMudanca)       rows.push({label:'Necessita mudança?',field:'necessitaMudanca',value:s.necessitaMudanca,bg:'#f8fafc',col:'#475569'});
+      if(s.disponibilidadeViagens) rows.push({label:'Disponibilidade para viagens',field:'disponibilidadeViagens',value:s.disponibilidadeViagens,bg:'#f8fafc',col:'#475569'});
+      if(s.expectativaSalarial)    rows.push({label:'Expectativa salarial',field:'expectativaSalarial',value:s.expectativaSalarial,bg:'#f8fafc',col:'#475569'});
+      if(s.disponibilidade)        rows.push({label:'Disponibilidade',field:'disponibilidade',value:s.disponibilidade,bg:'#f8fafc',col:'#475569'});
       return rows.filter(function(r){return r.value;});
     });
 
@@ -4811,6 +4830,30 @@ createApp({
     var unreadCount=computed(function(){return notifications.value.filter(function(n){return!n.read;}).length;});
 
 
+    // ── Importar .docx para transcrição ──────────────────────────────────────
+    function importDocxTranscript(candId){
+      var input=document.createElement('input');
+      input.type='file';
+      input.accept='.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      input.onchange=function(e){
+        var file=e.target.files[0];
+        if(!file)return;
+        var reader=new FileReader();
+        reader.onload=function(ev){
+          if(typeof mammoth==='undefined'){flash('Biblioteca não carregada. Tente recarregar a página.');return;}
+          mammoth.extractRawText({arrayBuffer:ev.target.result}).then(function(result){
+            var text=result.value||'';
+            if(!text.trim()){flash('Arquivo vazio ou sem texto legível.');return;}
+            setTranscript(candId,text);
+            flash('Transcrição importada com sucesso!');
+          }).catch(function(){flash('Erro ao ler o arquivo. Tente copiar e colar o texto.');});
+        };
+        reader.readAsArrayBuffer(file);
+      };
+      input.click();
+    }
+
+
     return {
       navItems,nav,currentUser,greeting,rsLogout,jbExistingId,jobs,candidates,notes,apiKey,showApiModal,newApiKey,
       showJobModal,editingJob,jf,ejf,selJobId,pdfFile,isDragging,
@@ -4824,9 +4867,12 @@ createApp({
       saveSyncConfig,deactivateSync,pushSync,pullSync,
       startEdit,saveEdit,cancelEdit,isEditing,
       scoreColor,scoreBgCol,stageMeta,recMeta,fitMeta,initials,fmtDate,daysSince,slaStats,proximaAcao,origemData,filteredCands,isVagaCrit,alertTab,detTab,candSearch,insightFilter,filterMonth,availableMonths,filterMonthLabel,strategicStats,showManualModal,mf,mfError,addManualCandidate,deleteCandidate,setCandField,editAnaMode,editAnaFields,startEditAnalysis,saveAnalysis,cancelEditAnalysis,
-      jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
+      jobCands,pending,hired,downloadPdf,importDocxTranscript,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
+
+
 
 
 
