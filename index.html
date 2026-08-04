@@ -4166,6 +4166,7 @@ function generateSummaryPDF(job,candidates){
 
 
 
+
 const {createApp,ref,computed,watch,onMounted}=Vue;
 createApp({
   render: __vueRenderFn,
@@ -4662,8 +4663,12 @@ createApp({
     }
     function deleteCandidate(id){
       if(!confirm('Excluir este candidato? A ação não pode ser desfeita.'))return;
+      // Step 1: delete from Supabase explicitly (saveMany does UPSERT, not delete)
+      supabaseCall('delete','candidates',id,null);
+      // Step 2: remove from local state
       candidates.value=candidates.value.filter(function(c){return c.id!==id;});
-      viewCand.value=null;
+      if(viewCand.value&&viewCand.value.id===id)viewCand.value=null;
+      // Step 3: save updated list (without deleted candidate)
       pushSync();
       flash('Candidato excluído.');
     }
@@ -4804,6 +4809,7 @@ createApp({
       jobCands,pending,hired,downloadPdf,businessDays,bizDaysSince,ORIGENS,candStatusFilter,candSort,showDeclinouModal,declinouMotivo,declinouObs,DECLINOU_MOTIVOS,openDeclinouModal,cancelDeclinou,confirmDeclinou,showJustModal,justMotivo,justObs,PRAZO_MOTIVOS,openJustModal,cancelJust,saveJustificativa,removeJustificativa,DISPONIBILIDADE_OPTS,setCandSalario,setCandDisp,getCandField,jobFilter,filteredJobs,setJobFilter,batchQueue,batchRunning,batchProgress,notifications,showNotifPanel,unreadCount,sendToGestor,getGestorCands,markNotifRead,    };
   }
 }).mount('#app');
+
 
 
 
