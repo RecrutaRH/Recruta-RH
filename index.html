@@ -3523,6 +3523,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 function extractJSON(raw){
   // Remove markdown fences
   var s=raw.replace(/```json/g,'').replace(/```/g,'').trim();
@@ -3729,68 +3730,84 @@ function hasPerfilXP(job){
 }
 
 
-function buildInterviewPrompt(candidate,transcript,job){
-  job=job||{};
-  var ctx='';
-  if(candidate.salario) ctx+='Pretensão salarial declarada: '+candidate.salario+'\n';
-  if(candidate.disponibilidade) ctx+='Disponibilidade declarada: '+candidate.disponibilidade+'\n';
+function buildInterviewPrompt(candidate, transcript, job){
+  job = job || {};
+  var ctx = '';
+  if(candidate.salario)       ctx += 'Pretensao salarial: ' + candidate.salario + '\n';
+  if(candidate.disponibilidade) ctx += 'Disponibilidade: ' + candidate.disponibilidade + '\n';
 
-  // Build CV analysis context for cross-reference
-  var cvCtx='';
-  var a=candidate.analysis||{};
-  var es=a.executiveSummary||{};
-  var ca=a.candidateAnalysis||{};
-  if(es.reasoning) cvCtx+='PARECER DO CURRÍCULO:\n'+es.reasoning+'\n\n';
-  if(ca.hardSkills&&ca.hardSkills.length) cvCtx+='Hard skills identificadas no currículo: '+ca.hardSkills.join(', ')+'\n';
-  if(ca.softSkills&&ca.softSkills.length) cvCtx+='Soft skills identificadas no currículo: '+ca.softSkills.join(', ')+'\n';
-  if(a.recommendation) cvCtx+='Recomendação do currículo: '+a.recommendation+'\n';
-  if(a.score&&a.score.total) cvCtx+='Score do currículo: '+a.score.total+'/100\n';
+  // CV analysis as initial hypothesis for cross-reference
+  var cvCtx = '';
+  var a = candidate.analysis || {};
+  var es = a.executiveSummary || {};
+  var ca = a.candidateAnalysis || {};
+  if(es.reasoning)                         cvCtx += 'Parecer do currículo: ' + es.reasoning + '\n';
+  if(ca.hardSkills && ca.hardSkills.length) cvCtx += 'Hard skills identificadas: ' + ca.hardSkills.join(', ') + '\n';
+  if(a.recommendation)                     cvCtx += 'Recomendacao do curriculo: ' + a.recommendation + '\n';
+  if(a.score && a.score.total)             cvCtx += 'Score do curriculo: ' + a.score.total + '/100\n';
 
-  return 'Você é um Especialista Sênior em Recrutamento e Seleção de uma grande instituição financeira.\n'
-    +'Sua função é elaborar um Parecer de Entrevista executivo, objetivo e confiável, que apoie a decisão de contratação do gestor.\n\n'
-    +'CANDIDATO: '+candidate.name+'\nVAGA: '+candidate.jobTitle+'\n'
-    +(ctx?'DADOS COLETADOS:\n'+ctx+'\n':'')
-    +(cvCtx?'════════════════════════════════\nCONTEXTO DO CURRÍCULO (USE COMO BASE OBRIGATÓRIA):\n'+cvCtx+'════════════════════════════════\n\n':'')
-    +'TRANSCRIÇÃO DA ENTREVISTA:\n'+transcript+'\n\n'
-    +'════════════════════════════════\n'
-    +'INSTRUÇÕES OBRIGATÓRIAS:\n\n'
-    +'REGRA FUNDAMENTAL: Esta análise NÃO é independente. Antes de escrever qualquer seção, compare as evidências da entrevista com as identificadas no currículo.\n'
-    +'— Se a entrevista CONFIRMA o currículo: destaque a consistência\n'
-    +'— Se COMPLEMENTA: integre a nova informação ao contexto\n'
-    +'— Se CONTRADIZ: sinalize a divergência como ponto de atenção\n'
-    +'— Se algo do currículo NÃO foi validado: indique como pendência\n'
-    +'Nunca trate o candidato como se estivesse sendo analisado pela primeira vez.\n\n'
-    +'LINGUAGEM:\n'
-    +'— Executiva, objetiva, neutra e baseada em evidências\n'
-    +'— Sem elogios por educação, sem suposições sem base na entrevista\n'
-    +'— Separe claramente: fatos observados | interpretações | ausência de evidências\n'
-    +'— Nunca escreva "não mencionado" ou "não informado" — retorne string vazia se ausente\n\n'
-    +'ESTRUTURA DO PARECER (siga exatamente):\n\n'
-    +'fitExperiencia/fitTecnico/fitComportamental/fitModeloTrabalho/fitSalarial:\n'
-    +'Avalie como "Adequado", "Parcial" ou "Inadequado". Se não houver evidência suficiente: "Dado insuficiente".\n'
-    +'Para cada dimensão com "Parcial" ou "Inadequado", a justificativa deve aparecer em fatoresRecomendacao ou pontosAtencao.\n\n'
-    +'fatoresRecomendacao (3 a 5 itens):\n'
-    +'Bullets diretos que fundamentam a recomendação. Priorize evidências cruzadas (currículo + entrevista). Sem repetir o que aparece no parecerExecutivo.\n\n'
-    +'parecerExecutivo (1 parágrafo único, máx. 5 linhas):\n'
-    +'Visão consolidada do candidato integrando currículo e entrevista. Mostre o que foi confirmado, o que surgiu de novo e o principal risco. Um gestor deve conseguir decidir após ler apenas este bloco.\n\n'
-    +'contextoProfissional (1 parágrafo, máx. 3 linhas):\n'
-    +'Trajetória e momento atual. Apenas fatos — sem repetir análise ou riscos.\n\n'
-    +'pontosPositivos (2 a 4 itens):\n'
-    +'Apenas evidências observadas na entrevista ou confirmadas pelo cruzamento com currículo. Sem inferências.\n\n'
-    +'pontosAtencao (2 a 4 itens):\n'
-    +'Riscos reais ou lacunas identificadas. Separe: (a) riscos concretos, (b) aspectos não validados na entrevista.\n\n'
-    +'paraExplorar (2 a 4 itens):\n'
-    +'Perguntas ou tópicos que o líder DEVE aprofundar na próxima etapa. Baseie-se nas lacunas identificadas.\n\n'
-    +'CAMPOS DE INFORMAÇÃO OBJETIVA — extrair literalmente da entrevista:\n'
-    +'expectativaSalarial, disponibilidade, cidadeAtual, modeloTrabalhoAtual, necessitaMudanca, disponibilidadeViagens\n\n'
-    +'TOM DE REFERÊNCIA (escreva com este estilo):\n'
-    +'"O histórico profissional previamente identificado demonstra experiência empreendedora e gestão de clientes. Durante a entrevista, a candidata reforçou esse contexto ao explicar sua transição motivada pelo interesse em atividades analíticas. A conversa confirmou a coerência entre a trajetória do currículo e seu projeto de mudança de carreira, embora permaneçam pendentes evidências sobre conhecimentos técnicos específicos em investimentos."\n\n'
-    +'Retorne APENAS JSON válido sem markdown:\n'
-    +'{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"","fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"","pontosPositivos":["",""],"pontosAtencao":["",""],"paraExplorar":["",""],"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"","necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
-    +'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".\n'
-    +'Seja rigoroso. Não elogie por educação. Aponte todas as oportunidades de melhoria, mesmo pequenas, priorizando precisão e apoio à tomada de decisão.';
+  return 'Voce atua como Recrutador Senior especializado em entrevistas por competencia.\n\n'
+    + 'CANDIDATO: ' + candidate.name + '\n'
+    + 'VAGA: ' + candidate.jobTitle + '\n'
+    + (ctx ? 'DADOS DO CANDIDATO:\n' + ctx + '\n' : '')
+    + (cvCtx
+        ? '=== ANALISE DO CURRICULO (hipotese inicial do RH) ===\n' + cvCtx
+        + '=====================================================\n\n'
+        : '')
+    + 'TRANSCRICAO DA ENTREVISTA:\n' + transcript + '\n\n'
+    + '=== INSTRUCOES ===\n\n'
+    + 'OBJETIVO: Gerar um Briefing Executivo — nao um resumo da entrevista.\n'
+    + 'O gestor tem pouco tempo. Em menos de 2 minutos ele precisa entender:\n'
+    + '- Se o RH recomenda ou nao o avanco;\n'
+    + '- Quais fatores sustentam essa recomendacao;\n'
+    + '- Quais riscos precisam ser considerados;\n'
+    + '- Quais pontos aprofundar na proxima etapa.\n\n'
+    + 'VALIDACAO CRUZADA: A analise do curriculo e a hipotese inicial.\n'
+    + 'A entrevista serve para confirmar, complementar, identificar novas evidencias ou revisar percepcoes.\n'
+    + 'Nunca gere contradicoes desnecessarias entre os dois documentos.\n\n'
+    + 'CRITERIO DE RELEVANCIA: Inclua apenas informacoes que realmente impactam a decisao.\n'
+    + 'Se uma informacao removida nao mudaria a decisao do gestor, omita-a.\n\n'
+    + 'REGRAS DE SINTESE: Nenhuma informacao deve aparecer em mais de uma secao. Elimine redundancias.\n\n'
+    + 'PRINCIPIOS DE ESCRITA: Linguagem executiva, objetiva, natural, humanizada e profissional.\n'
+    + 'Escreva como um recrutador experiente escreveria para um diretor.\n'
+    + 'Evite linguagem robotica, textos explicativos, justificativas extensas e narrativas da entrevista.\n\n'
+    + 'PRIORIZACAO: Foque em aderencia comportamental, motivacao, comunicacao, maturidade, capacidade analitica,\n'
+    + 'aprendizagem, potencial, alinhamento cultural, riscos relevantes, inconsistencias e expectativas incompativeis.\n\n'
+    + 'ESTRUTURA DO JSON (preencha conforme as regras abaixo):\n\n'
+    + 'fitExperiencia / fitTecnico / fitComportamental / fitModeloTrabalho / fitSalarial:\n'
+    + 'Avalie como "Adequado", "Parcial" ou "Inadequado".\n\n'
+    + 'fatoresRecomendacao (array, 3 a 5 bullets):\n'
+    + 'Fatores que sustentam diretamente a recomendacao. Sem repetir o parecer executivo.\n\n'
+    + 'parecerExecutivo (string, MAXIMO 80 PALAVRAS):\n'
+    + 'Responda apenas: qual e a impressao geral, por que o RH recomenda ou nao, existe risco relevante.\n'
+    + 'Nao conte historico. Nao justifique extensamente. Nao repita pontos fortes ou de atencao.\n\n'
+    + 'pontosPositivos (array, MAXIMO 4 bullets):\n'
+    + 'Apenas competencias efetivamente observadas na entrevista ou confirmadas em relacao ao curriculo.\n'
+    + 'Uma ideia por bullet. Exemplo: "Demonstra boa capacidade analitica." (nao "Durante a entrevista foi possivel perceber que...")\n\n'
+    + 'pontosAtencao (array, MAXIMO 4 bullets):\n'
+    + 'Apenas riscos que possam impactar o desempenho na funcao. Nao use linguagem alarmista.\n'
+    + 'Nao transforme pequenas observacoes em problemas.\n\n'
+    + 'paraExplorar (array, MAXIMO 3 perguntas):\n'
+    + 'Perguntas sugeridas ao gestor para aprofundar competencias relevantes ou validar riscos.\n'
+    + 'Evite perguntas genericas. Cada pergunta deve ter um objetivo claro.\n\n'
+    + 'contextoProfissional (string, MAXIMO 60 PALAVRAS):\n'
+    + 'Apenas informacoes relevantes surgidas na entrevista que complementam (nao repetem) o curriculo.\n'
+    + 'Descreva o momento profissional do candidato.\n\n'
+    + 'expectativaSalarial / disponibilidade / cidadeAtual / modeloTrabalhoAtual / necessitaMudanca / disponibilidadeViagens:\n'
+    + 'Extrair literalmente da entrevista quando mencionado.\n\n'
+    + 'VALIDACAO FINAL antes de responder:\n'
+    + '- O documento complementa a analise de perfil em vez de repeti-la?\n'
+    + '- Ha alguma informacao repetida entre secoes?\n'
+    + '- Todos os textos sao objetivos e cabem em uma pagina A4?\n'
+    + '- O gestor conseguira compreender a decisao em menos de 2 minutos?\n\n'
+    + 'Retorne APENAS JSON valido sem markdown:\n'
+    + '{"fitExperiencia":"","fitTecnico":"","fitComportamental":"","fitModeloTrabalho":"","fitSalarial":"",'
+    + '"fatoresRecomendacao":["","",""],"parecerExecutivo":"","contextoProfissional":"",'
+    + '"pontosPositivos":["","","",""],"pontosAtencao":["","","",""],"paraExplorar":["","",""],'
+    + '"expectativaSalarial":"","disponibilidade":"","cidadeAtual":"","modeloTrabalhoAtual":"",'
+    + '"necessitaMudanca":"","disponibilidadeViagens":"","recomendacao":"Avançar para entrevista com o líder"}\n'
+    + 'recomendacao deve ser EXATAMENTE: "Avançar para entrevista com o líder" ou "Não avançar no processo".';
 }
-
 
 function generateAnalysisPDF(candidate) {
   if(!candidate||!candidate.analysis){return;}
@@ -4147,6 +4164,7 @@ function generateSummaryPDF(job,candidates){
   window.open(url,'_blank');
   setTimeout(function(){URL.revokeObjectURL(url);},60000);
 }
+
 
 
 
