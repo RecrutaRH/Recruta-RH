@@ -3522,6 +3522,7 @@ try{__vueRenderFn=_b(Vue);}catch(e){console.error("Render error:",e);}
 
 
 
+
 function extractJSON(raw){
   // Remove markdown fences
   var s=raw.replace(/```json/g,'').replace(/```/g,'').trim();
@@ -3700,7 +3701,31 @@ function buildPrompt(job){
     +'- executiveSummary.attentionPoints: pontos que merecem aprofundamento — seja específico\n'
     +'- executiveSummary.reasoning: justificativa clara da recomendação em 2-3 frases\n'
     +'- comparison.matched: habilidades e experiências CONFIRMADAS no currículo (array de strings)\n'
-    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)';
+    +'- comparison.missing: requisitos da vaga NÃO evidenciados no currículo (array de strings)'
+    +(hasPerfilXP(job)?
+      '\n\nATENCAO - VAGA DO PROGRAMA XP FUTURE. Instrucoes obrigatorias:\n'
+      +'1. NAO use "Aderencia moderada" ou "Forte aderencia" - esses termos NAO se aplicam.\n'
+      +'2. No campo "classification" retorne EXATAMENTE: "Perfil A", "Perfil B", "Perfil C" ou "Perfil D".\n'
+      +'3. No campo "recommendation" retorne: "Avançar para entrevista" (perfis A/B/C) ou "Não avançar" (perfil D).\n'
+      +'REGRAS DE CLASSIFICACAO XP FUTURE:\n'
+      +'Perfil A: Universidade 4-5 estrelas + curso Adm/Eco/Eng/Cont + empresa Valor1000 ou banco + salario acima R$10k\n'
+      +'Perfil B: Opcao1: Univ 3 estrelas + Adm/Eco/Eng/Cont + Valor1000/banco | Opcao2: Univ 4-5 estrelas + qualquer curso + Valor1000/banco\n'
+      +'Perfil C: Univ 3 estrelas + qualquer curso + Valor1000/banco | Ou: forte experiencia comercial comprovada\n'
+      +'Perfil D: Nao atende os criterios acima\n'
+      +'PROGRAMA DE FORMACAO: candidatos em transicao de carreira sao bem-vindos.\n'
+      +'Formacao solida + trajetoria consistente + motivacao para financas = minimo Perfil C.\n'
+      +'Ausencia de exp. como assessor NAO e eliminatorio - o programa forma novos assessores.\n'
+      +'Universidades 4-5 estrelas: USP,FGV,Insper,Unicamp,Mackenzie,PUC,UFRJ,UFMG,UFRGS,UFPR,ESPM,Ibmec,ITA,UFSCar\n'
+      +'Bancos validos: Itau,Bradesco,Santander,BB,Caixa,XP,BTG,Nubank,Inter,C6,Safra\n'
+      +'Adicione ao JSON: "perfilXP":{"perfil":"B","justificativa":"razao","universidade":"nome","estrelas":"3","curso":"nome","empresaValor1000":true,"empresaAtual":"nome","salarioAcima10k":null}'
+      :'');
+}
+
+function hasPerfilXP(job){
+  var desc=(job.descr||job.desc||'').toLowerCase();
+  return (desc.indexOf('perfil a')>=0&&desc.indexOf('perfil b')>=0&&desc.indexOf('valor 1000')>=0)
+      || desc.indexOf('xp future')>=0
+      || desc.indexOf('assessor de investimentos')>=0&&desc.indexOf('programa')>=0;
 }
 
 
@@ -4122,6 +4147,7 @@ function generateSummaryPDF(job,candidates){
   window.open(url,'_blank');
   setTimeout(function(){URL.revokeObjectURL(url);},60000);
 }
+
 
 
 
