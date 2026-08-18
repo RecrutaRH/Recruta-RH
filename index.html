@@ -3918,7 +3918,7 @@ function generateAnalysisPDF(candidate) {
     // EXEC SUMMARY
     +(es.strengths?'<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#1D4ED8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Resumo Executivo</p>'
-    +'<p style="font-size:10.5px;color:#1e293b;line-height:1.55">'+truncate(es.strengths, 420)+'</p>'
+    +'<p style="font-size:10.5px;color:#1e293b;line-height:1.55">'+truncate(es.strengths, 900)+'</p>'
     +'</div>':'')
 
     // COMPETÊNCIAS + PERFIL COMPORTAMENTAL
@@ -3957,7 +3957,7 @@ function generateAnalysisPDF(candidate) {
     // REASONING
     +(es.reasoning?'<div style="background:#F8FAFC;border:1px solid #e2e8f0;border-radius:7px;padding:7px 11px;margin-bottom:8px">'
     +'<p style="font-size:8px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Justificativa</p>'
-    +'<p style="font-size:10px;color:#334155;line-height:1.5">'+truncate(es.reasoning, 380)+'</p>'
+    +'<p style="font-size:10px;color:#334155;line-height:1.5">'+truncate(es.reasoning, 700)+'</p>'
     +'</div>':'')
 
     // FOOTER
