@@ -478,6 +478,15 @@ return function render(_ctx, _cache) {
                     ]))
                   : _createCommentVNode("v-if", true)
               ]),
+              (editingJob&&editingJob.status==='cancelada')
+                ? (_openBlock(), _createElementBlock("div", {
+                    key: 1,
+                    style: {"background":"#FFF7ED","border":"1px solid #FED7AA","border-radius":"8px","padding":"10px 12px","margin-bottom":"14px"}
+                  }, [
+                    _createElementVNode("p", { style: {"font-size":"10px","font-weight":"700","color":"#C2410C","text-transform":"uppercase","letter-spacing":".05em","margin-bottom":"3px"} }, "Vaga cancelada"),
+                    _createElementVNode("p", { style: {"font-size":"12px","color":"#7C2D12"} }, _toDisplayString('Motivo: '+(editingJob.cancelReason||'-')+(editingJob.cancelDate?' · '+fmtDate(editingJob.cancelDate):'')), 1 /* TEXT */)
+                  ]))
+                : _createCommentVNode("v-if", true),
               _createElementVNode("label", { style: {"font-size":"12px","color":"#64748B","display":"block","margin-bottom":"16px"} }, [
                 _createTextVNode("Descricao"),
                 _withDirectives(_createElementVNode("textarea", {
@@ -1531,7 +1540,7 @@ return function render(_ctx, _cache) {
                                           }, "Critica"))
                                         : _createCommentVNode("v-if", true)
                                     ]),
-                                    _createElementVNode("div", { style: {"font-size":"10.5px","color":"#64748B"} }, _toDisplayString(job.dept) + " · " + _toDisplayString(job.status==='encerrada'?('Encerrada '+fmtDate(job.closedDate)):(bizDaysSince(job.openDate)+' dias uteis aberta')), 1 /* TEXT */)
+                                    _createElementVNode("div", { style: {"font-size":"10.5px","color":"#64748B"} }, _toDisplayString(job.dept) + " · " + _toDisplayString(job.status==='encerrada'?('Encerrada '+fmtDate(job.closedDate)):job.status==='cancelada'?('Cancelada '+fmtDate(job.cancelDate)):(bizDaysSince(job.openDate)+' dias uteis aberta')), 1 /* TEXT */)
                                   ], 4 /* STYLE */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC","font-weight":"500","font-size":"12.5px"} }, _toDisplayString(jobCands(job.id).length), 1 /* TEXT */),
                                   _createElementVNode("td", { style: {"padding":"11px 10px","border-bottom":"1px solid #F8FAFC"} }, [
@@ -1607,7 +1616,18 @@ return function render(_ctx, _cache) {
                                             onClick: $event => (sendToLeader(job)),
                                             style: {"background":"#6D28D9","color":"#fff","border":"none","border-radius":"6px","font-size":"11px","cursor":"pointer","padding":"3px 8px","font-family":"Inter,sans-serif"}
                                           }, "Enviar lider", 8 /* PROPS */, ["onClick"]))
-                                        : _createCommentVNode("v-if", true)
+                                        : _createCommentVNode("v-if", true),
+                                      (job.status==='aberta')
+                                        ? (_openBlock(), _createElementBlock("button", {
+                                            key: 1,
+                                            onClick: $event => (cancelJob(job)),
+                                            style: {"background":"none","border":"1px solid #FED7AA","border-radius":"6px","color":"#EA580C","font-size":"11px","cursor":"pointer","padding":"3px 8px","font-family":"Inter,sans-serif"}
+                                          }, "Cancelar vaga", 8 /* PROPS */, ["onClick"]))
+                                        : _createCommentVNode("v-if", true),
+                                      _createElementVNode("button", {
+                                        onClick: $event => (deleteJob(job.id)),
+                                        style: {"background":"none","border":"1px solid #FCA5A5","border-radius":"6px","color":"#DC2626","font-size":"11px","cursor":"pointer","padding":"3px 8px","font-family":"Inter,sans-serif"}
+                                      }, "Excluir vaga", 8 /* PROPS */, ["onClick"])
                                     ])
                                   ])
                                 ], 4 /* STYLE */))
@@ -4488,6 +4508,27 @@ createApp({
       }
       editingJob.value=null;flash('Vaga atualizada');pushSync();
     }
+    function cancelJob(job){
+      var i=jobs.value.findIndex(function(j){return j.id===job.id;});
+      if(i<0)return;
+      var reason=prompt('Motivo do cancelamento da vaga "'+jobs.value[i].title+'":\n(ex: falta de orçamento, mudança estratégica, etc.)');
+      if(reason===null)return;
+      if(!reason.trim()){alert('Informe o motivo do cancelamento.');return;}
+      jobs.value[i].status='cancelada';
+      jobs.value[i].cancelReason=reason.trim();
+      jobs.value[i].cancelDate=today();
+      flash('Vaga cancelada.');pushSync();
+    }
+    function deleteJob(id){
+      var linked=candidates.value.filter(function(c){return c.jobId===id;}).length;
+      if(linked>0){alert('Esta vaga tem '+linked+' candidato(s) vinculado(s). Exclua ou realoque os candidatos antes de excluir a vaga.');return;}
+      var job=jobs.value.find(function(j){return j.id===id;});
+      if(!confirm('Excluir a vaga "'+(job?job.title:'')+'"? Essa ação não pode ser desfeita.'))return;
+      supabaseCall('delete','jobs',id,null);
+      jobs.value=jobs.value.filter(function(j){return j.id!==id;});
+      if(editingJob.value&&editingJob.value.id===id)editingJob.value=null;
+      flash('Vaga excluída.');pushSync();
+    }
 
     // ── Analyze ───────────────────────────────────────────────────────────
     function handleFile(file){
@@ -4861,7 +4902,7 @@ createApp({
       isGenSum,genSumStep,metrics,dashCards,filtCands,vcTrans,scoreBars,execBlocks,summaryRows,STAGES,
       jbKey,jbBin,jbStatus,showSyncModal,jbKeyInput,jbCreating,
       editingField,editFieldVal,
-      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,handleFile,onFileDrop,analyze,
+      flash,goTo,goBack,goToFiltered,openDetail,addJob,openEdit,saveJob,cancelJob,deleteJob,handleFile,onFileDrop,analyze,
       advanceStatus,saveNote,getNote,getTranscript,setTranscript,getSummary,getIntDate,setIntDate,
       generateInterviewSummary,dlParecer,downloadAnalysisPDF,summaryMailto,sendToLeader,saveApiKey,
       saveSyncConfig,deactivateSync,pushSync,pullSync,
