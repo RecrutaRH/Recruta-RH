@@ -3590,7 +3590,15 @@ function supabaseCall(action, table, id, data) {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({action, table, id, data})
-  }).then(function(r){ return r.json(); }).catch(function(e){ console.error('DB error:',e); return {ok:false}; });
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }).catch(function(e){
+    console.error('DB error:',action,table,e);
+    // __failed marca explicitamente que ESTA chamada nao trouxe dado.
+    // Sem isso, o app confundia "erro" com "banco vazio".
+    return {ok:false, __failed:true};
+  });
 }
 
 // ── JSONBin.io API functions ──────────────────────────────────────────────────
@@ -3615,9 +3623,14 @@ function jsonBinPull(masterKey, binId) {
     supabaseCall('getState','app_state','summaries'),
     supabaseCall('getState','app_state','intDates'),
   ]).then(function(results){
+    // Se QUALQUER uma das 6 chamadas falhou, aborta o sync inteiro.
+    // Antes, uma falha virava lista vazia e apagava tudo da tela.
+    if(results.some(function(r){ return !r || r.__failed; })) return null;
+    // Cinto de seguranca extra: jobs/candidates tem que vir como array.
+    if(!Array.isArray(results[0].data) || !Array.isArray(results[1].data)) return null;
     return {
-      jobs: results[0].data||[],
-      candidates: results[1].data||[],
+      jobs: results[0].data,
+      candidates: results[1].data,
       notes: results[2].data||{},
       transcripts: results[3].data||{},
       summaries: results[4].data||{},
@@ -4434,7 +4447,14 @@ createApp({
 
     function applyData(d){
       if(!d)return;
-      if(d.jobs)jobs.value=d.jobs;
+      // Trava final: nunca substituir uma lista cheia por uma vazia sem confirmacao.
+      // Se o banco voltar vazio mas o local tem dados, e' sinal de problema, nao de exclusao.
+      if(Array.isArray(d.candidates) && d.candidates.length===0 && candidates.value.length>0){
+        console.warn('Sync devolveu 0 candidatos com '+candidates.value.length+' em tela. Ignorado.');
+        jbStatus.value='⚠ Sync ignorado (resposta vazia)';
+        return;
+      }
+      if(Array.isArray(d.jobs))jobs.value=d.jobs;
       if(d.candidates){
         // Preserve local pdfBase64 for candidates already in local storage
         var localPdfs = {};
@@ -4451,7 +4471,13 @@ createApp({
     function pushSync(){jsonBinPush(jbKey.value,jbBin.value,getAllData());}
     function pullSync(){
       jsonBinPull(jbKey.value,jbBin.value).then(function(d){
-        if(d){applyData(d);jbStatus.value='Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+        if(d){
+          applyData(d);
+          jbStatus.value='Sincronizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        } else {
+          // Falhou: mantem os dados em tela e AVISA, em vez de mostrar tela vazia.
+          jbStatus.value='⚠ Sem conexão com o banco — dados em tela podem estar desatualizados';
+        }
       });
     }
     function saveSyncConfig(){showSyncModal.value=false;pullSync();flash('Sincronizando...');}
@@ -4460,7 +4486,11 @@ createApp({
     onMounted(function(){loadNotifications();
       if(jbKey.value&&jbBin.value){
         pullSync();
-        setInterval(pullSync,10000);
+        // 10s -> 120s e so' com a aba visivel.
+        // O polling de 10s era o que consumia ~1 GB/dia de egress no Supabase.
+        setInterval(function(){
+          if(!document.hidden&&jbKey.value&&jbBin.value)pullSync();
+        },120000);
         document.addEventListener('visibilitychange',function(){
           if(!document.hidden&&jbKey.value&&jbBin.value)pullSync();
         });
